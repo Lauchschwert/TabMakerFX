@@ -12,6 +12,7 @@ public class NoteButton extends Button {
     public NoteButton(TabPanel tabPanel, int index) {
         this.tabPanel = tabPanel;
         this.index = index;
+        this.setStyle("-fx-font-size: 16");
 
         this.setPrefSize(40, 40);
         this.setOnAction(e -> {

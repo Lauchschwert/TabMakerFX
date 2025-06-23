@@ -1,10 +1,7 @@
 package xyz.lauchschwert.tabmaker;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
 import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -13,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import xyz.lauchschwert.tabmaker.panels.TabPanel;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +28,8 @@ public class TabMaker extends Application {
             "19", "20", "21", "22", "23", "24",
             "-", "X");
 
+    public static Font btnFont = new Font("sansserif", Font.PLAIN, 20);
+
     @Override
     public void start(Stage stage) {
         VBox root = new VBox();
@@ -43,9 +43,11 @@ public class TabMaker extends Application {
 
         Tab tab1 = new Tab("Guitar");
         tab1.setClosable(false);
+        tab1.setStyle("-fx-font-size: 16");
 
         Tab tab2 = new Tab("Bass");
         tab2.setClosable(false);
+        tab2.setStyle("-fx-font-size: 16");
 
         VBox guitarPanelContainer = new VBox();
         guitarPanelContainer.setSpacing(20);

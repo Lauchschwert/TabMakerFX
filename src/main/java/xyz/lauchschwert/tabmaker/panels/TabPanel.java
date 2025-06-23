@@ -20,6 +20,7 @@ public class TabPanel extends HBox {
         setPadding(new Insets(10));
 
         Button stringButton = new Button(string);
+        stringButton.setStyle("-fx-font-size: 15");
         stringButton.setPrefSize(40, 40);
 
         stringButton.setOnAction(e -> {
