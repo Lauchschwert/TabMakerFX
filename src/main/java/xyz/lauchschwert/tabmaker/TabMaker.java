@@ -1,8 +1,12 @@
 package xyz.lauchschwert.tabmaker;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
@@ -14,8 +18,10 @@ import java.util.List;
 
 public class TabMaker extends Application {
     public static List<String> strings = Arrays.asList(
-            "A", "B", "C", "C#", "D", "E", "F#", "G", "G#",
-            "F" // optional, only if you're accounting for enharmonic variants
+            // Standard tuning
+            "E", "A", "D", "G", "B",
+            // All chromatic notes for alternate tunings
+            "C", "C#", "D#", "F", "F#", "G#", "A#"
     );
 
     public static List<String> notes = Arrays.asList("1", "2", "3", "4", "5", "6",
@@ -26,9 +32,11 @@ public class TabMaker extends Application {
 
     @Override
     public void start(Stage stage) {
-
         VBox root = new VBox();
         root.setMinWidth(800);
+
+        ScrollPane rootScrollPane = new ScrollPane(root);
+        rootScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         TabPane tabPane = new TabPane();
         tabPane.setSide(Side.TOP);
@@ -46,23 +54,56 @@ public class TabMaker extends Application {
         bassPanelContainer.setSpacing(20);
 
         for (int i = 0; i < 6; i++) {
-            guitarPanelContainer.getChildren().add(new TabPanel(strings.get(i)));
+            final TabPanel guitarTabPanel = createTabPanel(i);
+
+            // Wrap in ScrollPane for guitar
+            ScrollPane guitarScrollPane = new ScrollPane(guitarTabPanel);
+            guitarScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            guitarScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            guitarScrollPane.setFitToHeight(true);
+            guitarScrollPane.setPrefHeight(80);
+
+            guitarTabPanel.setScrollPane(guitarScrollPane);
+            guitarPanelContainer.getChildren().add(guitarScrollPane);
+
             if (i < 4) {
-                bassPanelContainer.getChildren().add(new TabPanel(strings.get(i)));
+                final TabPanel bassTabPanel = createTabPanel(i);
+
+                // Wrap in ScrollPane for bass
+                ScrollPane bassScrollPane = new ScrollPane(bassTabPanel);
+                bassScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+                bassScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                bassScrollPane.setFitToHeight(true);
+                bassScrollPane.setPrefHeight(80);
+
+                bassPanelContainer.getChildren().add(bassScrollPane);
             }
         }
 
         tab1.setContent(guitarPanelContainer);
         tab2.setContent(bassPanelContainer);
 
-        tabPane.getTabs().addAll(tab1, tab2);
+        tabPane.getTabs().
 
-        root.getChildren().addAll(tabPane);
+                addAll(tab1, tab2);
+
+        root.getChildren().
+
+                addAll(tabPane);
 
         Scene scene = new Scene(root);
         stage.setTitle("TabmakerFX");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private static TabPanel createTabPanel(int i) {
+        int index = i;
+        // if last string since E is not a duplicate
+        if (i == 5) {
+            index = 0;
+        }
+        return new TabPanel(strings.get(index));
     }
 
     public static void main(String[] args) {
