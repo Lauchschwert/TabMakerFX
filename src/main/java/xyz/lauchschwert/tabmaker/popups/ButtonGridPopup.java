@@ -28,8 +28,7 @@ public class ButtonGridPopup {
 
         this.container = new VBox(5);
         this.container.setStyle("-fx-background-color: white; -fx-border-color: gray; " +
-                "-fx-padding: 10; -fx-background-radius: 5; " +
-                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);");
+                "-fx-padding: 10; ");
 
         this.popup.getContent().add(container);
     }
