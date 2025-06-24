@@ -1,6 +1,7 @@
 package xyz.lauchschwert.tabmaker;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -107,6 +108,13 @@ public class TabMaker extends Application {
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/TabMaker.css")).toExternalForm());
         stage.setTitle("TabmakerFX");
         stage.setScene(scene);
+
+        Platform.runLater(() -> {
+            double height = root.getHeight();
+            stage.setMaxHeight(height);
+            stage.setMinHeight(height);
+        });
+
         stage.show();
     }
 
