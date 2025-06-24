@@ -12,9 +12,9 @@ public class NoteButton extends Button {
     public NoteButton(TabPanel tabPanel, int index) {
         this.tabPanel = tabPanel;
         this.index = index;
-        this.setStyle("-fx-font-size: 16");
+        this.getStyleClass().add("note-button");
 
-        this.setPrefSize(40, 40);
+        this.setPrefSize(50, 50);
         this.setOnAction(e -> {
             ButtonGridPopup.create(TabMaker.notes, selectedNote -> {
                 this.setText(selectedNote);

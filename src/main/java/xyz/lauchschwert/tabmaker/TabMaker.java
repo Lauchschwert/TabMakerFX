@@ -13,6 +13,7 @@ import xyz.lauchschwert.tabmaker.panels.TabPanel;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class TabMaker extends Application {
     public static List<String> strings = Arrays.asList(
@@ -34,12 +35,11 @@ public class TabMaker extends Application {
     public void start(Stage stage) {
         VBox root = new VBox();
         root.setMinWidth(800);
-
-        ScrollPane rootScrollPane = new ScrollPane(root);
-        rootScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        root.getStyleClass().add("root");
 
         TabPane tabPane = new TabPane();
         tabPane.setSide(Side.TOP);
+        tabPane.getStyleClass().add("tabPane");
 
         Tab tab1 = new Tab("Guitar");
         tab1.setClosable(false);
@@ -60,10 +60,9 @@ public class TabMaker extends Application {
 
             // Wrap in ScrollPane for guitar
             ScrollPane guitarScrollPane = new ScrollPane(guitarTabPanel);
-            guitarScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            guitarScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
             guitarScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             guitarScrollPane.setFitToHeight(true);
-            guitarScrollPane.setPrefHeight(80);
 
             guitarTabPanel.setScrollPane(guitarScrollPane);
             guitarPanelContainer.getChildren().add(guitarScrollPane);
@@ -76,7 +75,6 @@ public class TabMaker extends Application {
                 bassScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
                 bassScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
                 bassScrollPane.setFitToHeight(true);
-                bassScrollPane.setPrefHeight(80);
 
                 bassPanelContainer.getChildren().add(bassScrollPane);
             }
@@ -94,6 +92,7 @@ public class TabMaker extends Application {
                 addAll(tabPane);
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/TabMaker.css")).toExternalForm());
         stage.setTitle("TabmakerFX");
         stage.setScene(scene);
         stage.show();

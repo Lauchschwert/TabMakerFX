@@ -17,11 +17,11 @@ public class TabPanel extends HBox {
 
     public TabPanel(String string) {
         setSpacing(10);
-        setPadding(new Insets(10));
+        setPadding(new Insets(15));
 
         Button stringButton = new Button(string);
-        stringButton.setStyle("-fx-font-size: 15");
-        stringButton.setPrefSize(40, 40);
+        stringButton.setPrefSize(50, 50);
+        stringButton.getStyleClass().add("string-button");
 
         stringButton.setOnAction(e -> {
             ButtonGridPopup.create(TabMaker.strings, stringButton::setText).show(stringButton);
