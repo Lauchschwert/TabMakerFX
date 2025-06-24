@@ -1,6 +1,5 @@
 package xyz.lauchschwert.tabmaker.panels;
 
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
@@ -13,7 +12,6 @@ import xyz.lauchschwert.tabmaker.popups.ButtonGridPopup;
 
 public class TabPanel extends HBox {
     private final HBox noteBtnPanel;
-    private ScrollPane scrollPane;
 
     public TabPanel(String string) {
         setSpacing(10);
@@ -44,17 +42,11 @@ public class TabPanel extends HBox {
     public void addNoteBtn() {
         NoteButton newButton = new NoteButton(this, noteBtnPanel.getChildren().size());
         this.noteBtnPanel.getChildren().add(newButton);
-        Platform.runLater(() -> {
-            scrollPane.setHvalue(1.0); // Scroll to end
-            newButton.requestFocus();
-        });
+        TabMaker.NOTE_ADDED = true;
+        newButton.requestFocus();
     }
 
     public int lastIndexOfNotePanel() {
         return noteBtnPanel.getChildren().size() - 1;
-    }
-
-    public void setScrollPane(ScrollPane guitarScrollPane) {
-        this.scrollPane = guitarScrollPane;
     }
 }

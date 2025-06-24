@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class TabMaker extends Application {
+    public static boolean NOTE_ADDED = false;
+
     public static List<String> strings = Arrays.asList(
             // Standard tuning
             "E", "A", "D", "G", "B",
@@ -63,9 +65,15 @@ public class TabMaker extends Application {
             guitarScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
             guitarScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             guitarScrollPane.setFitToHeight(true);
-
-            guitarTabPanel.setScrollPane(guitarScrollPane);
+            guitarScrollPane.hvalueProperty().addListener((observable, oldValue, newValue) -> {
+                // Basic filtering so you can scroll too :)
+                if (NOTE_ADDED) {
+                    guitarScrollPane.setHvalue(1.0);
+                    NOTE_ADDED = false;
+                }
+            });
             guitarPanelContainer.getChildren().add(guitarScrollPane);
+            guitarScrollPane.setHvalue(1.0);
 
             if (i < 4) {
                 final TabPanel bassTabPanel = createTabPanel(i);
@@ -75,8 +83,12 @@ public class TabMaker extends Application {
                 bassScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
                 bassScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
                 bassScrollPane.setFitToHeight(true);
-
+                bassScrollPane.hvalueProperty().addListener((observable, oldValue, newValue) -> {
+                    bassScrollPane.setHvalue(1.0);
+                });
                 bassPanelContainer.getChildren().add(bassScrollPane);
+
+                bassScrollPane.setHvalue(1.0);
             }
         }
 
