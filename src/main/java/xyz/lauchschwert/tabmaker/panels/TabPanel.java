@@ -36,9 +36,6 @@ public class TabPanel extends HBox {
         this.getChildren().addAll(stringButton, separator, noteBtnPanel);
     }
 
-    private void handleNoteSelection(String s) {
-    }
-
     public void addNoteBtn() {
         NoteButton newButton = new NoteButton(this, noteBtnPanel.getChildren().size());
         this.noteBtnPanel.getChildren().add(newButton);
