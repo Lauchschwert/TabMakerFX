@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class ButtonGridPopup {
@@ -27,8 +28,8 @@ public class ButtonGridPopup {
         this.popup.setAutoHide(true);
 
         this.container = new VBox(5);
-        this.container.setStyle("-fx-background-color: white; -fx-border-color: gray; " +
-                "-fx-padding: 10; ");
+        this.container.getStyleClass().add("button-grid-popup");
+        this.container.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/Popup.css")).toExternalForm());
 
         this.popup.getContent().add(container);
     }

@@ -18,7 +18,7 @@ public class TabPanel extends HBox {
         setPadding(new Insets(15));
 
         Button stringButton = new Button(string);
-        stringButton.setPrefSize(50, 50);
+        stringButton.setPrefSize(60, 65);
         stringButton.getStyleClass().add("string-button");
 
         stringButton.setOnAction(e -> {

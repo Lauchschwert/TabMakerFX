@@ -38,6 +38,7 @@ public class TabMaker extends Application {
     public void start(Stage stage) {
         VBox root = new VBox();
         root.setMinWidth(800);
+        root.setPrefWidth(1200);
         root.getStyleClass().add("root");
 
         TabPane tabPane = new TabPane();

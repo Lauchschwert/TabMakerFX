@@ -1,0 +1,6 @@
+.button-grid-popup {
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+    -fx-border-color: deeppink;
+    -fx-border-radius: 5px;
+}

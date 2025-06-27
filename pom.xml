@@ -81,6 +81,20 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.3</version>
+                <configuration>
+                    <name>TabmakerFX</name>
+                    <appVersion>0.0.1</appVersion>
+                    <vendor>Lauchschwert</vendor>
+                    <destination>target/dist</destination>
+                    <mainClass>xyz.lauchschwert.tabmaker.TabMaker</mainClass>
+                    <mainJar>TabMaker-0.0.1.jar</mainJar>
+                    <input>target</input>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

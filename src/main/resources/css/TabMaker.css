@@ -15,10 +15,10 @@
 
 /* Make the viewport (content area) transparent */
 .scroll-pane .viewport {
-    -fx-background-color: rgb(25, 25, 25);
+    -fx-background-color: rgba(0, 0, 0, 0.2); /* 0.5 = 50% opacity */
     -fx-border-width: 2px;
     -fx-border-color: gray;
-    -fx-border-radius: 5;
+    -fx-border-radius: 5px;
 }
 
 .scroll-bar:horizontal .track {
