@@ -1,4 +1,4 @@
-package xyz.lauchschwert.tabmaker.export;
+package xyz.lauchschwert.tabmaker.handler;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JSONExporter {
+public class ImportExportHandler {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void SaveToJSON(String string, List<String> stringTabs) {

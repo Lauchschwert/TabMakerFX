@@ -1,4 +1,4 @@
-package xyz.lauchschwert.tabmaker.popups;
+package xyz.lauchschwert.tabmaker.ui.popups;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
