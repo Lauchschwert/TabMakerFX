@@ -34,6 +34,10 @@ public class TabPanel extends HBox {
         this.getChildren().addAll(stringButton, separator, noteBtnPanel);
     }
 
+    public TabPanel(String string, String[] notes) {
+        noteBtnPanel = new HBox();
+    }
+
     public void addNoteBtn() {
         NoteButton newButton = new NoteButton(this, noteBtnPanel.getChildren().size());
         this.noteBtnPanel.getChildren().add(newButton);
