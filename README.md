@@ -8,9 +8,8 @@
 ## Core Features
 - [x] Basic tab creation interface
 - [x] Note input and editing
-- [ ] Tab playback functionality
+- [ ] Export/Import
 - [ ] Save/load tab files
-- [ ] Export to common formats (PDF, TXT)
 
 ## User Interface
 - [x] Guitar/Bass seperation
@@ -41,8 +40,8 @@
 ## Project Completion: **20%** (4/20 tasks completed)
 
 ### By Category:
-- **Core Features:** 40% (2/5)
+- **Core Features:** 50% (2/4)
 - **User Interface:** 20% (1/5)
-- **Advanced Features:** 20% (1/5)
+- **Advanced Features:** 50% (1/2)
 - **Quality & Polish:** 0% (0/5)
 - **Future Ideas:** 0% (0/4)
