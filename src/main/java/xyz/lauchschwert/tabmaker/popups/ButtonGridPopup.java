@@ -57,10 +57,11 @@ public class ButtonGridPopup {
 
         for (int i = 0; i < buttonTexts.size(); i += buttonsPerRow) {
             HBox row = new HBox(4);
+            row.setSpacing(10);
 
             for (int j = i; j < Math.min(i + buttonsPerRow, buttonTexts.size()); j++) {
                 Button btn = new Button(buttonTexts.get(j));
-                btn.setPrefSize(40,40);
+                btn.getStyleClass().add("popup-button");
                 btn.setOnAction(e -> {
                     if (onButtonClick != null) {
                         onButtonClick.accept(btn.getText());

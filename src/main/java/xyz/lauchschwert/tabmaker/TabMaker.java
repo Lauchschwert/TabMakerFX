@@ -11,7 +11,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import xyz.lauchschwert.tabmaker.panels.TabPanel;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -31,8 +30,6 @@ public class TabMaker extends Application {
             "13", "14", "15", "16", "17", "18",
             "19", "20", "21", "22", "23", "24",
             "-", "X");
-
-    public static Font btnFont = new Font("sansserif", Font.PLAIN, 20);
 
     @Override
     public void start(Stage stage) {
@@ -58,37 +55,10 @@ public class TabMaker extends Application {
         bassPanelContainer.setSpacing(20);
 
         for (int i = 0; i < 6; i++) {
-            final TabPanel guitarTabPanel = createTabPanel(i);
-
-            // Wrap in ScrollPane for guitar
-            ScrollPane guitarScrollPane = new ScrollPane(guitarTabPanel);
-            guitarScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-            guitarScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-            guitarScrollPane.setFitToHeight(true);
-            guitarScrollPane.hvalueProperty().addListener((observable, oldValue, newValue) -> {
-                // Basic filtering so you can scroll too :)
-                if (NOTE_ADDED) {
-                    guitarScrollPane.setHvalue(1.0);
-                    NOTE_ADDED = false;
-                }
-            });
-            guitarPanelContainer.getChildren().add(guitarScrollPane);
-            guitarScrollPane.setHvalue(1.0);
+            createTabPanel(i, guitarPanelContainer);
 
             if (i < 4) {
-                final TabPanel bassTabPanel = createTabPanel(i);
-
-                // Wrap in ScrollPane for bass
-                ScrollPane bassScrollPane = new ScrollPane(bassTabPanel);
-                bassScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-                bassScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-                bassScrollPane.setFitToHeight(true);
-                bassScrollPane.hvalueProperty().addListener((observable, oldValue, newValue) -> {
-                    bassScrollPane.setHvalue(1.0);
-                });
-                bassPanelContainer.getChildren().add(bassScrollPane);
-
-                bassScrollPane.setHvalue(1.0);
+                createTabPanel(i, bassPanelContainer);
             }
         }
 
@@ -110,11 +80,31 @@ public class TabMaker extends Application {
 
         Platform.runLater(() -> {
             double height = root.getHeight();
-            stage.setMaxHeight(height);
             stage.setMinHeight(height);
+            // Whyever I need to add 40 here. It's for the buttons so please don't remove sadge
+            stage.setMaxHeight(height + 40);
         });
 
         stage.show();
+    }
+
+    private static void createTabPanel(int i, VBox container) {
+        final TabPanel tabPanel = createTabPanel(i);
+
+        // Wrap in ScrollPane for scrolling if buttons extend bounds
+        ScrollPane scrollPane = new ScrollPane(tabPanel);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setFitToHeight(true);
+        scrollPane.hvalueProperty().addListener((observable, oldValue, newValue) -> {
+            // Basic filtering so you can scroll too :)
+            if (NOTE_ADDED) {
+                scrollPane.setHvalue(1.0);
+                NOTE_ADDED = false;
+            }
+        });
+        scrollPane.setHvalue(1.0);
+        container.getChildren().add(scrollPane);
     }
 
     private static TabPanel createTabPanel(int i) {
