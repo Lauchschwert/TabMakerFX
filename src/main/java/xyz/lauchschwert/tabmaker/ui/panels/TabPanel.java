@@ -1,14 +1,13 @@
-package xyz.lauchschwert.tabmaker.panels;
+package xyz.lauchschwert.tabmaker.ui.panels;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import xyz.lauchschwert.tabmaker.TabMaker;
-import xyz.lauchschwert.tabmaker.buttons.NoteButton;
-import xyz.lauchschwert.tabmaker.popups.ButtonGridPopup;
+import xyz.lauchschwert.tabmaker.ui.buttons.NoteButton;
+import xyz.lauchschwert.tabmaker.ui.popups.ButtonGridPopup;
 
 public class TabPanel extends HBox {
     private final HBox noteBtnPanel;

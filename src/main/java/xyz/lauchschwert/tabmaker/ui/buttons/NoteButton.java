@@ -1,9 +1,9 @@
-package xyz.lauchschwert.tabmaker.buttons;
+package xyz.lauchschwert.tabmaker.ui.buttons;
 
 import javafx.scene.control.Button;
 import xyz.lauchschwert.tabmaker.TabMaker;
-import xyz.lauchschwert.tabmaker.panels.TabPanel;
-import xyz.lauchschwert.tabmaker.popups.ButtonGridPopup;
+import xyz.lauchschwert.tabmaker.ui.panels.TabPanel;
+import xyz.lauchschwert.tabmaker.ui.popups.ButtonGridPopup;
 
 public class NoteButton extends Button {
     private final TabPanel tabPanel;

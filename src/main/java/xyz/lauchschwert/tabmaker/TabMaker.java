@@ -9,7 +9,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import xyz.lauchschwert.tabmaker.panels.TabPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.TabPanel;
 
 import java.util.Arrays;
 import java.util.List;
