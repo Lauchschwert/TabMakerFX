@@ -3,6 +3,9 @@
 
 ## This tool is still under development and will be punching you with some bugs
 
+# Current Feature under development
+- Import/Export (Core Features)
+
 # Roadmap / Checklist
 
 ## Core Features
