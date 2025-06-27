@@ -9,6 +9,7 @@
 - [x] Basic tab creation interface
 - [x] Note input and editing
 - [ ] Export/Import
+- [ ] Notefill
 - [ ] Save/load tab files
 
 ## User Interface
@@ -20,6 +21,7 @@
 
 ## Advanced Features
 - [x] Multiple instrument support
+- [ ] Custom notefill (Notefill but with customizable settings e.g. saveable)
 - [ ] Chord recognition
 
 ## Quality & Polish
@@ -42,6 +44,6 @@
 ### By Category:
 - **Core Features:** 50% (2/4)
 - **User Interface:** 20% (1/5)
-- **Advanced Features:** 50% (1/2)
+- **Advanced Features:** 33% (1/3)
 - **Quality & Polish:** 0% (0/5)
 - **Future Ideas:** 0% (0/4)
