@@ -41,15 +41,11 @@
 
 ---
 
-## Progress Overview
-![Progress](https://progress-bar.dev/10/?title=Overall%20Completion)
+## Project Completion: **10%** (2/20 tasks completed)
 
-**Completed:** 2/20 tasks  
-**Progress:** 10%
-
-### Breakdown by Category:
-- **Core Features:** ![Progress](https://progress-bar.dev/40/?scale=5&title=2/5&suffix=%20completed&width=200)
-- **User Interface:** ![Progress](https://progress-bar.dev/0/?scale=5&title=0/5&suffix=%20completed&width=200)
-- **Advanced Features:** ![Progress](https://progress-bar.dev/0/?scale=5&title=0/5&suffix=%20completed&width=200)
-- **Quality & Polish:** ![Progress](https://progress-bar.dev/0/?scale=5&title=0/5&suffix=%20completed&width=200)
-- **Future Ideas:** ![Progress](https://progress-bar.dev/0/?scale=4&title=0/4&suffix=%20completed&width=200)
+### By Category:
+- **Core Features:** 40% (2/5)
+- **User Interface:** 0% (0/5)
+- **Advanced Features:** 0% (0/5)
+- **Quality & Polish:** 0% (0/5)
+- **Future Ideas:** 0% (0/4)
