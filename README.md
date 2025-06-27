@@ -13,18 +13,15 @@
 - [ ] Export to common formats (PDF, TXT)
 
 ## User Interface
-- [ ] Intuitive fretboard display
+- [x] Guitar/Bass seperation
 - [ ] Timeline/measure view
 - [ ] Toolbar with essential tools
 - [ ] Dark/light theme support
 - [ ] Responsive layout
 
 ## Advanced Features
-- [ ] Multiple instrument support
+- [x] Multiple instrument support
 - [ ] Chord recognition
-- [ ] Tempo adjustment
-- [ ] Audio import/sync
-- [ ] Tab sharing functionality
 
 ## Quality & Polish
 - [ ] Bug fixes and stability
@@ -41,11 +38,11 @@
 
 ---
 
-## Project Completion: **10%** (2/20 tasks completed)
+## Project Completion: **20%** (4/20 tasks completed)
 
 ### By Category:
 - **Core Features:** 40% (2/5)
-- **User Interface:** 0% (0/5)
-- **Advanced Features:** 0% (0/5)
+- **User Interface:** 20% (1/5)
+- **Advanced Features:** 20% (1/5)
 - **Quality & Polish:** 0% (0/5)
 - **Future Ideas:** 0% (0/4)
