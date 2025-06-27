@@ -33,3 +33,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/.idea/
+/out/
+/output/
+/target
+/dependency-reduced-pom.xml
