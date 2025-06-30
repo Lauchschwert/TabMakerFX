@@ -4,9 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import xyz.lauchschwert.tabmaker.ui.builder.TabBuilder;
@@ -40,40 +38,27 @@ public class TabMaker extends Application {
         root.setPrefWidth(1200);
         root.getStyleClass().add("root");
 
+        MenuBar toolBar = new MenuBar();
+
+        Menu menu = new Menu("Add Note");
+        MenuItem test = new MenuItem("Test");
+        menu.getItems().add(test);
+        toolBar.getMenus().addAll(menu);
+
         TabPane tabPane = new TabPane();
         tabPane.setSide(Side.TOP);
         tabPane.getStyleClass().add("tabPane");
 
-        Tab addTab = new TmTab("+");
+        TmTab welcomeTab = new TmTab("Welcome");
+        welcomeTab.setClosable(true);
+
+        TmTab addTab = new TmTab("+");
         addTab.setClosable(false);
         addTab.getStyleClass().add("addTab");
 
-        Tab tab1 = new Tab("Guitar");
-        tab1.setClosable(false);
+        tabPane.getTabs().add(addTab);
 
-        Tab tab2 = new Tab("Bass");
-        tab2.setClosable(false);
-
-        VBox guitarPanelContainer = new VBox();
-        guitarPanelContainer.setSpacing(20);
-
-        VBox bassPanelContainer = new VBox();
-        bassPanelContainer.setSpacing(20);
-
-        for (int i = 0; i < 6; i++) {
-            createTabPanel(i, guitarPanelContainer);
-
-            if (i < 4) {
-                createTabPanel(i, bassPanelContainer);
-            }
-        }
-
-        tab1.setContent(guitarPanelContainer);
-        tab2.setContent(bassPanelContainer);
-
-        tabPane.getTabs().addAll(tab1, tab2);
-
-        root.getChildren().add(tabPane);
+        root.getChildren().addAll(toolBar, tabPane);
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/TabMaker.css")).toExternalForm());
