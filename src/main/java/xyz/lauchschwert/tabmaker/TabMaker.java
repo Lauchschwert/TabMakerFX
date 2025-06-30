@@ -9,6 +9,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import xyz.lauchschwert.tabmaker.ui.builder.TabBuilder;
+import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 import xyz.lauchschwert.tabmaker.ui.panels.TabPanel;
 
 import java.util.Arrays;
@@ -42,6 +44,10 @@ public class TabMaker extends Application {
         tabPane.setSide(Side.TOP);
         tabPane.getStyleClass().add("tabPane");
 
+        Tab addTab = new TmTab("+");
+        addTab.setClosable(false);
+        addTab.getStyleClass().add("addTab");
+
         Tab tab1 = new Tab("Guitar");
         tab1.setClosable(false);
 
@@ -65,13 +71,9 @@ public class TabMaker extends Application {
         tab1.setContent(guitarPanelContainer);
         tab2.setContent(bassPanelContainer);
 
-        tabPane.getTabs().
+        tabPane.getTabs().addAll(tab1, tab2);
 
-                addAll(tab1, tab2);
-
-        root.getChildren().
-
-                addAll(tabPane);
+        root.getChildren().add(tabPane);
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/TabMaker.css")).toExternalForm());
