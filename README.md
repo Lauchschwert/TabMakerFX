@@ -50,3 +50,6 @@
 - **Advanced Features:** 33% (1/3)
 - **Quality & Polish:** 0% (0/5)
 - **Future Ideas:** 0% (0/4)
+
+
+## Install Guide
