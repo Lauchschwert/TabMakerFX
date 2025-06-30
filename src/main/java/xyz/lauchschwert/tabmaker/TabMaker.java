@@ -1,13 +1,11 @@
 package xyz.lauchschwert.tabmaker;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import xyz.lauchschwert.tabmaker.ui.builder.TabBuilder;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 import xyz.lauchschwert.tabmaker.ui.panels.TabPanel;
 
@@ -17,62 +15,71 @@ import java.util.Objects;
 
 public class TabMaker extends Application {
     public static boolean NOTE_ADDED = false;
-
     public static List<String> strings = Arrays.asList(
             // Standard tuning
             "E", "A", "D", "G", "B",
             // All chromatic notes for alternate tunings
             "C", "C#", "D#", "F", "F#", "G#", "A#"
     );
-
     public static List<String> notes = Arrays.asList("1", "2", "3", "4", "5", "6",
             "7", "8", "9", "10", "11", "12",
             "13", "14", "15", "16", "17", "18",
             "19", "20", "21", "22", "23", "24",
             "-", "X");
 
+    private VBox root;
+    private MenuBar menuBar;
+    private TabPane tabPanelPane;
+    private TmTab welcomeTab;
+
     @Override
     public void start(Stage stage) {
-        VBox root = new VBox();
-        root.setMinWidth(800);
-        root.setPrefWidth(1200);
-        root.getStyleClass().add("root");
+        initComponents();
+        configureComponents();
 
-        MenuBar toolBar = new MenuBar();
+        setScene(stage);
+    }
 
-        Menu menu = new Menu("Add Note");
-        MenuItem test = new MenuItem("Test");
-        menu.getItems().add(test);
-        toolBar.getMenus().addAll(menu);
-
-        TabPane tabPane = new TabPane();
-        tabPane.setSide(Side.TOP);
-        tabPane.getStyleClass().add("tabPane");
-
-        TmTab welcomeTab = new TmTab("Welcome");
-        welcomeTab.setClosable(true);
-
-        TmTab addTab = new TmTab("+");
-        addTab.setClosable(false);
-        addTab.getStyleClass().add("addTab");
-
-        tabPane.getTabs().add(addTab);
-
-        root.getChildren().addAll(toolBar, tabPane);
-
+    private void setScene(Stage stage) {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/TabMaker.css")).toExternalForm());
         stage.setTitle("TabmakerFX");
         stage.setScene(scene);
+        stage.setMinHeight(400);
+        stage.setMinWidth(600);
+        stage.show();
+    }
 
-        Platform.runLater(() -> {
-            double height = root.getHeight();
-            stage.setMinHeight(height);
-            // Whyever I need to add 40 here. It's for the buttons so please don't remove sadge
-            stage.setMaxHeight(height + 40);
+    private void configureComponents() {
+        welcomeTab.setClosable(true);
+
+        Menu panelMenu = new Menu("Panels");
+
+        MenuItem addPanelItem = new MenuItem("Add Panel");
+        addPanelItem.setOnAction(e -> {
+//            createTabPanel();
         });
 
-        stage.show();
+        panelMenu.getItems().addAll(addPanelItem);
+
+        menuBar.getMenus().addAll(panelMenu);
+
+        tabPanelPane.setSide(Side.TOP);
+        tabPanelPane.getStyleClass().add("tabPane");
+        tabPanelPane.getTabs().add(welcomeTab);
+
+        root.setMinWidth(800);
+        root.setPrefWidth(1200);
+        root.getStyleClass().add("root");
+        root.getChildren().addAll(menuBar, tabPanelPane);
+    }
+
+    private void initComponents() {
+        root = new VBox();
+        menuBar = new MenuBar();
+
+        tabPanelPane = new TabPane();
+        welcomeTab = new TmTab("Welcome");
     }
 
     private static void createTabPanel(int i, VBox container) {
