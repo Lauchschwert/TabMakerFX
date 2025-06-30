@@ -2,7 +2,6 @@ module xyz.lauchschwert.tabmaker {
     requires javafx.controls;
     requires javafx.fxml;
 
-    requires org.kordamp.ikonli.javafx;
     requires java.desktop;
     requires com.google.gson;
 
