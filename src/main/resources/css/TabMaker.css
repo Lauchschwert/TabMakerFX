@@ -101,3 +101,9 @@
 .tab:selected {
     -fx-padding: 3px;
 }
+
+.addTab {
+    -fx-pref-width: 20px;
+    -fx-padding: 0px 5px 0px 5px !important;
+    -fx-background-color: lightgray;
+}
