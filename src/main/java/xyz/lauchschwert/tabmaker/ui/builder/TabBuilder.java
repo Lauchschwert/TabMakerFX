@@ -23,6 +23,12 @@ public class TabBuilder {
     }
 
     public static TmTab ShowBuildUi() {
-        return null;
+        TabBuilderDialog dialog = new TabBuilderDialog();
+        dialog.showAndWait();
+
+        TmTab tab = new TmTab(dialog.getName());
+        tab.setClosable(dialog.isCloseable());
+
+        return tab;
     }
 }
