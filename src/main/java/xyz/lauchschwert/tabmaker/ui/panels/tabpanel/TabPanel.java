@@ -21,7 +21,7 @@ public class TabPanel extends HBox {
         stringButton.getStyleClass().add("string-button");
 
         stringButton.setOnAction(e -> {
-            ButtonGridPopup.create(TabMaker.strings, stringButton::setText, 6).show(stringButton);
+            ButtonGridPopup.create(TabMaker.STRINGS, stringButton::setText, 6).show(stringButton);
         });
 
         Separator separator = new Separator(Orientation.VERTICAL);
