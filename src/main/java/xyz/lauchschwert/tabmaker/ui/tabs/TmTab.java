@@ -2,7 +2,7 @@ package xyz.lauchschwert.tabmaker.ui.tabs;
 
 import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
-import xyz.lauchschwert.tabmaker.ui.panels.TabPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 import java.util.List;
 

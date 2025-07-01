@@ -1,4 +1,4 @@
-package xyz.lauchschwert.tabmaker.ui.panels;
+package xyz.lauchschwert.tabmaker.ui.panels.tabpanel;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -11,12 +11,13 @@ import xyz.lauchschwert.tabmaker.ui.popups.ButtonGridPopup;
 
 public class TabPanel extends HBox {
     private final HBox noteBtnPanel;
+    private final Button stringButton;
 
     public TabPanel(String string) {
         setSpacing(10);
         setPadding(new Insets(15));
 
-        Button stringButton = new Button(string);
+        stringButton = new Button(string);
         stringButton.getStyleClass().add("string-button");
 
         stringButton.setOnAction(e -> {
@@ -34,10 +35,6 @@ public class TabPanel extends HBox {
         this.getChildren().addAll(stringButton, separator, noteBtnPanel);
     }
 
-    public TabPanel(String string, String[] notes) {
-        noteBtnPanel = new HBox();
-    }
-
     public void addNoteBtn() {
         NoteButton newButton = new NoteButton(this, noteBtnPanel.getChildren().size());
         this.noteBtnPanel.getChildren().add(newButton);
@@ -47,5 +44,13 @@ public class TabPanel extends HBox {
 
     public int lastIndexOfNotePanel() {
         return noteBtnPanel.getChildren().size() - 1;
+    }
+
+    public String getStringName() {
+        return stringButton.getText();
+    }
+
+    public String[] getNotes() {
+        return null;
     }
 }

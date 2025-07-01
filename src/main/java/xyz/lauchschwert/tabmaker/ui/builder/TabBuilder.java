@@ -1,6 +1,6 @@
 package xyz.lauchschwert.tabmaker.ui.builder;
 
-import xyz.lauchschwert.tabmaker.ui.panels.TabPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
 import java.util.List;
