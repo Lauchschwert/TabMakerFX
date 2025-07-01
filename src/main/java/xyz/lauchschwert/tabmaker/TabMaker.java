@@ -6,8 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
+import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.TabPanelBuilder;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
+import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,11 +55,7 @@ public class TabMaker extends Application {
         welcomeTab.setClosable(true);
 
         Menu panelMenu = new Menu("Panels");
-
-        MenuItem addPanelItem = new MenuItem("Add Panel");
-        addPanelItem.setOnAction(e -> {
-//            createTabPanel();
-        });
+        MenuItem addPanelItem = new MenuItem("Add TabPanel");
 
         panelMenu.getItems().addAll(addPanelItem);
 
@@ -67,6 +64,13 @@ public class TabMaker extends Application {
         tabPanelPane.setSide(Side.TOP);
         tabPanelPane.getStyleClass().add("tabPane");
         tabPanelPane.getTabs().add(welcomeTab);
+
+        addPanelItem.setOnAction(e -> {
+            TabPanelBuilder tpb = new TabPanelBuilder(tabPanelPane.getTabs());
+            tpb.showAndWait();
+            TabPanel tp = tpb.getResult();
+            System.out.println(tp.getStringName());
+        });
 
         root.setMinWidth(800);
         root.setPrefWidth(1200);
