@@ -14,7 +14,7 @@
 - [ ] Export/Import
 - [ ] Notefill
 - [ ] Save/load tab files
-- [ ] Dynamic panel adding
+- [x] Dynamic panel adding
 
 ## User Interface
 - [x] Guitar/Bass seperation
@@ -43,10 +43,10 @@
 
 ---
 
-## Project Completion: **20%** (4/20 tasks completed)
+## Project Completion: **21.74%** (5/23 tasks completed)
 
 ### By Category:
-- **Core Features:** 50% (2/4)
+- **Core Features:** 50% (2/6)
 - **User Interface:** 20% (1/5)
 - **Advanced Features:** 33% (1/3)
 - **Quality & Polish:** 0% (0/5)
