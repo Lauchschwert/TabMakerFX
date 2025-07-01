@@ -46,7 +46,7 @@
 ## Project Completion: **21.74%** (5/23 tasks completed)
 
 ### By Category:
-- **Core Features:** 50% (2/6)
+- **Core Features:** 50% (3/6)
 - **User Interface:** 20% (1/5)
 - **Advanced Features:** 33% (1/3)
 - **Quality & Polish:** 0% (0/5)
