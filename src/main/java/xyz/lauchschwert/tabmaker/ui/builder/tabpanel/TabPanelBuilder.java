@@ -1,12 +1,10 @@
 package xyz.lauchschwert.tabmaker.ui.builder.tabpanel;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
-import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
-
-import java.util.Objects;
 
 public class TabPanelBuilder extends Dialog<TabPanel> {
     RadioButton radioGuitar;
@@ -32,8 +30,22 @@ public class TabPanelBuilder extends Dialog<TabPanel> {
     private VBox createContent(ObservableList<Tab> items) {
         VBox vbox = new VBox(10);
 
-        ComboBox<Tab> dropDownSelector = new ComboBox<>();
-        dropDownSelector.setItems(items.filtered(tab -> !Objects.equals(tab.getText(), "Welcome")));
+        Tab createNewTab = new Tab("Create new Tab");
+        createNewTab.selectedProperty().addListener((observableValue, oldBool, newBool) -> {
+            System.out.println("old: " + oldBool + "new: " + newBool);
+        });
+
+        final ObservableList<String> displayItems = FXCollections.observableArrayList();
+        for (Tab tab : items) {
+            if (!tab.getText().equalsIgnoreCase("welcome")) {
+                displayItems.add(tab.getText());
+            }
+        }
+        displayItems.add(createNewTab.getText());
+
+        ComboBox<String> dropDownSelector = new ComboBox<>();
+        dropDownSelector.setItems(displayItems);
+        dropDownSelector.setValue("Create new Tab");
 
         ToggleGroup panelTypeGroup = new ToggleGroup();
 

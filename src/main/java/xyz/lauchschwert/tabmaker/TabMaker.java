@@ -48,6 +48,8 @@ public class TabMaker extends Application {
         stage.setScene(scene);
         stage.setMinHeight(400);
         stage.setMinWidth(600);
+        stage.setHeight(600);
+        stage.setWidth(1000);
         stage.show();
     }
 
@@ -72,8 +74,6 @@ public class TabMaker extends Application {
             System.out.println(tp.getStringName());
         });
 
-        root.setMinWidth(800);
-        root.setPrefWidth(1200);
         root.getStyleClass().add("root");
         root.getChildren().addAll(menuBar, tabPanelPane);
     }
