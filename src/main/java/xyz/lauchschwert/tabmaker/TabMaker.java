@@ -1,13 +1,18 @@
 package xyz.lauchschwert.tabmaker;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.InstrumentPanelBuilder;
+import xyz.lauchschwert.tabmaker.ui.panels.presets.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
-import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,13 +20,13 @@ import java.util.Objects;
 
 public class TabMaker extends Application {
     public static boolean NOTE_ADDED = false;
-    public static List<String> strings = Arrays.asList(
+    public static List<String> STRINGS = Arrays.asList(
             // Standard tuning
             "E", "A", "D", "G", "B",
             // All chromatic notes for alternate tunings
             "C", "C#", "D#", "F", "F#", "G#", "A#"
     );
-    public static List<String> notes = Arrays.asList("1", "2", "3", "4", "5", "6",
+    public static List<String> NOTES = Arrays.asList("1", "2", "3", "4", "5", "6",
             "7", "8", "9", "10", "11", "12",
             "13", "14", "15", "16", "17", "18",
             "19", "20", "21", "22", "23", "24",
@@ -32,8 +37,12 @@ public class TabMaker extends Application {
     private TabPane tabPanelPane;
     private TmTab welcomeTab;
 
+    private Stage stage;
+
     @Override
     public void start(Stage stage) {
+        this.stage = stage;
+
         initComponents();
         configureComponents();
 
@@ -47,18 +56,16 @@ public class TabMaker extends Application {
         stage.setScene(scene);
         stage.setMinHeight(400);
         stage.setMinWidth(600);
+        stage.setHeight(600);
+        stage.setWidth(1000);
         stage.show();
     }
 
     private void configureComponents() {
         welcomeTab.setClosable(true);
 
-        Menu panelMenu = new Menu("Panels");
-
+        Menu panelMenu = new Menu("Tabs");
         MenuItem addPanelItem = new MenuItem("Add Panel");
-        addPanelItem.setOnAction(e -> {
-//            createTabPanel();
-        });
 
         panelMenu.getItems().addAll(addPanelItem);
 
@@ -67,9 +74,23 @@ public class TabMaker extends Application {
         tabPanelPane.setSide(Side.TOP);
         tabPanelPane.getStyleClass().add("tabPane");
         tabPanelPane.getTabs().add(welcomeTab);
+        tabPanelPane.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observableValue, oldTab, newTab) -> {
+                    Platform.runLater(() -> {
+                        // so the width don't get fucked up lol
+                        double width = stage.getWidth();
+                        stage.sizeToScene();
+                        stage.setWidth(width);
+                    });
+                });
 
-        root.setMinWidth(800);
-        root.setPrefWidth(1200);
+        addPanelItem.setOnAction(e -> {
+            InstrumentPanelBuilder tpb = new InstrumentPanelBuilder(this);
+            tpb.showAndWait();
+            boolean success = tpb.getResult();
+        });
+
         root.getStyleClass().add("root");
         root.getChildren().addAll(menuBar, tabPanelPane);
     }
@@ -82,32 +103,10 @@ public class TabMaker extends Application {
         welcomeTab = new TmTab("Welcome");
     }
 
-    private static void createTabPanel(int i, VBox container) {
-        final TabPanel tabPanel = createTabPanel(i);
-
-        // Wrap in ScrollPane for scrolling if buttons extend bounds
-        ScrollPane scrollPane = new ScrollPane(tabPanel);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setFitToHeight(true);
-        scrollPane.hvalueProperty().addListener((observable, oldValue, newValue) -> {
-            // Basic filtering so you can scroll too :)
-            if (NOTE_ADDED) {
-                scrollPane.setHvalue(1.0);
-                NOTE_ADDED = false;
-            }
-        });
-        scrollPane.setHvalue(1.0);
-        container.getChildren().add(scrollPane);
-    }
-
-    private static TabPanel createTabPanel(int i) {
-        int index = i;
-        // if last string since E is not a duplicate
-        if (i == 5) {
-            index = 0;
-        }
-        return new TabPanel(strings.get(index));
+    public void createNewTab(String selectedTabName, InstrumentPanel instrumentPanel) {
+        final TmTab newTab = new TmTab(selectedTabName);
+        tabPanelPane.getTabs().add(newTab);
+        newTab.setContent(instrumentPanel);
     }
 
     public static void main(String[] args) {

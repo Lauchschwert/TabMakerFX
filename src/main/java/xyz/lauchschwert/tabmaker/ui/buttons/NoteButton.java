@@ -15,7 +15,7 @@ public class NoteButton extends Button {
         this.getStyleClass().add("note-button");
 
         this.setOnAction(e -> {
-            ButtonGridPopup.create(TabMaker.notes, selectedNote -> handleNewNote(tabPanel, selectedNote), 6).show(this);
+            ButtonGridPopup.create(TabMaker.NOTES, selectedNote -> handleNewNote(tabPanel, selectedNote), 6).show(this);
         }); // add note selection
     }
 
