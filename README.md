@@ -4,7 +4,7 @@
 ## This tool is still under development and will be punching you with some bugs
 
 # Current Feature under development
-- Import/Export (Core Features)
+- Import/Export (Core Features) dependant on: 
 
 # Roadmap / Checklist
 
@@ -14,6 +14,7 @@
 - [ ] Export/Import
 - [ ] Notefill
 - [ ] Save/load tab files
+- [ ] Dynamic panel adding
 
 ## User Interface
 - [x] Guitar/Bass seperation
