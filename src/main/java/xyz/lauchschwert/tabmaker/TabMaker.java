@@ -2,19 +2,20 @@ package xyz.lauchschwert.tabmaker;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
 import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.InstrumentPanelBuilder;
 import xyz.lauchschwert.tabmaker.ui.panels.presets.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -69,16 +70,55 @@ public class TabMaker extends Application {
 
         Menu fileMenu = new Menu("File");
         MenuItem newFileItem = new MenuItem("Add Panel");
-        MenuItem importFileItem = new MenuItem("Import tabs");
-        MenuItem exportFileItem = new MenuItem("Export tabs");
+        final MenuItem importFileItem = createMenuItem("Import Files", e -> {
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Choose an import file.");
 
+            // Add extension filters
+            fc.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("JSON Files", "*.json"),
+                    new FileChooser.ExtensionFilter("All Files", "*.*")
+            );
+
+            // Set initial directory (optional)
+            fc.setInitialDirectory(new File(System.getProperty("user.home")));
+
+            // Show dialog and get selected file
+            File file = fc.showOpenDialog(stage); // Use your actual stage reference
+
+            if (file != null) {
+                try {
+                    importExportHandler.handleImport(file);
+
+                    // Optional: Show success message
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Import Successful");
+                    alert.setContentText("File imported successfully!");
+                    alert.showAndWait();
+
+                } catch (Exception ex) {
+                    // Handle import errors
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Import Error");
+                    alert.setContentText("Failed to import file: " + ex.getMessage());
+                    alert.showAndWait();
+                }
+            }
+        });
+
+        MenuItem exportFileItem = new MenuItem("Export tabs");
         fileMenu.getItems().addAll(newFileItem, importFileItem, exportFileItem);
 
         Menu panelMenu = new Menu("Tabs");
         MenuItem addPanelItem = new MenuItem("Add Panel");
+        addPanelItem.setOnAction(e -> {
+            InstrumentPanelBuilder tpb = new InstrumentPanelBuilder(this);
+            tpb.showAndWait();
+            boolean success = tpb.getResult();
+        });
         panelMenu.getItems().addAll(addPanelItem);
 
-        menuBar.getMenus().addAll(fileMenu,panelMenu);
+        menuBar.getMenus().addAll(fileMenu, panelMenu);
 
         tabPanelPane.setSide(Side.TOP);
         tabPanelPane.getStyleClass().add("tabPane");
@@ -94,18 +134,20 @@ public class TabMaker extends Application {
                     });
                 });
 
-        addPanelItem.setOnAction(e -> {
-            InstrumentPanelBuilder tpb = new InstrumentPanelBuilder(this);
-            tpb.showAndWait();
-            boolean success = tpb.getResult();
-        });
 
         root.getStyleClass().add("root");
         root.getChildren().addAll(menuBar, tabPanelPane);
     }
 
+    private MenuItem createMenuItem(String name, EventHandler<ActionEvent> e) {
+        MenuItem importFileItem = new MenuItem(name);
+
+        importFileItem.setOnAction(e);
+        return importFileItem;
+    }
+
     private void initComponents() {
-        importExportHandler = new ImportExportHandler();
+        importExportHandler = new ImportExportHandler(this);
 
         root = new VBox();
         menuBar = new MenuBar();

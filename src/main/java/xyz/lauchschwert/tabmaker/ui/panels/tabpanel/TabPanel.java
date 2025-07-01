@@ -7,13 +7,16 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.ui.buttons.NoteButton;
+import xyz.lauchschwert.tabmaker.ui.panels.presets.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.popups.ButtonGridPopup;
 
 public class TabPanel extends HBox {
     private final HBox noteBtnPanel;
     private final Button stringButton;
+    private final InstrumentPanel parent;
 
-    public TabPanel(String string) {
+    public TabPanel(String string, InstrumentPanel parent) {
+        this.parent = parent;
         setSpacing(10);
         setPadding(new Insets(15));
 
@@ -38,7 +41,7 @@ public class TabPanel extends HBox {
     public void addNoteBtn() {
         NoteButton newButton = new NoteButton(this, noteBtnPanel.getChildren().size());
         this.noteBtnPanel.getChildren().add(newButton);
-        TabMaker.NOTE_ADDED = true;
+        parent.setNoteAdded(true);
         newButton.requestFocus();
     }
 

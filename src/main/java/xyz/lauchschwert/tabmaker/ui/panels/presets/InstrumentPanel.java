@@ -11,7 +11,7 @@ import java.util.List;
 
 public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
     protected List<TabPanel> tabPanels;
-    protected static boolean NOTE_ADDED;
+    private boolean noteAdded;
 
     protected InstrumentPanel() {
         tabPanels = new ArrayList<>();
@@ -27,20 +27,7 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
         final TabPanel tabPanel = createTabPanel(index);
 
         // Wrap in ScrollPane for scrolling if buttons extend bounds
-        ScrollPane scrollPane = new ScrollPane(tabPanel);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setFitToHeight(true);
-        scrollPane.hvalueProperty().addListener((observable, oldValue, newValue) -> {
-            // Basic filtering so you can scroll too :)
-            if (NOTE_ADDED) {
-                scrollPane.setHvalue(1.0);
-                NOTE_ADDED = false;
-            }
-        });
-        scrollPane.setHvalue(1.0);
-        this.getChildren().add(scrollPane);
-        tabPanels.add(tabPanel);
+        createScrollPane(tabPanel);
     }
 
     public TabPanel createTabPanel(int i) {
@@ -49,7 +36,40 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
         if (i == 5) {
             index = 0;
         }
-        return new TabPanel(TabMaker.STRINGS.get(index));
+        return new TabPanel(TabMaker.STRINGS.get(index), this);
+    }
+
+    // Method to add TabPanel from deserialized data
+    public void addTabPanelFromData(TabPanel tabPanel) {
+        // Recreate the UI components (ScrollPane, etc.)
+        createScrollPane(tabPanel);
+    }
+
+    private void createScrollPane(TabPanel tabPanel) {
+        ScrollPane scrollPane = new ScrollPane(tabPanel);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setFitToHeight(true);
+
+        // Add scroll listener
+        scrollPane.hvalueProperty().addListener((observable, oldValue, newValue) -> {
+            if (noteAdded) {
+                scrollPane.setHvalue(1.0);
+                noteAdded = false;
+            }
+        });
+
+        scrollPane.setHvalue(1.0);
+        this.getChildren().add(scrollPane);
+        tabPanels.add(tabPanel);
+    }
+
+    public boolean isNoteAdded() {
+        return noteAdded;
+    }
+
+    public void setNoteAdded(boolean noteAdded) {
+        this.noteAdded = noteAdded;
     }
 
     public List<TabPanel> getTabPanels() {
