@@ -4,7 +4,7 @@
 ## This tool is still under development and will be punching you with some bugs
 
 # Current Feature under development
-- Import/Export (Core Features) dependant on: Dynamic panel adding
+- Import/Export (Core Features) ! Almost ready
 
 # Roadmap / Checklist
 
