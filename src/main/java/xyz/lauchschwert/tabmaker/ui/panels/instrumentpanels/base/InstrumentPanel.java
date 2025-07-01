@@ -1,9 +1,8 @@
-package xyz.lauchschwert.tabmaker.ui.panels.presets;
+package xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import xyz.lauchschwert.tabmaker.TabMaker;
-import xyz.lauchschwert.tabmaker.ui.panels.presets.base.BaseForInstrumentPanels;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 import java.util.ArrayList;
@@ -13,8 +12,14 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
     protected List<TabPanel> tabPanels;
     private boolean noteAdded;
 
-    protected InstrumentPanel() {
+    public InstrumentPanel() {
         tabPanels = new ArrayList<>();
+    }
+
+    public InstrumentPanel(List<TabPanel> tabPanels) {
+        for (TabPanel tabPanel : tabPanels) {
+            createScrollPane(tabPanel);
+        }
     }
 
     protected void initPanels(int count) {
@@ -74,5 +79,9 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
 
     public List<TabPanel> getTabPanels() {
         return tabPanels;
+    }
+
+    public void importPanelsFromData() {
+
     }
 }

@@ -3,8 +3,8 @@ package xyz.lauchschwert.tabmaker.ui.builder.tabpanel;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import xyz.lauchschwert.tabmaker.TabMaker;
-import xyz.lauchschwert.tabmaker.ui.panels.presets.instrumentpanels.BassPanel;
-import xyz.lauchschwert.tabmaker.ui.panels.presets.instrumentpanels.GuitarPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.BassPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.GuitarPanel;
 
 public class InstrumentPanelBuilder extends Dialog<Boolean> {
     private final TabMaker tabMaker;

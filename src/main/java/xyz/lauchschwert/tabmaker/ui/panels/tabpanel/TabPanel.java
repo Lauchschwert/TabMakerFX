@@ -7,7 +7,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.ui.buttons.NoteButton;
-import xyz.lauchschwert.tabmaker.ui.panels.presets.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.popups.ButtonGridPopup;
 
 public class TabPanel extends HBox {

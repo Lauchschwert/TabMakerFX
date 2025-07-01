@@ -12,7 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
 import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.InstrumentPanelBuilder;
-import xyz.lauchschwert.tabmaker.ui.panels.presets.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
 import java.io.File;
@@ -160,7 +160,7 @@ public class TabMaker extends Application {
         final TmTab newTab = new TmTab(selectedTabName);
         tabPanelPane.getTabs().add(newTab);
         newTab.setContent(instrumentPanel);
-        importExportHandler.exportTabPanels(newTab.getTabPanels());
+        importExportHandler.handleExport(instrumentPanel);
     }
 
     public static void main(String[] args) {

@@ -2,15 +2,14 @@ package xyz.lauchschwert.tabmaker.handler;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import javafx.scene.control.Tab;
 import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
+import xyz.lauchschwert.tabmaker.ui.panels.adapters.InstrumentPanelAdapter;
+import xyz.lauchschwert.tabmaker.ui.panels.adapters.TabPanelAdapter;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
-import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanelAdapter;
 
 import java.io.File;
-import java.util.List;
 
 public class ImportExportHandler {
     public static File SAVE_DIRECTORY = new File(System.getenv("ProgramData") + "\\TabmakerFX\\Files\\Save");
@@ -20,7 +19,8 @@ public class ImportExportHandler {
 
     private final GsonBuilder gsonBuilder = new GsonBuilder()
             .setPrettyPrinting()
-            .registerTypeAdapter(TabPanel.class, new TabPanelAdapter());
+            .registerTypeAdapter(TabPanel.class, new TabPanelAdapter())
+            .registerTypeAdapter(InstrumentPanel.class, new InstrumentPanelAdapter());
     private final Gson gson = gsonBuilder.create();
 
     public ImportExportHandler(TabMaker tabMaker) {
@@ -33,9 +33,12 @@ public class ImportExportHandler {
         }
     }
 
-    public void exportTabPanels(List<TabPanel> tabPanels) {
-        String json = gson.toJson(tabPanels, new TypeToken<List<TabPanel>>() {
-        }.getType());
+    public void handleExport(InstrumentPanel targetPanel) {
+        String json = gson.toJson(
+                targetPanel,
+                InstrumentPanel.class
+        );
+
         System.out.println("json: " + json);
     }
 
