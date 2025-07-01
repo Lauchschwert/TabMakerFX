@@ -15,7 +15,11 @@ import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.InstrumentPanelBuilder;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -39,13 +43,13 @@ public class TabMaker extends Application {
     private TabPane tabPanelPane;
     private TmTab welcomeTab;
 
-    private Stage stage;
+    private static Stage stage;
 
-    private ImportExportHandler importExportHandler;
+    private static ImportExportHandler ImportExportHandler;
 
     @Override
     public void start(Stage stage) {
-        this.stage = stage;
+        TabMaker.stage = stage;
 
         initComponents();
         configureComponents();
@@ -71,39 +75,7 @@ public class TabMaker extends Application {
         Menu fileMenu = new Menu("File");
         MenuItem newFileItem = new MenuItem("Add Panel");
         final MenuItem importFileItem = createMenuItem("Import Files", e -> {
-            FileChooser fc = new FileChooser();
-            fc.setTitle("Choose an import file.");
-
-            // Add extension filters
-            fc.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("JSON Files", "*.json"),
-                    new FileChooser.ExtensionFilter("All Files", "*.*")
-            );
-
-            // Set initial directory (optional)
-            fc.setInitialDirectory(new File(System.getProperty("user.home")));
-
-            // Show dialog and get selected file
-            File file = fc.showOpenDialog(stage); // Use your actual stage reference
-
-            if (file != null) {
-                try {
-                    importExportHandler.handleImport(file);
-
-                    // Optional: Show success message
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Import Successful");
-                    alert.setContentText("File imported successfully!");
-                    alert.showAndWait();
-
-                } catch (Exception ex) {
-                    // Handle import errors
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Import Error");
-                    alert.setContentText("Failed to import file: " + ex.getMessage());
-                    alert.showAndWait();
-                }
-            }
+            ImportExportHandler.handleImport();
         });
 
         MenuItem exportFileItem = new MenuItem("Export tabs");
@@ -147,7 +119,7 @@ public class TabMaker extends Application {
     }
 
     private void initComponents() {
-        importExportHandler = new ImportExportHandler(this);
+        ImportExportHandler = new ImportExportHandler(this);
 
         root = new VBox();
         menuBar = new MenuBar();
@@ -160,7 +132,49 @@ public class TabMaker extends Application {
         final TmTab newTab = new TmTab(selectedTabName);
         tabPanelPane.getTabs().add(newTab);
         newTab.setContent(instrumentPanel);
-        importExportHandler.handleExport(instrumentPanel);
+        ImportExportHandler.handleExport(instrumentPanel);
+    }
+
+    public static File GetFileViaFileChooser(FileChooser.ExtensionFilter... filters) {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Choose an import file.");
+
+        fc.getExtensionFilters().addAll(
+                filters
+        );
+
+        fc.setInitialDirectory(new File(System.getProperty("user.home")));
+
+        return fc.showOpenDialog(stage);
+    }
+
+    public static void SaveFileViaFileChooser(String content, FileChooser.ExtensionFilter... filters) {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Save file");
+
+        // Add extension filters
+        fc.getExtensionFilters().addAll(filters);
+
+        // Set initial directory
+        fc.setInitialDirectory(new File(System.getProperty("user.home")));
+
+        File file = fc.showSaveDialog(stage);
+
+        if (file != null) {
+            try (FileWriter fw = new FileWriter(file, StandardCharsets.UTF_8);
+                 BufferedWriter bw = new BufferedWriter(fw)) {
+
+                bw.write(content);
+
+                System.out.println("File saved to: " + file.getAbsolutePath());
+
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Save Error");
+                alert.setContentText("Failed to save file: " + e.getMessage());
+                alert.showAndWait();
+            }
+        }
     }
 
     public static void main(String[] args) {
