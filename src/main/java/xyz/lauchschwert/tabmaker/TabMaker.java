@@ -10,6 +10,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
 import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.InstrumentPanelBuilder;
 import xyz.lauchschwert.tabmaker.ui.panels.presets.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
@@ -39,6 +40,8 @@ public class TabMaker extends Application {
 
     private Stage stage;
 
+    private ImportExportHandler importExportHandler;
+
     @Override
     public void start(Stage stage) {
         this.stage = stage;
@@ -64,12 +67,18 @@ public class TabMaker extends Application {
     private void configureComponents() {
         welcomeTab.setClosable(true);
 
+        Menu fileMenu = new Menu("File");
+        MenuItem newFileItem = new MenuItem("Add Panel");
+        MenuItem importFileItem = new MenuItem("Import tabs");
+        MenuItem exportFileItem = new MenuItem("Export tabs");
+
+        fileMenu.getItems().addAll(newFileItem, importFileItem, exportFileItem);
+
         Menu panelMenu = new Menu("Tabs");
         MenuItem addPanelItem = new MenuItem("Add Panel");
-
         panelMenu.getItems().addAll(addPanelItem);
 
-        menuBar.getMenus().addAll(panelMenu);
+        menuBar.getMenus().addAll(fileMenu,panelMenu);
 
         tabPanelPane.setSide(Side.TOP);
         tabPanelPane.getStyleClass().add("tabPane");
@@ -96,6 +105,8 @@ public class TabMaker extends Application {
     }
 
     private void initComponents() {
+        importExportHandler = new ImportExportHandler();
+
         root = new VBox();
         menuBar = new MenuBar();
 
@@ -107,6 +118,7 @@ public class TabMaker extends Application {
         final TmTab newTab = new TmTab(selectedTabName);
         tabPanelPane.getTabs().add(newTab);
         newTab.setContent(instrumentPanel);
+        importExportHandler.exportTabPanels(newTab.getTabPanels());
     }
 
     public static void main(String[] args) {
