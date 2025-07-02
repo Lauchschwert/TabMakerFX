@@ -10,6 +10,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.InstrumentPanelBuilder;
 import xyz.lauchschwert.tabmaker.ui.panels.presets.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
@@ -33,11 +34,18 @@ public class TabMaker extends Application {
             "-", "X");
 
     private VBox root;
-    private MenuBar menuBar;
     private TabPane tabPanelPane;
-    private TmTab welcomeTab;
 
     private Stage stage;
+
+    @Override
+    public void init() throws Exception {
+        // Init config
+//        Configurator configurator = new Configurator();
+//        Properties config = configurator.loadConfig("default.properties");
+        // init logger
+        TmLogger.logStartup();
+    }
 
     @Override
     public void start(Stage stage) {
@@ -47,6 +55,11 @@ public class TabMaker extends Application {
         configureComponents();
 
         setScene(stage);
+    }
+
+    @Override
+    public void stop() throws Exception {
+        TmLogger.logShutdown();
     }
 
     private void setScene(Stage stage) {
@@ -62,13 +75,26 @@ public class TabMaker extends Application {
     }
 
     private void configureComponents() {
+        TmTab welcomeTab = new TmTab("Welcome");
         welcomeTab.setClosable(true);
 
-        Menu panelMenu = new Menu("Tabs");
         MenuItem addPanelItem = new MenuItem("Add Panel");
+        addPanelItem.setOnAction(e -> {
+            InstrumentPanelBuilder ipb = new InstrumentPanelBuilder(this);
+            TmLogger.debug("Instrument Panel Builder initialized");
+            ipb.showAndWait();
+            boolean success = ipb.getResult();
+            if (!success) {
+                TmLogger.warn("Instrument Panel Builder did not succeed in building an instrument panel.");
+            } else {
+                TmLogger.debug("Instrument Panel Builder succeeded in adding another panel");
+            }
+        });
 
+        Menu panelMenu = new Menu("Tabs");
         panelMenu.getItems().addAll(addPanelItem);
 
+        MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(panelMenu);
 
         tabPanelPane.setSide(Side.TOP);
@@ -85,28 +111,24 @@ public class TabMaker extends Application {
                     });
                 });
 
-        addPanelItem.setOnAction(e -> {
-            InstrumentPanelBuilder tpb = new InstrumentPanelBuilder(this);
-            tpb.showAndWait();
-            boolean success = tpb.getResult();
-        });
 
         root.getStyleClass().add("root");
         root.getChildren().addAll(menuBar, tabPanelPane);
+        TmLogger.debug("Configured Components successfully");
     }
 
     private void initComponents() {
         root = new VBox();
-        menuBar = new MenuBar();
 
         tabPanelPane = new TabPane();
-        welcomeTab = new TmTab("Welcome");
+        TmLogger.debug("TabMaker default components initialized successfully");
     }
 
     public void createNewTab(String selectedTabName, InstrumentPanel instrumentPanel) {
         final TmTab newTab = new TmTab(selectedTabName);
         tabPanelPane.getTabs().add(newTab);
         newTab.setContent(instrumentPanel);
+        TmLogger.debug("New Tab created successfully. Tab: " + newTab.getText());
     }
 
     public static void main(String[] args) {
