@@ -4,7 +4,7 @@
 ## This tool is still under development and will be punching you with some bugs
 
 # Current Feature under development
-- Import/Export (Core Features) dependant on: Dynamic panel adding
+- Configuration Files
 
 # Roadmap / Checklist
 
@@ -13,7 +13,6 @@
 - [x] Note input and editing
 - [ ] Export/Import
 - [ ] Notefill
-- [ ] Save/load tab files
 - [x] Dynamic panel adding
 
 ## User Interface
@@ -34,6 +33,7 @@
 - [ ] User documentation
 - [ ] Installation guide
 - [ ] Cross-platform compatibility
+- [ ] Configuration file
 
 ## Future Ideas
 - [ ] Plugin system
@@ -43,13 +43,13 @@
 
 ---
 
-## Project Completion: **21.74%** (5/23 tasks completed)
+## Project Completion: **21,73%** (5/24 tasks completed)
 
 ### By Category:
-- **Core Features:** 50% (3/6)
+- **Core Features:** 50% (3/5)
 - **User Interface:** 20% (1/5)
 - **Advanced Features:** 33% (1/3)
-- **Quality & Polish:** 0% (0/5)
+- **Quality & Polish:** 0% (0/6)
 - **Future Ideas:** 0% (0/4)
 
 
