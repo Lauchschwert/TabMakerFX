@@ -65,7 +65,7 @@ public class TabMaker extends Application {
     private void setScene(Stage stage) {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/TabMaker.css")).toExternalForm());
-        stage.setTitle("TabmakerFX");
+        stage.setTitle("TabMakerFX");
         stage.setScene(scene);
         stage.setMinHeight(400);
         stage.setMinWidth(600);
