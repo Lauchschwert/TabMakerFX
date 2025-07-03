@@ -136,7 +136,7 @@ public class TabMaker extends Application {
         tabPanelPane.getTabs().add(newTab);
     }
 
-    public static File GetFileViaFileChooser(Path location, FileChooser.ExtensionFilter... filters) {
+    public static File GetFileViaFileChooser(FileChooser.ExtensionFilter... filters) {
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose an import file.");
 
@@ -144,12 +144,7 @@ public class TabMaker extends Application {
                 filters
         );
 
-        File locationDir = location.toFile();
-        if (!locationDir.isDirectory()) {
-            locationDir = locationDir.getParentFile();
-            System.out.println(locationDir.getAbsolutePath());
-        }
-//        fc.setInitialDirectory(location);
+        fc.setInitialDirectory(ImportExportHandler.SAVE_DIRECTORY.toFile());
 
         return fc.showOpenDialog(stage);
     }
