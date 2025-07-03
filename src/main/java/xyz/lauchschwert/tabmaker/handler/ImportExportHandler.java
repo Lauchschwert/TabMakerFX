@@ -10,11 +10,20 @@ import xyz.lauchschwert.tabmaker.ui.panels.adapters.InstrumentPanelAdapter;
 import xyz.lauchschwert.tabmaker.ui.panels.adapters.TabPanelAdapter;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
+import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class ImportExportHandler {
-    public static File SAVE_DIRECTORY = new File(System.getenv("ProgramData") + "\\TabmakerFX\\Files\\Save\\");
+    private static final String INITIAL_NAME = "save";
+    private static final String INITIAL_EXTENSION = ".json";
+    public static final String INITIAL_FILE_NAME = INITIAL_NAME + INITIAL_EXTENSION;
+
+    private static final String saveDirString = System.getProperty("user.home") + "\\TabmakerFX\\Files\\Saves\\";
+    public static final Path SAVE_DIRECTORY = Paths.get(saveDirString);
+
     public static String VALID_IMPORTTYPE = "*.json";
 
     private final TabMaker tabMaker;
@@ -27,33 +36,39 @@ public class ImportExportHandler {
 
     public ImportExportHandler(TabMaker tabMaker) {
         this.tabMaker = tabMaker;
-        if (!SAVE_DIRECTORY.exists()) {
-            boolean succeeded = SAVE_DIRECTORY.mkdirs();
+
+        final File SAVE_FOLDER = SAVE_DIRECTORY.toFile();
+
+        if (!SAVE_FOLDER.exists()) {
+            boolean succeeded = SAVE_FOLDER.mkdirs();
             if (!succeeded) {
                 throw new ImportException("Unable to create save directory.");
             }
         }
     }
 
-    public void handleExport(InstrumentPanel targetPanel) {
-        int count = 0;
-        File file;
-
-        while (true) {
-            String filename = count == 0 ? "save.json" : "save" + count + ".json";
-            file = new File(SAVE_DIRECTORY, filename);
-
-            if (!file.exists()) {
-                break; // Found available filename
-            }
-            count++;
-        }
+    public void handleExport() {
+        // get current tab from TabMaker
+        TmTab selectedTab = tabMaker.getSelectedTab();
+        InstrumentPanel targetPanel = selectedTab.getInstrumentPanel();
 
         String json = gson.toJson(
                 targetPanel,
                 InstrumentPanel.class
         );
 
+        int count = 0;
+        File file;
+
+        while (true) {
+            String filename = count == 0 ? INITIAL_FILE_NAME : INITIAL_NAME + count + INITIAL_EXTENSION;
+            file = new File(SAVE_DIRECTORY.toFile(), filename);
+
+            if (!file.exists()) {
+                break; // Found available filename
+            }
+            count++;
+        }
         TabMaker.SaveFileViaFileChooser(json, new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE));
     }
 

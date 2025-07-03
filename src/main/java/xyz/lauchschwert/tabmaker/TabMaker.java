@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -39,13 +40,10 @@ public class TabMaker extends Application {
             "-", "X");
 
     private VBox root;
-    private MenuBar menuBar;
     private TabPane tabPanelPane;
-    private TmTab welcomeTab;
-
     private static Stage stage;
 
-    private static ImportExportHandler ImportExportHandler;
+    private static ImportExportHandler IeHandler;
 
     @Override
     public void start(Stage stage) {
@@ -70,15 +68,18 @@ public class TabMaker extends Application {
     }
 
     private void configureComponents() {
+        TmTab welcomeTab = new TmTab("Welcome", null);
         welcomeTab.setClosable(true);
 
         Menu fileMenu = new Menu("File");
         MenuItem newFileItem = new MenuItem("Add Panel");
         final MenuItem importFileItem = createMenuItem("Import Files", e -> {
-            ImportExportHandler.handleImport();
+            IeHandler.handleImport();
         });
 
-        MenuItem exportFileItem = new MenuItem("Export tabs");
+        MenuItem exportFileItem = createMenuItem("Export Files", e -> {
+            IeHandler.handleExport();
+        });
         fileMenu.getItems().addAll(newFileItem, importFileItem, exportFileItem);
 
         Menu panelMenu = new Menu("Tabs");
@@ -87,9 +88,14 @@ public class TabMaker extends Application {
             InstrumentPanelBuilder tpb = new InstrumentPanelBuilder(this);
             tpb.showAndWait();
             boolean success = tpb.getResult();
+            if (!success) {
+                String failMessage = tpb.getFailMessage();
+                System.out.println("InstrumentPanelBuilder failed in building tab. Reason: " + failMessage);
+            }
         });
         panelMenu.getItems().addAll(addPanelItem);
 
+        MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, panelMenu);
 
         tabPanelPane.setSide(Side.TOP);
@@ -119,20 +125,14 @@ public class TabMaker extends Application {
     }
 
     private void initComponents() {
-        ImportExportHandler = new ImportExportHandler(this);
-
+        IeHandler = new ImportExportHandler(this);
         root = new VBox();
-        menuBar = new MenuBar();
-
         tabPanelPane = new TabPane();
-        welcomeTab = new TmTab("Welcome");
     }
 
     public void createNewTab(String selectedTabName, InstrumentPanel instrumentPanel) {
-        final TmTab newTab = new TmTab(selectedTabName);
-        tabPanelPane.getTabs().add(newTab);
+        final TmTab newTab = new TmTab(selectedTabName, instrumentPanel);
         newTab.setContent(instrumentPanel);
-        ImportExportHandler.handleExport(instrumentPanel);
     }
 
     public static File GetFileViaFileChooser(FileChooser.ExtensionFilter... filters) {
@@ -156,7 +156,9 @@ public class TabMaker extends Application {
         fc.getExtensionFilters().addAll(filters);
 
         // Set initial directory
-        fc.setInitialDirectory(new File(System.getProperty("user.home")));
+        // Replace with save directory from config loader :)
+        fc.setInitialDirectory(Paths.get(System.getProperty("user.home"), "TabMakerFX", "Files", "Saves").toFile());
+        fc.setInitialFileName(ImportExportHandler.INITIAL_FILE_NAME);
 
         File file = fc.showSaveDialog(stage);
 
@@ -179,5 +181,9 @@ public class TabMaker extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public TmTab getSelectedTab() {
+        return (TmTab) tabPanelPane.getSelectionModel().getSelectedItem();
     }
 }
