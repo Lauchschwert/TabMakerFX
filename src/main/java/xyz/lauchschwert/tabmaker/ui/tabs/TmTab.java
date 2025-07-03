@@ -23,10 +23,6 @@ public class TmTab extends Tab {
         this.setContent(instrumentPanel);
     }
 
-    public List<TabPanel> getTabPanels() {
-        return instrumentPanel.getTabPanels();
-    }
-
     public InstrumentPanel getInstrumentPanel() {
         return instrumentPanel;
     }

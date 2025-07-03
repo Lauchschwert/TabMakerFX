@@ -54,6 +54,12 @@ public class TabPanel extends HBox {
     }
 
     public String[] getNotes() {
-        return null;
+        final int noteBtnPanelSize = noteBtnPanel.getChildren().size();
+        String[] noteArray = new String[noteBtnPanelSize];
+        for (int i = 0; i < noteBtnPanelSize; i++) {
+            noteArray[i] = ((NoteButton) noteBtnPanel.getChildren().get(i)).getText();
+        }
+
+        return noteArray;
     }
 }
