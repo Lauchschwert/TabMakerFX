@@ -132,7 +132,7 @@ public class TabMaker extends Application {
 
     public void createNewTab(String selectedTabName, InstrumentPanel instrumentPanel) {
         final TmTab newTab = new TmTab(selectedTabName, instrumentPanel);
-        newTab.setContent(instrumentPanel);
+        tabPanelPane.getTabs().add(newTab);
     }
 
     public static File GetFileViaFileChooser(FileChooser.ExtensionFilter... filters) {

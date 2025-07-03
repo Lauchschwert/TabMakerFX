@@ -19,6 +19,8 @@ public class TmTab extends Tab {
             System.out.println("instrumentPanel is null");
             instrumentPanel = new InstrumentPanel();
         }
+
+        this.setContent(instrumentPanel);
     }
 
     public List<TabPanel> getTabPanels() {
