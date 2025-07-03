@@ -7,6 +7,7 @@ import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
     protected List<TabPanel> tabPanels;
@@ -17,7 +18,8 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
     }
 
     public InstrumentPanel(List<TabPanel> tabPanels) {
-        for (TabPanel tabPanel : tabPanels) {
+        this();
+        for (TabPanel tabPanel : Objects.requireNonNull(tabPanels)) {
             createScrollPane(tabPanel);
         }
     }
@@ -41,7 +43,7 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
         if (i == 5) {
             index = 0;
         }
-        return new TabPanel(TabMaker.STRINGS.get(index), this);
+        return new TabPanel(TabMaker.STRINGS.get(index));
     }
 
     // Method to add TabPanel from deserialized data
@@ -69,19 +71,7 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
         tabPanels.add(tabPanel);
     }
 
-    public boolean isNoteAdded() {
-        return noteAdded;
-    }
-
-    public void setNoteAdded(boolean noteAdded) {
-        this.noteAdded = noteAdded;
-    }
-
     public List<TabPanel> getTabPanels() {
         return tabPanels;
-    }
-
-    public void importPanelsFromData() {
-
     }
 }

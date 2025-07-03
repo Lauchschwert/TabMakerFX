@@ -30,8 +30,6 @@ public class InstrumentPanelAdapter implements JsonSerializer<InstrumentPanel>, 
                 new TypeToken<List<TabPanel>>() {}.getType()
         );
 
-        InstrumentPanel panel = new InstrumentPanel(tabPanels);
-
-        return null;
+        return new InstrumentPanel(tabPanels);
     }
 }

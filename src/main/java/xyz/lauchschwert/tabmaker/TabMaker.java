@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -135,7 +136,7 @@ public class TabMaker extends Application {
         tabPanelPane.getTabs().add(newTab);
     }
 
-    public static File GetFileViaFileChooser(FileChooser.ExtensionFilter... filters) {
+    public static File GetFileViaFileChooser(Path location, FileChooser.ExtensionFilter... filters) {
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose an import file.");
 
@@ -143,7 +144,12 @@ public class TabMaker extends Application {
                 filters
         );
 
-        fc.setInitialDirectory(new File(System.getProperty("user.home")));
+        File locationDir = location.toFile();
+        if (!locationDir.isDirectory()) {
+            locationDir = locationDir.getParentFile();
+            System.out.println(locationDir.getAbsolutePath());
+        }
+//        fc.setInitialDirectory(location);
 
         return fc.showOpenDialog(stage);
     }

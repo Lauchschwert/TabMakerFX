@@ -3,6 +3,7 @@ package xyz.lauchschwert.tabmaker.handler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
@@ -12,7 +13,10 @@ import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -74,18 +78,25 @@ public class ImportExportHandler {
 
     public void handleImport() throws ImportException {
         File importFile = TabMaker.GetFileViaFileChooser(
-                new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE)
+                Paths.get(System.getProperty("user.home"), "TabMakerFX", "Files", "Saves"),
+                new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE) // later on text files etc....
         );
-        if (importFile == null) {
-            throw new ImportException("Couldn't import file since it doesn't exist, cannot be read or is a directory!");
+        if (importFile == null || importFile.isDirectory() || !importFile.canRead()) {
+            throw new ImportException("Couldn't import file since it doesn't exist, cannot be read or is a directory!"); // TODO: Add logging
         }
 
-        // Optional: Show success message
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Import Successful");
-        alert.setContentText("File imported successfully!");
+        alert.setContentText("File imported successfully!\n" + importFile.getName());
         alert.showAndWait();
 
-        System.out.println(importFile.getAbsolutePath());
+        try (FileReader fileReader = new FileReader(importFile);
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            InstrumentPanel instrumentPanel = gson.fromJson(bufferedReader, InstrumentPanel.class);
+            tabMaker.createNewTab(new TextInputDialog().getResult(), instrumentPanel);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

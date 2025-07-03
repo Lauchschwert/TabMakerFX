@@ -13,10 +13,10 @@ import xyz.lauchschwert.tabmaker.ui.popups.ButtonGridPopup;
 public class TabPanel extends HBox {
     private final HBox noteBtnPanel;
     private final Button stringButton;
-    private final InstrumentPanel parent;
+    private boolean noteAdded;
 
-    public TabPanel(String string, InstrumentPanel parent) {
-        this.parent = parent;
+
+    public TabPanel(String string) {
         setSpacing(10);
         setPadding(new Insets(15));
 
@@ -38,10 +38,23 @@ public class TabPanel extends HBox {
         this.getChildren().addAll(stringButton, separator, noteBtnPanel);
     }
 
+    public TabPanel(String string, String[] notes) {
+        this(string);
+
+        // remove default button
+        this.noteBtnPanel.getChildren().clear();
+
+        // import buttons
+        for (String note : notes) {
+            NoteButton noteButton = new NoteButton(this, noteBtnPanel.getChildren().size());
+            this.noteBtnPanel.getChildren().add(noteButton);
+        }
+    }
+
     public void addNoteBtn() {
         NoteButton newButton = new NoteButton(this, noteBtnPanel.getChildren().size());
         this.noteBtnPanel.getChildren().add(newButton);
-        parent.setNoteAdded(true);
+        setNoteAdded(true);
         newButton.requestFocus();
     }
 
@@ -61,5 +74,13 @@ public class TabPanel extends HBox {
         }
 
         return noteArray;
+    }
+
+    public boolean isNoteAdded() {
+        return noteAdded;
+    }
+
+    public void setNoteAdded(boolean noteAdded) {
+        this.noteAdded = noteAdded;
     }
 }
