@@ -47,6 +47,7 @@ public class TabPanel extends HBox {
         // import buttons
         for (String note : notes) {
             NoteButton noteButton = new NoteButton(this, noteBtnPanel.getChildren().size());
+            noteButton.setText(note);
             this.noteBtnPanel.getChildren().add(noteButton);
         }
     }
