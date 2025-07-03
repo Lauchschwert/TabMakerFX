@@ -1,3 +1,6 @@
+# WARNING
+- I am having some trouble compiling another .exe installer so there might not be a release soon for the updated version (import and export feature). However i will try to push it out asap.
+- i also broke my current linux os installation so it will probably be out next week lmao
 # TabmakerFX
 - This is a helper tool directed to musicians who just want to get some tabs for themselves
 
