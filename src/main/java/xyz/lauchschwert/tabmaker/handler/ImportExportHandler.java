@@ -93,8 +93,17 @@ public class ImportExportHandler {
         try (FileReader fileReader = new FileReader(importFile);
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             InstrumentPanel instrumentPanel = gson.fromJson(bufferedReader, InstrumentPanel.class);
-            tabMaker.createNewTab(new TextInputDialog().getResult(), instrumentPanel);
 
+            TextInputDialog tabNameDialog = new TextInputDialog("Default");
+            tabNameDialog.setTitle("Enter Tab name");
+            tabNameDialog.setHeaderText("Please enter the Tab name of the imported panel! (leave empty for default)");
+            tabNameDialog.showAndWait();
+            String input = tabNameDialog.getResult();
+            if (input == null || input.trim().isEmpty()) {
+                input = tabNameDialog.getDefaultValue();
+            }
+
+            tabMaker.createNewTab(input, instrumentPanel);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
