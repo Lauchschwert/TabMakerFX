@@ -1,6 +1,5 @@
-package xyz.lauchschwert.tabmaker.ui.panels.presets.base;
+package xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base;
 
-import javafx.scene.layout.VBox;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 public interface BaseForInstrumentPanels {

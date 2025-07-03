@@ -1,7 +1,7 @@
-package xyz.lauchschwert.tabmaker.ui.panels.presets.instrumentpanels;
+package xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels;
 
 import xyz.lauchschwert.tabmaker.enums.PanelSizes;
-import xyz.lauchschwert.tabmaker.ui.panels.presets.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 
 public class GuitarPanel extends InstrumentPanel {
     public GuitarPanel() {

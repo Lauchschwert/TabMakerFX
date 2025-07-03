@@ -3,8 +3,8 @@ package xyz.lauchschwert.tabmaker.ui.builder.tabpanel;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import xyz.lauchschwert.tabmaker.TabMaker;
-import xyz.lauchschwert.tabmaker.ui.panels.presets.instrumentpanels.BassPanel;
-import xyz.lauchschwert.tabmaker.ui.panels.presets.instrumentpanels.GuitarPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.BassPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.GuitarPanel;
 
 public class InstrumentPanelBuilder extends Dialog<Boolean> {
     private final TabMaker tabMaker;
@@ -12,6 +12,7 @@ public class InstrumentPanelBuilder extends Dialog<Boolean> {
     private RadioButton radioGuitar;
     private RadioButton radioBass;
     private ToggleGroup panelTypeGroup;
+    private String failMessage;
 
     public InstrumentPanelBuilder(TabMaker tabMaker) {
         super();
@@ -69,6 +70,7 @@ public class InstrumentPanelBuilder extends Dialog<Boolean> {
             // Get selected radio button
             Toggle selectedToggle = panelTypeGroup.getSelectedToggle();
             if (selectedToggle == null) {
+                setFailMessage("No radio button selected");
                 return false; // No radio button selected
             }
 
@@ -84,10 +86,20 @@ public class InstrumentPanelBuilder extends Dialog<Boolean> {
                     return true;
                 }
                 default -> {
+                    setFailMessage("No radio button selected or unknown panel-preset configured.");
                     return false;
                 }
             }
         }
+        setFailMessage("TabMaker failed for unknown reason");
         return false;
+    }
+
+    private void setFailMessage(String failMessage) {
+        this.failMessage = failMessage;
+    }
+
+    public String getFailMessage() {
+        return failMessage;
     }
 }

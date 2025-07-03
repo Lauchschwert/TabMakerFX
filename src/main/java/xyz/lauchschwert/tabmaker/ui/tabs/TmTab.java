@@ -2,33 +2,28 @@ package xyz.lauchschwert.tabmaker.ui.tabs;
 
 import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TmTab extends Tab {
-    private VBox contentPanel;
-    private List<TabPanel> tabPanels;
+    private final InstrumentPanel instrumentPanel;
 
-    public TmTab(String tabText) {
+    public TmTab(String tabText, InstrumentPanel instrumentPanel) {
         super(tabText);
 
-        this.contentPanel = new VBox();
-        tabPanels = new ArrayList<>();
+        this.instrumentPanel = instrumentPanel;
+        if (instrumentPanel == null) {
+            System.out.println("instrumentPanel is null");
+            instrumentPanel = new InstrumentPanel();
+        }
+        System.out.println(instrumentPanel.getTabPanels());
+        this.setContent(instrumentPanel);
     }
 
-    public void addTabPanel(TabPanel tabPanel) {
-        this.contentPanel.getChildren().add(tabPanel);
-        this.tabPanels.add(tabPanel);
-    }
-
-    public void removeTabPanel(TabPanel tabPanel) {
-        this.contentPanel.getChildren().remove(tabPanel);
-        this.tabPanels.remove(tabPanel);
-    }
-
-    public List<TabPanel> getTabPanels() {
-        return tabPanels;
+    public InstrumentPanel getInstrumentPanel() {
+        return instrumentPanel;
     }
 }

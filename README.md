@@ -11,7 +11,7 @@
 ## Core Features
 - [x] Basic tab creation interface
 - [x] Note input and editing
-- [ ] Export/Import
+- [x] Export/Import
 - [ ] Notefill
 - [x] Dynamic panel adding
 
@@ -19,7 +19,6 @@
 - [x] Guitar/Bass seperation
 - [ ] Timeline/measure view
 - [ ] Toolbar with essential tools
-- [ ] Dark/light theme support
 - [ ] Responsive layout
 
 ## Advanced Features
@@ -43,11 +42,11 @@
 
 ---
 
-## Project Completion: **21,73%** (5/24 tasks completed)
+## Project Completion: **27,27%** wysi! (6/22 tasks completed)
 
 ### By Category:
-- **Core Features:** 50% (3/5)
-- **User Interface:** 20% (1/5)
+- **Core Features:** 50% (4/5)
+- **User Interface:** 20% (1/4)
 - **Advanced Features:** 33% (1/3)
 - **Quality & Polish:** 0% (0/6)
 - **Future Ideas:** 0% (0/4)

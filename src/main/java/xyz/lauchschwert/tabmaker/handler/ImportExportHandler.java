@@ -2,44 +2,109 @@ package xyz.lauchschwert.tabmaker.handler;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
+import javafx.stage.FileChooser;
+import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
+import xyz.lauchschwert.tabmaker.ui.panels.adapters.InstrumentPanelAdapter;
+import xyz.lauchschwert.tabmaker.ui.panels.adapters.TabPanelAdapter;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
-import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanelAdapter;
+import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.util.List;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class ImportExportHandler {
+    private static final String INITIAL_NAME = "save";
+    private static final String INITIAL_EXTENSION = ".json";
+    public static final String INITIAL_FILE_NAME = INITIAL_NAME + INITIAL_EXTENSION;
+
+    private static final String saveDirString = System.getProperty("user.home") + "\\TabmakerFX\\Files\\Saves\\";
+    public static final Path SAVE_DIRECTORY = Paths.get(saveDirString);
+
+    public static String VALID_IMPORTTYPE = "*.json";
+
+    private final TabMaker tabMaker;
+
     private final GsonBuilder gsonBuilder = new GsonBuilder()
             .setPrettyPrinting()
-            .registerTypeAdapter(TabPanel.class, new TabPanelAdapter());
-
+            .registerTypeAdapter(TabPanel.class, new TabPanelAdapter())
+            .registerTypeAdapter(InstrumentPanel.class, new InstrumentPanelAdapter());
     private final Gson gson = gsonBuilder.create();
 
-    public static File SAVE_DIRECTORY = new File(System.getenv("ProgramData") + "\\TabmakerFX\\Files\\Save");
-    public static String VALID_IMPORTTYPE = ".json";
+    public ImportExportHandler(TabMaker tabMaker) {
+        this.tabMaker = tabMaker;
 
-    private final String[] seperators = new String[]{";", ":"}; // Lines = ;, buttons = :
+        final File SAVE_FOLDER = SAVE_DIRECTORY.toFile();
 
-    private final TabPanelAdapter tba = new TabPanelAdapter();
-
-    public ImportExportHandler() {
-        if (!SAVE_DIRECTORY.exists()) {
-            boolean succeeded = SAVE_DIRECTORY.mkdirs();
+        if (!SAVE_FOLDER.exists()) {
+            boolean succeeded = SAVE_FOLDER.mkdirs();
             if (!succeeded) {
                 throw new ImportException("Unable to create save directory.");
             }
         }
     }
 
-    public void exportTabPanels(List<TabPanel> tabPanels) {
-        String json = gson.toJson(tabPanels, new TypeToken<List<TabPanel>>() {
-        }.getType());
-        System.out.println("json: " + json);
+    public void handleExport() {
+        // get current tab from TabMaker
+        TmTab selectedTab = tabMaker.getSelectedTab();
+        InstrumentPanel targetPanel = selectedTab.getInstrumentPanel();
+
+        String json = gson.toJson(
+                targetPanel,
+                InstrumentPanel.class
+        );
+
+        int count = 0;
+        File file;
+
+        while (true) {
+            String filename = count == 0 ? INITIAL_FILE_NAME : INITIAL_NAME + count + INITIAL_EXTENSION;
+            file = new File(SAVE_DIRECTORY.toFile(), filename);
+
+            if (!file.exists()) {
+                break; // Found available filename
+            }
+            count++;
+        }
+        TabMaker.SaveFileViaFileChooser(json, new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE));
     }
 
-    public List<TabPanel> importTabPanels(File importFile) throws ImportException {
-        return null;
+    public void handleImport() throws ImportException {
+        File importFile = TabMaker.GetFileViaFileChooser(
+                new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE) // later on text files etc....
+        );
+        if (importFile == null || importFile.isDirectory() || !importFile.canRead()) {
+            throw new ImportException("Couldn't import file since it doesn't exist, cannot be read or is a directory!"); // TODO: Add logging
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Import Successful");
+        alert.setContentText("File imported successfully!\n" + importFile.getName());
+        alert.showAndWait();
+
+        try (FileReader fileReader = new FileReader(importFile);
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            InstrumentPanel instrumentPanel = gson.fromJson(bufferedReader, InstrumentPanel.class);
+
+            TextInputDialog tabNameDialog = new TextInputDialog("Default");
+            tabNameDialog.setTitle("Enter Tab name");
+            tabNameDialog.setHeaderText("Please enter the Tab name of the imported panel! (leave empty for default)");
+            tabNameDialog.showAndWait();
+            String input = tabNameDialog.getResult();
+            if (input == null || input.trim().isEmpty()) {
+                input = tabNameDialog.getDefaultValue();
+            }
+
+            tabMaker.createNewTab(input, instrumentPanel);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
