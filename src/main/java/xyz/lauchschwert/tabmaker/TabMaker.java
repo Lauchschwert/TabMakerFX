@@ -10,10 +10,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import xyz.lauchschwert.tabmaker.logging.TmLogger;
+import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
+import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.InstrumentPanelBuilder;
-import xyz.lauchschwert.tabmaker.ui.panels.presets.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
 import java.io.BufferedWriter;
@@ -21,7 +22,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -91,7 +91,11 @@ public class TabMaker extends Application {
         MenuItem newFileItem = new MenuItem("Add Panel");
 
         final MenuItem importFileItem = createMenuItem("Import Files", e -> {
-            IeHandler.handleImport();
+            try {
+                IeHandler.handleImport();
+            } catch (ImportException ex) {
+                TmLogger.error(ex.getMessage());
+            }
         });
 
         MenuItem exportFileItem = createMenuItem("Export Files", e -> {
@@ -99,9 +103,7 @@ public class TabMaker extends Application {
         });
         fileMenu.getItems().addAll(newFileItem, importFileItem, exportFileItem);
 
-        Menu panelMenu = new Menu("Tabs");
-        MenuItem addPanelItem = new MenuItem("Add Panel");
-        addPanelItem.setOnAction(e -> {
+        MenuItem addPanelItem = createMenuItem("Add Panel", e -> {
             InstrumentPanelBuilder ipb = new InstrumentPanelBuilder(this);
             TmLogger.debug("Instrument Panel Builder initialized");
             ipb.showAndWait();
@@ -148,6 +150,7 @@ public class TabMaker extends Application {
 
     private void initComponents() {
         IeHandler = new ImportExportHandler(this);
+
         root = new VBox();
 
         tabPanelPane = new TabPane();
@@ -172,37 +175,6 @@ public class TabMaker extends Application {
         fc.setInitialDirectory(ImportExportHandler.SAVE_DIRECTORY.toFile());
 
         return fc.showOpenDialog(stage);
-    }
-
-    public static void SaveFileViaFileChooser(String content, FileChooser.ExtensionFilter... filters) {
-        FileChooser fc = new FileChooser();
-        fc.setTitle("Save file");
-
-        // Add extension filters
-        fc.getExtensionFilters().addAll(filters);
-
-        // Set initial directory
-        // Replace with save directory from config loader :)
-        fc.setInitialDirectory(Paths.get(System.getProperty("user.home"), "TabMakerFX", "Files", "Saves").toFile());
-        fc.setInitialFileName(ImportExportHandler.INITIAL_FILE_NAME);
-
-        File file = fc.showSaveDialog(stage);
-
-        if (file != null) {
-            try (FileWriter fw = new FileWriter(file, StandardCharsets.UTF_8);
-                 BufferedWriter bw = new BufferedWriter(fw)) {
-
-                bw.write(content);
-
-                System.out.println("File saved to: " + file.getAbsolutePath());
-
-            } catch (IOException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Save Error");
-                alert.setContentText("Failed to save file: " + e.getMessage());
-                alert.showAndWait();
-            }
-        }
     }
 
     public TmTab getSelectedTab() {

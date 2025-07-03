@@ -7,16 +7,15 @@ import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
+import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.panels.adapters.InstrumentPanelAdapter;
 import xyz.lauchschwert.tabmaker.ui.panels.adapters.TabPanelAdapter;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -38,7 +37,7 @@ public class ImportExportHandler {
             .registerTypeAdapter(InstrumentPanel.class, new InstrumentPanelAdapter());
     private final Gson gson = gsonBuilder.create();
 
-    public ImportExportHandler(TabMaker tabMaker) {
+    public ImportExportHandler(TabMaker tabMaker)  {
         this.tabMaker = tabMaker;
 
         final File SAVE_FOLDER = SAVE_DIRECTORY.toFile();
@@ -46,7 +45,7 @@ public class ImportExportHandler {
         if (!SAVE_FOLDER.exists()) {
             boolean succeeded = SAVE_FOLDER.mkdirs();
             if (!succeeded) {
-                throw new ImportException("Unable to create save directory.");
+                TmLogger.error(saveDirString + " could not be created.");
             }
         }
     }
@@ -73,7 +72,7 @@ public class ImportExportHandler {
             }
             count++;
         }
-        TabMaker.SaveFileViaFileChooser(json, new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE));
+        saveFileViaFileChooser(json, new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE));
     }
 
     public void handleImport() throws ImportException {
@@ -81,7 +80,7 @@ public class ImportExportHandler {
                 new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE) // later on text files etc....
         );
         if (importFile == null || importFile.isDirectory() || !importFile.canRead()) {
-            throw new ImportException("Couldn't import file since it doesn't exist, cannot be read or is a directory!"); // TODO: Add logging
+            throw new ImportException("Couldn't import file since it doesn't exist, cannot be read or is a directory!");
         }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -105,6 +104,34 @@ public class ImportExportHandler {
             tabMaker.createNewTab(input, instrumentPanel);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void saveFileViaFileChooser(String content, FileChooser.ExtensionFilter... filters) {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Save file");
+
+        // Add extension filters
+        fc.getExtensionFilters().addAll(filters);
+
+        // Set initial directory
+        // Replace with save directory from config loader :)
+        fc.setInitialDirectory(Paths.get(System.getProperty("user.home"), "TabMakerFX", "Files", "Saves").toFile());
+        fc.setInitialFileName(ImportExportHandler.INITIAL_FILE_NAME);
+
+        File file = fc.showSaveDialog(null);
+
+        if (file != null) {
+            try (FileWriter fw = new FileWriter(file, StandardCharsets.UTF_8);
+                 BufferedWriter bw = new BufferedWriter(fw)) {
+
+                bw.write(content);
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Save Error");
+                alert.setContentText("Failed to save file: " + e.getMessage());
+                alert.showAndWait();
+            }
         }
     }
 }
