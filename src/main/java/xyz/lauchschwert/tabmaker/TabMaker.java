@@ -160,7 +160,6 @@ public class TabMaker extends Application {
     public void createNewTab(String selectedTabName, InstrumentPanel instrumentPanel) {
         final TmTab newTab = new TmTab(selectedTabName, instrumentPanel);
         tabPanelPane.getTabs().add(newTab);
-        newTab.setContent(instrumentPanel);
         TmLogger.debug("New Tab created successfully. Tab: " + newTab.getText());
     }
 
