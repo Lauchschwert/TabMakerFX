@@ -99,4 +99,8 @@ public class TmLogger {
     public static void logShutdown() {
         info("=== TabMakerFX Shutdown ===");
     }
+
+    public static void logInitialization() {
+        info("=== TabMakerFX is initializing ===");
+    }
 }
