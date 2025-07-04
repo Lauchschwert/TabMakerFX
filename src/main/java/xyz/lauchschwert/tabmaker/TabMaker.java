@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
+import xyz.lauchschwert.tabmaker.handler.ConfigHandler;
 import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.InstrumentPanelBuilder;
@@ -49,10 +50,10 @@ public class TabMaker extends Application {
 
     @Override
     public void init() throws Exception {
-        // Init config
-//        Configurator configurator = new Configurator();
-//        Properties config = configurator.loadConfig("default.properties");
-        // init logger
+        TmLogger.logInitialization();
+        // init code here
+        ConfigHandler.getInstance().initConfigFiles(); // getInstance() also initializes the ConfigHandler
+
         TmLogger.logStartup();
     }
 
@@ -157,7 +158,7 @@ public class TabMaker extends Application {
         TmLogger.debug("TabMaker default components initialized successfully");
     }
 
-    public void createNewTab(String selectedTabName, InstrumentPanel instrumentPanel) {
+    public void createNewTab(String selectedTabName, InstrumentPanel instrumentPanel) { // TODO: Refactor Instrument Panel parameter => Doesnt have to be here!
         final TmTab newTab = new TmTab(selectedTabName, instrumentPanel);
         tabPanelPane.getTabs().add(newTab);
         TmLogger.debug("New Tab created successfully. Tab: " + newTab.getText());
@@ -171,7 +172,7 @@ public class TabMaker extends Application {
                 filters
         );
 
-        fc.setInitialDirectory(ImportExportHandler.SAVE_DIRECTORY.toFile());
+        fc.setInitialDirectory(ImportExportHandler.SAVE_PATH.toFile());
 
         return fc.showOpenDialog(stage);
     }

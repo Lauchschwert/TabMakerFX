@@ -24,8 +24,7 @@ public class ImportExportHandler {
     private static final String INITIAL_EXTENSION = ".json";
     public static final String INITIAL_FILE_NAME = INITIAL_NAME + INITIAL_EXTENSION;
 
-    private static final String saveDirString = System.getProperty("user.home") + "\\TabmakerFX\\Files\\Saves\\";
-    public static final Path SAVE_DIRECTORY = Paths.get(saveDirString);
+    public static final Path SAVE_PATH = Paths.get(System.getProperty("user.home"), "TabMakerFX", "Files", "Saves");
 
     public static String VALID_IMPORTTYPE = "*.json";
 
@@ -37,15 +36,15 @@ public class ImportExportHandler {
             .registerTypeAdapter(InstrumentPanel.class, new InstrumentPanelAdapter());
     private final Gson gson = gsonBuilder.create();
 
-    public ImportExportHandler(TabMaker tabMaker)  {
+    public ImportExportHandler(TabMaker tabMaker) {
         this.tabMaker = tabMaker;
 
-        final File SAVE_FOLDER = SAVE_DIRECTORY.toFile();
+        final File SAVE_FOLDER = SAVE_PATH.toFile();
 
-        if (!SAVE_FOLDER.exists()) {
+        if (!SAVE_FOLDER.exists() || !SAVE_FOLDER.isDirectory()) {
             boolean succeeded = SAVE_FOLDER.mkdirs();
             if (!succeeded) {
-                TmLogger.error(saveDirString + " could not be created.");
+                TmLogger.error(SAVE_PATH + " could not be created.");
             }
         }
     }
@@ -65,7 +64,7 @@ public class ImportExportHandler {
 
         while (true) {
             String filename = count == 0 ? INITIAL_FILE_NAME : INITIAL_NAME + count + INITIAL_EXTENSION;
-            file = new File(SAVE_DIRECTORY.toFile(), filename);
+            file = new File(SAVE_PATH.toFile(), filename);
 
             if (!file.exists()) {
                 break; // Found available filename
