@@ -1,7 +1,13 @@
 # TabmakerFX
 - This is a helper tool directed to musicians who just want to get some tabs for themselves
 
-## This tool is still under development and will be punching you with some bugs
+# BETA SOFTWARE DISCLAIMER
+
+## This software is currently in development and may contain bugs or cause unexpected behavior. 
+
+- USE AT YOUR OWN RISK. This software is provided "AS-IS" without warranties of any kind. To the maximum extent permitted by law, the developer disclaims all liability for any damages, including but not limited to data loss, system instability, or hardware issues that may result from using this software.
+
+## By installing and using this software, you acknowledge that you understand the risks associated with beta software and agree to assume full responsibility for any consequences.
 
 # Current Feature under development
 - Configuration Files
