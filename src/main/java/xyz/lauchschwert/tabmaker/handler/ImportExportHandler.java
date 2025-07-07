@@ -51,7 +51,7 @@ public class ImportExportHandler {
 
     public void handleExport() {
         // get current tab from TabMaker
-        TmTab selectedTab = tabMaker.getSelectedTab();
+        TmTab selectedTab = (TmTab) tabMaker.getSelectedTab();
         InstrumentPanel targetPanel = selectedTab.getInstrumentPanel();
 
         String json = gson.toJson(

@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -194,8 +191,8 @@ public class TabMaker extends Application {
         return fc.showOpenDialog(stage);
     }
 
-    public TmTab getSelectedTab() {
-        return (TmTab) tabPanelPane.getSelectionModel().getSelectedItem();
+    public Tab getSelectedTab() {
+        return tabPanelPane.getSelectionModel().getSelectedItem();
     }
 
     public static void main(String[] args) {
