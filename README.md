@@ -1,4 +1,4 @@
-<# TabmakerFX
+# TabmakerFX
 - This is a helper tool directed to musicians who just want to get some tabs for themselves
 
 # BETA SOFTWARE DISCLAIMER
