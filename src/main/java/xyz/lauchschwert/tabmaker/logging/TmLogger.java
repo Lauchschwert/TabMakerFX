@@ -11,7 +11,7 @@ import java.util.logging.*;
 
 public class TmLogger {
     private static final Logger logger = Logger.getLogger(TmLogger.class.getName());
-    private static final Path LOG_DIR = Paths.get(System.getProperty("user.home"), "TabMakerFX", "Files", "Logs");
+    private static final Path LOG_DIR = Paths.get(System.getProperty("user.home"), "TabMakerFx", "Files", "Logs");
     private static final String LOG_FILE = "tabmaker.log";
 
     static {
@@ -33,8 +33,13 @@ public class TmLogger {
             // Add file handler
             addFileHandler();
 
+            info("TmLogger initialized.");
         } catch (IOException e) {
-            System.err.println("Failed to initialize logger: " + e.getMessage());
+            System.err.println("FATAL: Failed to initialize logger: " + e.getMessage());
+            System.err.println("Log directory: " + LOG_DIR);
+            e.printStackTrace();
+            // Don't continue with broken logger
+            throw new RuntimeException("Logger initialization failed", e);
         }
     }
 
@@ -102,5 +107,10 @@ public class TmLogger {
 
     public static void logInitialization() {
         info("=== TabMakerFX is initializing ===");
+    }
+
+    public static void logSystemExit(int i) {
+        TmLogger.info("TabMakerFx closed with code: " + i);
+        System.exit(i);
     }
 }

@@ -6,7 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -18,17 +21,16 @@ import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.InstrumentPanelBuilder;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Properties;
 
 public class TabMaker extends Application {
+    private static final double DEFAULT_WIDTH = 1000;
+    private static final double DEFAULT_HEIGHT = 600;
+
     public static boolean NOTE_ADDED = false;
     public static List<String> STRINGS = Arrays.asList(
             // Standard tuning
@@ -45,6 +47,7 @@ public class TabMaker extends Application {
     private VBox root;
     private TabPane tabPanelPane;
     private static Stage stage;
+    private Properties applicationProps;
 
     private static ImportExportHandler IeHandler;
 
@@ -53,6 +56,7 @@ public class TabMaker extends Application {
         TmLogger.logInitialization();
         // init code here
         ConfigHandler.getInstance().initConfigFiles(); // getInstance() also initializes the ConfigHandler
+        applicationProps = ConfigHandler.getInstance().loadProperties();
 
         TmLogger.logStartup();
     }
@@ -79,8 +83,21 @@ public class TabMaker extends Application {
         stage.setScene(scene);
         stage.setMinHeight(400);
         stage.setMinWidth(600);
-        stage.setHeight(600);
-        stage.setWidth(1000);
+
+        String heightProp = applicationProps.getProperty("ui.window.height");
+        String widthProp = applicationProps.getProperty("ui.window.width");
+
+        try {
+            double height = Double.parseDouble(heightProp);
+            double width = Double.parseDouble(widthProp);
+            stage.setHeight(height);
+            stage.setWidth(width);
+        }  catch (NumberFormatException e) {
+            TmLogger.warn("Error setting height and width property. Falling back to default values");
+            stage.setHeight(DEFAULT_HEIGHT);
+            stage.setWidth(DEFAULT_WIDTH);
+        }
+
         stage.show();
     }
 
