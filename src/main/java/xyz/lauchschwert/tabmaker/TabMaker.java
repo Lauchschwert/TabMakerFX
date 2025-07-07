@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
+import xyz.lauchschwert.tabmaker.functions.NoteFill;
 import xyz.lauchschwert.tabmaker.handler.ConfigHandler;
 import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
@@ -89,7 +90,7 @@ public class TabMaker extends Application {
             double width = Double.parseDouble(widthProp);
             stage.setHeight(height);
             stage.setWidth(width);
-        }  catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             TmLogger.warn("Error setting height and width property. Falling back to default values");
             stage.setHeight(DEFAULT_HEIGHT);
             stage.setWidth(DEFAULT_WIDTH);
@@ -99,42 +100,10 @@ public class TabMaker extends Application {
     }
 
     private void configureComponents() {
-        TmTab welcomeTab = new TmTab("Welcome", null);
+        final MenuBar menuBar = createMenuBar();
+
+        final TmTab welcomeTab = new TmTab("Welcome", null);
         welcomeTab.setClosable(true);
-
-        Menu fileMenu = new Menu("File");
-        MenuItem newFileItem = new MenuItem("Add Panel");
-
-        final MenuItem importFileItem = createMenuItem("Import Files", e -> {
-            try {
-                IeHandler.handleImport();
-            } catch (ImportException ex) {
-                TmLogger.error(ex.getMessage());
-            }
-        });
-
-        MenuItem exportFileItem = createMenuItem("Export Files", e -> {
-            IeHandler.handleExport();
-        });
-        fileMenu.getItems().addAll(newFileItem, importFileItem, exportFileItem);
-
-        MenuItem addPanelItem = createMenuItem("Add Panel", e -> {
-            InstrumentPanelBuilder ipb = new InstrumentPanelBuilder(this);
-            TmLogger.debug("Instrument Panel Builder initialized");
-            ipb.showAndWait();
-            boolean success = ipb.getResult();
-            if (!success) {
-                TmLogger.warn("Instrument Panel Builder did not succeed in building an instrument panel.");
-            } else {
-                TmLogger.debug("Instrument Panel Builder succeeded in adding another panel");
-            }
-        });
-
-        Menu panelMenu = new Menu("Tabs");
-        panelMenu.getItems().addAll(addPanelItem);
-
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(fileMenu, panelMenu);
 
         tabPanelPane.setSide(Side.TOP);
         tabPanelPane.getStyleClass().add("tabPane");
@@ -154,6 +123,62 @@ public class TabMaker extends Application {
         root.getStyleClass().add("root");
         root.getChildren().addAll(menuBar, tabPanelPane);
         TmLogger.debug("Configured Components successfully");
+    }
+
+    private MenuBar createMenuBar() {
+        final MenuItem importFileItem = createMenuItem("Import Files", e -> {
+            try {
+                IeHandler.handleImport();
+            } catch (ImportException ex) {
+                TmLogger.error(ex.getMessage());
+            }
+        });
+        MenuItem exportFileItem = createMenuItem("Export Files", e -> {
+            IeHandler.handleExport();
+        });
+        final Menu fileMenu = createMenu("File", importFileItem, exportFileItem);
+
+        MenuItem addPanelItem = createMenuItem("Add Panel", e -> {
+            InstrumentPanelBuilder ipb = new InstrumentPanelBuilder(this);
+            ipb.showAndWait();
+            InstrumentPanel instrumentPanel = ipb.getResult();
+            String tabName = ipb.getSelectedName();
+            if (instrumentPanel == null || tabName == null || tabName.isEmpty()) {
+                TmLogger.warn("Instrument Panel Builder did not succeed in building an instrument panel.");
+                return;
+            }
+            createNewTab(ipb.getSelectedName(), instrumentPanel);
+            TmLogger.debug("Instrument Panel Builder succeeded in adding another panel");
+        });
+        final Menu panelMenu = createMenu("Tabs", addPanelItem);
+
+        MenuItem twoStepFillItem = createMenuItem("Two Step Fill", e -> {
+            final TmTab selectedTab = (TmTab) getSelectedTab();
+            final InstrumentPanel instrumentPanel = selectedTab.getInstrumentPanel();
+            if (instrumentPanel == null) {
+                TmLogger.info("Tried to open Note-Fill but there were no tabs inside the current InstrumentPanel.");
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Note-Fill");
+                alert.setHeaderText("Note-Fill could not be initialized. Please be sure to select a panel");
+                alert.showAndWait();
+
+                return;
+            }
+            final NoteFill noteFill = new NoteFill(instrumentPanel.getTabPanels());
+            noteFill.showAndWait();
+        });
+        final Menu noteFillMenu = createMenu("Note-Fill", twoStepFillItem);
+
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(fileMenu, panelMenu, noteFillMenu);
+        return menuBar;
+    }
+
+    private static Menu createMenu(String menuName, MenuItem... menuItems) {
+        Menu noteFillMenu = new Menu(menuName);
+        noteFillMenu.getItems().addAll(menuItems);
+        return noteFillMenu;
     }
 
     private MenuItem createMenuItem(String name, EventHandler<ActionEvent> e) {

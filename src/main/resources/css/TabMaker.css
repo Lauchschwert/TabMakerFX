@@ -107,3 +107,12 @@
     -fx-padding: 0px 5px 0px 5px !important;
     -fx-background-color: lightgray;
 }
+
+.menu {
+    -fx-padding: 7px 15px 7px 15px;
+    -fx-text-fill: white;
+}
+
+.menu-bar {
+    -fx-background-color: rgba(0,0,0,.7);
+}
