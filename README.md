@@ -32,6 +32,7 @@
 - [x] Multiple instrument support
 - [ ] Custom notefill (Notefill but with customizable settings e.g. saveable)
 - [ ] Chord recognition
+- [ ] Tab-Reader (Import files and read them as normal tabs)
 
 ## Quality & Polish
 - [ ] Bug fixes and stability
