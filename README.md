@@ -49,7 +49,7 @@
 
 ---
 
-## Project Completion: **31,81%** wysi! (7/22 tasks completed)
+## Project Completion: **31,81%** (7/22 tasks completed)
 
 ### By Category:
 - **Core Features:** 66% (4/6)
