@@ -59,7 +59,7 @@
 - **Future Ideas:** 0% (0/4)
 
 
-## Install Guide
+## Install Guide !!!Outdated!!!
 Execute TM_Installer.exe (administrator privs). An executable will be created inside of C:\Program Files\TabMaker
 Just run the exe.
 
