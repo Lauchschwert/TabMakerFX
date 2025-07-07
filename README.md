@@ -1,4 +1,4 @@
-# TabmakerFX
+<# TabmakerFX
 - This is a helper tool directed to musicians who just want to get some tabs for themselves
 
 # BETA SOFTWARE DISCLAIMER
@@ -10,7 +10,7 @@
 ## By installing and using this software, you acknowledge that you understand the risks associated with beta software and agree to assume full responsibility for any consequences.
 
 # Current Feature under development
-- Configuration Files
+- Export to readable format (Core Features) / User Documentation / Notefill
 
 # Roadmap / Checklist
 
@@ -19,6 +19,7 @@
 - [x] Note input and editing
 - [x] Export/Import
 - [ ] Notefill
+- [ ] Export to readable format
 - [x] Dynamic panel adding
 
 ## User Interface
@@ -38,7 +39,7 @@
 - [ ] User documentation
 - [ ] Installation guide
 - [ ] Cross-platform compatibility
-- [ ] Configuration file
+- [x] Configuration file
 
 ## Future Ideas
 - [ ] Plugin system
@@ -48,13 +49,13 @@
 
 ---
 
-## Project Completion: **27,27%** wysi! (6/22 tasks completed)
+## Project Completion: **31,81%** wysi! (7/22 tasks completed)
 
 ### By Category:
-- **Core Features:** 50% (4/5)
-- **User Interface:** 20% (1/4)
+- **Core Features:** 66% (4/6)
+- **User Interface:** 25% (1/4)
 - **Advanced Features:** 33% (1/3)
-- **Quality & Polish:** 0% (0/6)
+- **Quality & Polish:** 16,66% (1/6)
 - **Future Ideas:** 0% (0/4)
 
 
