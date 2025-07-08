@@ -201,4 +201,8 @@ public class TabMaker extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+    public void run() {
+        launch();
+    }
 }
