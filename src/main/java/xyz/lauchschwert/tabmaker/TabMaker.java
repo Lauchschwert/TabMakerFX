@@ -31,7 +31,6 @@ public class TabMaker extends Application {
     private static final double DEFAULT_WIDTH = 1000;
     private static final double DEFAULT_HEIGHT = 600;
 
-    public static boolean NOTE_ADDED = false;
     public static List<String> STRINGS = Arrays.asList(
             // Standard tuning
             "E", "A", "D", "G", "B",
