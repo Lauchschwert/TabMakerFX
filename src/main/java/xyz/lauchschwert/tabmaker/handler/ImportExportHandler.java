@@ -3,7 +3,6 @@ package xyz.lauchschwert.tabmaker.handler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
@@ -51,7 +50,7 @@ public class ImportExportHandler {
 
     public void handleExport() {
         // get current tab from TabMaker
-        TmTab selectedTab = tabMaker.getSelectedTab();
+        TmTab selectedTab = (TmTab) tabMaker.getSelectedTab();
         InstrumentPanel targetPanel = selectedTab.getInstrumentPanel();
 
         String json = gson.toJson(
@@ -82,27 +81,14 @@ public class ImportExportHandler {
             throw new ImportException("Couldn't import file since it doesn't exist, cannot be read or is a directory!");
         }
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Import Successful");
-        alert.setContentText("File imported successfully!\n" + importFile.getName());
-        alert.showAndWait();
-
         try (FileReader fileReader = new FileReader(importFile);
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             InstrumentPanel instrumentPanel = gson.fromJson(bufferedReader, InstrumentPanel.class);
 
-            TextInputDialog tabNameDialog = new TextInputDialog("Default");
-            tabNameDialog.setTitle("Enter Tab name");
-            tabNameDialog.setHeaderText("Please enter the Tab name of the imported panel! (leave empty for default)");
-            tabNameDialog.showAndWait();
-            String input = tabNameDialog.getResult();
-            if (input == null || input.trim().isEmpty()) {
-                input = tabNameDialog.getDefaultValue();
-            }
-
-            tabMaker.createNewTab(input, instrumentPanel);
+            TmTab tab = (TmTab) tabMaker.createNewTab(instrumentPanel);
+            tab.setInstrumentPanel(instrumentPanel);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ImportException(e.getMessage());
         }
     }
 

@@ -5,8 +5,9 @@ import javafx.scene.layout.VBox;
 import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.BassPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.GuitarPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 
-public class InstrumentPanelBuilder extends Dialog<Boolean> {
+public class InstrumentPanelBuilder extends Dialog<InstrumentPanel> {
     private final TabMaker tabMaker;
 
     private RadioButton radioGuitar;
@@ -56,7 +57,7 @@ public class InstrumentPanelBuilder extends Dialog<Boolean> {
         return vbox;
     }
 
-    private boolean convertResult(ButtonType buttonType) {
+    private InstrumentPanel convertResult(ButtonType buttonType) {
         if (buttonType == ButtonType.OK) {
             TextInputDialog tid = new TextInputDialog();
             tid.setTitle("Create a new Tab");
@@ -71,28 +72,26 @@ public class InstrumentPanelBuilder extends Dialog<Boolean> {
             Toggle selectedToggle = panelTypeGroup.getSelectedToggle();
             if (selectedToggle == null) {
                 setFailMessage("No radio button selected");
-                return false; // No radio button selected
+                return null; // No radio button selected
             }
 
             RadioButton selectedRadio = (RadioButton) selectedToggle;
             String panelType = selectedRadio.getText(); // "Guitar-Panel" or "Bass-Panel"
             switch (panelType) {
                 case "Guitar-Panel" -> {
-                    tabMaker.createNewTab(tabName, new GuitarPanel());
-                    return true;
+                    return new GuitarPanel();
                 }
                 case "Bass-Panel" -> {
-                    tabMaker.createNewTab(tabName, new BassPanel());
-                    return true;
+                    return new BassPanel();
                 }
                 default -> {
                     setFailMessage("No radio button selected or unknown panel-preset configured.");
-                    return false;
+                    return null;
                 }
             }
         }
         setFailMessage("TabMaker failed for unknown reason");
-        return false;
+        return null;
     }
 
     private void setFailMessage(String failMessage) {

@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -31,7 +28,6 @@ public class TabMaker extends Application {
     private static final double DEFAULT_WIDTH = 1000;
     private static final double DEFAULT_HEIGHT = 600;
 
-    public static boolean NOTE_ADDED = false;
     public static List<String> STRINGS = Arrays.asList(
             // Standard tuning
             "E", "A", "D", "G", "B",
@@ -92,7 +88,7 @@ public class TabMaker extends Application {
             double width = Double.parseDouble(widthProp);
             stage.setHeight(height);
             stage.setWidth(width);
-        }  catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             TmLogger.warn("Error setting height and width property. Falling back to default values");
             stage.setHeight(DEFAULT_HEIGHT);
             stage.setWidth(DEFAULT_WIDTH);
@@ -102,7 +98,7 @@ public class TabMaker extends Application {
     }
 
     private void configureComponents() {
-        TmTab welcomeTab = new TmTab("Welcome", null);
+        TmTab welcomeTab = new TmTab("Welcome");
         welcomeTab.setClosable(true);
 
         Menu fileMenu = new Menu("File");
@@ -125,8 +121,9 @@ public class TabMaker extends Application {
             InstrumentPanelBuilder ipb = new InstrumentPanelBuilder(this);
             TmLogger.debug("Instrument Panel Builder initialized");
             ipb.showAndWait();
-            boolean success = ipb.getResult();
-            if (!success) {
+            InstrumentPanel instrumentPanel = ipb.getResult();
+            this.createNewTab(instrumentPanel);
+            if (instrumentPanel == null) {
                 TmLogger.warn("Instrument Panel Builder did not succeed in building an instrument panel.");
             } else {
                 TmLogger.debug("Instrument Panel Builder succeeded in adding another panel");
@@ -175,10 +172,21 @@ public class TabMaker extends Application {
         TmLogger.debug("TabMaker default components initialized successfully");
     }
 
-    public void createNewTab(String selectedTabName, InstrumentPanel instrumentPanel) { // TODO: Refactor Instrument Panel parameter => Doesnt have to be here!
-        final TmTab newTab = new TmTab(selectedTabName, instrumentPanel);
+    public Tab createNewTab(InstrumentPanel instrumentPanel) { // TODO: Refactor Instrument Panel parameter => Doesnt have to be here!
+        TextInputDialog tabNameDialog = new TextInputDialog("Default");
+        tabNameDialog.setTitle("Enter Tab name");
+        tabNameDialog.setHeaderText("Please enter the Tab name of the imported panel! (leave empty for default)");
+        tabNameDialog.showAndWait();
+
+        String input = tabNameDialog.getResult();
+        if (input == null || input.trim().isEmpty()) {
+            input = tabNameDialog.getDefaultValue();
+        }
+
+        final TmTab newTab = new TmTab(input);
         tabPanelPane.getTabs().add(newTab);
         TmLogger.debug("New Tab created successfully. Tab: " + newTab.getText());
+        return newTab;
     }
 
     public static File GetFileViaFileChooser(FileChooser.ExtensionFilter... filters) {
@@ -194,8 +202,8 @@ public class TabMaker extends Application {
         return fc.showOpenDialog(stage);
     }
 
-    public TmTab getSelectedTab() {
-        return (TmTab) tabPanelPane.getSelectionModel().getSelectedItem();
+    public Tab getSelectedTab() {
+        return tabPanelPane.getSelectionModel().getSelectedItem();
     }
 
     public static void main(String[] args) {
