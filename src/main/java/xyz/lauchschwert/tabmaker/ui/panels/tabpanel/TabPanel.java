@@ -6,9 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import xyz.lauchschwert.tabmaker.TabMaker;
+import xyz.lauchschwert.tabmaker.enums.NoteFillConstants;
 import xyz.lauchschwert.tabmaker.ui.buttons.NoteButton;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.popups.ButtonGridPopup;
+
+import java.util.List;
 
 public class TabPanel extends HBox {
     private final HBox noteBtnPanel;
@@ -52,8 +54,9 @@ public class TabPanel extends HBox {
         }
     }
 
-    public void addNoteBtn() {
+    public void addNoteBtn(String name) {
         NoteButton newButton = new NoteButton(this, noteBtnPanel.getChildren().size());
+        newButton.setText(name);
         this.noteBtnPanel.getChildren().add(newButton);
         setNoteAdded(true);
         newButton.requestFocus();
@@ -83,5 +86,20 @@ public class TabPanel extends HBox {
 
     public void setNoteAdded(boolean noteAdded) {
         this.noteAdded = noteAdded;
+    }
+
+    public void noteFill(int length, NoteFillConstants noteFillConstants, List<String> notes) {
+        switch (noteFillConstants) {
+            case TWO_STEP_FILL -> {
+                for (int i = 0; i < length; i++) {
+                    int index = i;
+                    String currentNote = notes.isEmpty() ? "" : notes.get(index);
+                    addNoteBtn(currentNote);
+                    if (index > notes.size()) {
+                        index = 0;
+                    }
+                }
+            }
+        }
     }
 }

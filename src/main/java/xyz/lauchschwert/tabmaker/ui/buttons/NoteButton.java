@@ -22,7 +22,7 @@ public class NoteButton extends Button {
     private void handleNewNote(TabPanel tabPanel, String selectedNote) {
         this.setText(selectedNote);
         if (this.index == tabPanel.lastIndexOfNotePanel()) {
-            tabPanel.addNoteBtn();
+            tabPanel.addNoteBtn(null);
         }
     }
 

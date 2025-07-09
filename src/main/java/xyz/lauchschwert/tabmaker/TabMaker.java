@@ -10,11 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import xyz.lauchschwert.tabmaker.enums.NoteFillConstants;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.functions.NoteFill;
 import xyz.lauchschwert.tabmaker.handler.ConfigHandler;
 import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
+import xyz.lauchschwert.tabmaker.results.NoteFillResult;
 import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.InstrumentPanelBuilder;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
@@ -167,13 +169,21 @@ public class TabMaker extends Application {
             }
             final NoteFill noteFill = new NoteFill(instrumentPanel.getTabPanels());
             noteFill.showAndWait();
+            NoteFillResult nfr = noteFill.getResult();
+            if (nfr == null) {
+                return;
+            }
+
+            nfr.getTabPanels().forEach(tabPanel -> {tabPanel.noteFill(nfr.getFillLength(), NoteFillConstants.TWO_STEP_FILL, nfr.getNotes());});
         });
+
         final Menu noteFillMenu = createMenu("Note-Fill", twoStepFillItem);
 
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, panelMenu, noteFillMenu);
         return menuBar;
     }
+
 
     private static Menu createMenu(String menuName, MenuItem... menuItems) {
         Menu noteFillMenu = new Menu(menuName);
