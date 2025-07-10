@@ -74,7 +74,7 @@ public class ImportExportHandler {
     }
 
     public void handleImport() throws ImportException {
-        File importFile = TabMaker.GetFileViaFileChooser(
+        File importFile = tabMaker.getUI().getFileViaFileChooser(
                 new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE) // later on text files etc....
         );
         if (importFile == null || importFile.isDirectory() || !importFile.canRead()) {

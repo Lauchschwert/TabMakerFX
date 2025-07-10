@@ -1,10 +1,14 @@
 package xyz.lauchschwert.tabmaker.ui;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
@@ -13,11 +17,14 @@ import xyz.lauchschwert.tabmaker.ui.builder.InstrumentPanelBuilder;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
+import java.io.File;
+
 public class UserInterface {
     private final TabMaker tabMaker;
     private VBox root;
     private TabPane tabPanelPane;
     private ImportExportHandler importExportHandler;
+    private Stage stage;
 
     public UserInterface(TabMaker tabMaker) {
         this.tabMaker = tabMaker;
@@ -43,20 +50,19 @@ public class UserInterface {
 
         final MenuItem importFileItem = createMenuItem("Import Files", e -> {
             try {
-                IeHandler.handleImport();
+                importExportHandler.handleImport();
             } catch (ImportException ex) {
                 TmLogger.error(ex.getMessage());
             }
         });
 
         MenuItem exportFileItem = createMenuItem("Export Files", e -> {
-            IeHandler.handleExport();
+            importExportHandler.handleExport();
         });
         fileMenu.getItems().addAll(newFileItem, importFileItem, exportFileItem);
 
         MenuItem addPanelItem = createMenuItem("Add Panel", e -> {
-            InstrumentPanelBuilder ipb = new InstrumentPanelBuilder(this);
-            TmLogger.debug("Instrument Panel Builder initialized");
+            InstrumentPanelBuilder ipb = new InstrumentPanelBuilder(tabMaker);
             ipb.showAndWait();
             InstrumentPanel instrumentPanel = ipb.getResult();
             this.createNewTab("instrumentPanel");
@@ -92,6 +98,13 @@ public class UserInterface {
         TmLogger.debug("Configured Components successfully");
     }
 
+    private MenuItem createMenuItem(String name, EventHandler<ActionEvent> e) {
+        MenuItem importFileItem = new MenuItem(name);
+
+        importFileItem.setOnAction(e);
+        return importFileItem;
+    }
+
     public Tab createNewTab(String tabName) { // TODO: Refactor Instrument Panel parameter => Doesnt have to be here!
         TextInputDialog tabNameDialog = new TextInputDialog("Default");
         tabNameDialog.setTitle("Enter Tab name");
@@ -107,6 +120,19 @@ public class UserInterface {
         tabPanelPane.getTabs().add(newTab);
         TmLogger.debug("New Tab created successfully. Tab: " + newTab.getText());
         return newTab;
+    }
+
+    public File getFileViaFileChooser(FileChooser.ExtensionFilter... filters) {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Choose an import file.");
+
+        fc.getExtensionFilters().addAll(
+                filters
+        );
+
+        fc.setInitialDirectory(ImportExportHandler.SAVE_PATH.toFile());
+
+        return fc.showOpenDialog(null);
     }
 
     public VBox getRoot() {

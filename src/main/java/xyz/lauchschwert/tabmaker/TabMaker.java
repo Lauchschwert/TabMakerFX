@@ -1,25 +1,13 @@
 package xyz.lauchschwert.tabmaker;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Side;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
+import javafx.scene.control.Tab;
 import javafx.stage.Stage;
-import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.handler.ConfigHandler;
-import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.UserInterface;
-import xyz.lauchschwert.tabmaker.ui.builder.InstrumentPanelBuilder;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
-import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -41,17 +29,12 @@ public class TabMaker extends Application {
             "19", "20", "21", "22", "23", "24",
             "-", "X");
 
-    private VBox root;
-    private TabPane tabPanelPane;
-    private static Stage stage;
     private Properties applicationProps;
 
     private UserInterface userInterface;
 
-    private static ImportExportHandler IeHandler;
-
     @Override
-    public void init() throws Exception {
+    public void init() {
         TmLogger.logInitialization();
         // init code here
         ConfigHandler.getInstance().initConfigFiles(); // getInstance() also initializes the ConfigHandler
@@ -64,18 +47,15 @@ public class TabMaker extends Application {
 
     @Override
     public void start(Stage stage) {
-        initComponents();
-        configureComponents();
-
-        setScene();
+        setScene(stage);
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         TmLogger.logShutdown();
     }
 
-    private void setScene() {
+    private void setScene(Stage stage) {
         Scene scene = userInterface.createScene();
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/TabMaker.css")).toExternalForm());
         stage.setTitle("TabMakerFX");
@@ -100,39 +80,6 @@ public class TabMaker extends Application {
         stage.show();
     }
 
-    private MenuItem createMenuItem(String name, EventHandler<ActionEvent> e) {
-        MenuItem importFileItem = new MenuItem(name);
-
-        importFileItem.setOnAction(e);
-        return importFileItem;
-    }
-
-    private void initComponents() {
-        IeHandler = new ImportExportHandler(this);
-
-        root = new VBox();
-
-        tabPanelPane = new TabPane();
-        TmLogger.debug("TabMaker default components initialized successfully");
-    }
-
-    public static File GetFileViaFileChooser(FileChooser.ExtensionFilter... filters) {
-        FileChooser fc = new FileChooser();
-        fc.setTitle("Choose an import file.");
-
-        fc.getExtensionFilters().addAll(
-                filters
-        );
-
-        fc.setInitialDirectory(ImportExportHandler.SAVE_PATH.toFile());
-
-        return fc.showOpenDialog(stage);
-    }
-
-    public Tab getSelectedTab() {
-        return tabPanelPane.getSelectionModel().getSelectedItem();
-    }
-
     public static void main(String[] args) {
         launch();
     }
@@ -145,7 +92,7 @@ public class TabMaker extends Application {
         return userInterface;
     }
 
-    public void createNewTab(String tabName) {
-        userInterface.createNewTab(tabName);
+    public Tab createNewTab(String tabName) {
+        return userInterface.createNewTab(tabName);
     }
 }
