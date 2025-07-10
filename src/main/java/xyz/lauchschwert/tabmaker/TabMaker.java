@@ -14,6 +14,7 @@ import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.handler.ConfigHandler;
 import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
+import xyz.lauchschwert.tabmaker.ui.UserInterface;
 import xyz.lauchschwert.tabmaker.ui.builder.InstrumentPanelBuilder;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
@@ -45,6 +46,8 @@ public class TabMaker extends Application {
     private static Stage stage;
     private Properties applicationProps;
 
+    private UserInterface userInterface;
+
     private static ImportExportHandler IeHandler;
 
     @Override
@@ -54,17 +57,17 @@ public class TabMaker extends Application {
         ConfigHandler.getInstance().initConfigFiles(); // getInstance() also initializes the ConfigHandler
         applicationProps = ConfigHandler.getInstance().loadProperties();
 
+        userInterface = new UserInterface(this);
+
         TmLogger.logStartup();
     }
 
     @Override
     public void start(Stage stage) {
-        TabMaker.stage = stage;
-
         initComponents();
         configureComponents();
 
-        setScene(stage);
+        setScene();
     }
 
     @Override
@@ -72,7 +75,7 @@ public class TabMaker extends Application {
         TmLogger.logShutdown();
     }
 
-    private void setScene(Stage stage) {
+    private void setScene() {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/TabMaker.css")).toExternalForm());
         stage.setTitle("TabMakerFX");
@@ -122,7 +125,7 @@ public class TabMaker extends Application {
             TmLogger.debug("Instrument Panel Builder initialized");
             ipb.showAndWait();
             InstrumentPanel instrumentPanel = ipb.getResult();
-            this.createNewTab(instrumentPanel);
+            this.createNewTab("instrumentPanel");
             if (instrumentPanel == null) {
                 TmLogger.warn("Instrument Panel Builder did not succeed in building an instrument panel.");
             } else {
@@ -172,10 +175,10 @@ public class TabMaker extends Application {
         TmLogger.debug("TabMaker default components initialized successfully");
     }
 
-    public Tab createNewTab(InstrumentPanel instrumentPanel) { // TODO: Refactor Instrument Panel parameter => Doesnt have to be here!
+    public Tab createNewTab(String tabName) { // TODO: Refactor Instrument Panel parameter => Doesnt have to be here!
         TextInputDialog tabNameDialog = new TextInputDialog("Default");
         tabNameDialog.setTitle("Enter Tab name");
-        tabNameDialog.setHeaderText("Please enter the Tab name of the imported panel! (leave empty for default)");
+        tabNameDialog.setHeaderText("Please enter the Tab name of the imported panel!\n(leave empty for default)");
         tabNameDialog.showAndWait();
 
         String input = tabNameDialog.getResult();

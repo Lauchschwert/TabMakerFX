@@ -85,7 +85,7 @@ public class ImportExportHandler {
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             InstrumentPanel instrumentPanel = gson.fromJson(bufferedReader, InstrumentPanel.class);
 
-            TmTab tab = (TmTab) tabMaker.createNewTab(instrumentPanel);
+            TmTab tab = (TmTab) tabMaker.createNewTab("instrumentPanel");
             tab.setInstrumentPanel(instrumentPanel);
         } catch (IOException e) {
             throw new ImportException(e.getMessage());
