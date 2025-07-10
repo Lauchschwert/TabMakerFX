@@ -8,8 +8,6 @@ import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel
 
 public class InstrumentPanelBuilder extends Dialog<InstrumentPanel> {
 
-    private RadioButton radioGuitar;
-    private RadioButton radioBass;
     private ToggleGroup panelTypeGroup;
     private String failMessage;
 
@@ -26,18 +24,18 @@ public class InstrumentPanelBuilder extends Dialog<InstrumentPanel> {
         Button okButton = (Button) getDialogPane().lookupButton(ButtonType.OK);
 
         // Create your UI components
-        VBox content = createContent(okButton); // Pass button reference
+        VBox content = createContent(); // Pass button reference
         getDialogPane().setContent(content);
 
         setResultConverter(this::convertResult);
     }
 
-    private VBox createContent(Button okBtn) {
+    private VBox createContent() {
         VBox vbox = new VBox(10);
 
-        radioGuitar = new RadioButton("Guitar-Panel");
+        RadioButton radioGuitar = new RadioButton("Guitar-Panel");
         radioGuitar.selectedProperty().setValue(true);
-        radioBass = new RadioButton("Bass-Panel");
+        RadioButton radioBass = new RadioButton("Bass-Panel");
 
         panelTypeGroup = new ToggleGroup();
         radioGuitar.setToggleGroup(panelTypeGroup);
@@ -56,15 +54,6 @@ public class InstrumentPanelBuilder extends Dialog<InstrumentPanel> {
 
     private InstrumentPanel convertResult(ButtonType buttonType) {
         if (buttonType == ButtonType.OK) {
-            TextInputDialog tid = new TextInputDialog();
-            tid.setTitle("Create a new Tab");
-            tid.setHeaderText("Set a tab name");
-            tid.showAndWait();
-            String tabName = tid.getResult();
-            if (tabName.isEmpty()) {
-                tabName = "Default";
-            }
-
             // Get selected radio button
             Toggle selectedToggle = panelTypeGroup.getSelectedToggle();
             if (selectedToggle == null) {
@@ -93,9 +82,5 @@ public class InstrumentPanelBuilder extends Dialog<InstrumentPanel> {
 
     private void setFailMessage(String failMessage) {
         this.failMessage = failMessage;
-    }
-
-    public String getFailMessage() {
-        return failMessage;
     }
 }

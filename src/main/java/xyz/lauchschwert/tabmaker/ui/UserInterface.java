@@ -99,7 +99,7 @@ public class UserInterface {
         return importFileItem;
     }
 
-    public Tab createNewTab() { // TODO: Refactor Instrument Panel parameter => Doesnt have to be here!
+    public Tab createNewTab() {
         TextInputDialog tabNameDialog = new TextInputDialog("Default");
         tabNameDialog.setTitle("Enter Tab name");
         tabNameDialog.setHeaderText("Please enter the Tab name of the imported panel!\n(leave empty for default)");
