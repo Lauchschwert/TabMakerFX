@@ -1,4 +1,4 @@
-package xyz.lauchschwert.tabmaker.ui.builder.tabpanel;
+package xyz.lauchschwert.tabmaker.ui.builder;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;

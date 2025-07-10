@@ -14,7 +14,7 @@ import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.handler.ConfigHandler;
 import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
-import xyz.lauchschwert.tabmaker.ui.builder.tabpanel.InstrumentPanelBuilder;
+import xyz.lauchschwert.tabmaker.ui.builder.InstrumentPanelBuilder;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
