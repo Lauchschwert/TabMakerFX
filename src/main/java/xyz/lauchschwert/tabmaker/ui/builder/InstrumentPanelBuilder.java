@@ -18,10 +18,7 @@ public class InstrumentPanelBuilder extends Dialog<InstrumentPanel> {
 
         // Set dialog buttons
         getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-        // Get OK button and disable it initially
-        Button okButton = (Button) getDialogPane().lookupButton(ButtonType.OK);
-
+        
         // Create your UI components
         VBox content = createContent(); // Pass button reference
         getDialogPane().setContent(content);
