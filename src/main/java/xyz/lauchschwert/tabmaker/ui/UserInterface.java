@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
@@ -20,14 +19,13 @@ import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 import java.io.File;
 
 public class UserInterface {
-    private final TabMaker tabMaker;
+    private final ImportExportHandler importExportHandler;
+
     private VBox root;
     private TabPane tabPanelPane;
-    private ImportExportHandler importExportHandler;
-    private Stage stage;
 
-    public UserInterface(TabMaker tabMaker) {
-        this.tabMaker = tabMaker;
+    public UserInterface() {
+        this.importExportHandler = new ImportExportHandler(this);
         initComponents();
     }
 
@@ -36,12 +34,12 @@ public class UserInterface {
         this.tabPanelPane = new TabPane();
     }
 
-    public Scene createScene() {
-        configureComponents();
+    public Scene createScene(Stage stage) {
+        configureComponents(stage);
         return new Scene(this.root);
     }
 
-    private void configureComponents() {
+    private void configureComponents(Stage stage) {
         TmTab welcomeTab = new TmTab("Welcome");
         welcomeTab.setClosable(true);
 
@@ -56,16 +54,14 @@ public class UserInterface {
             }
         });
 
-        MenuItem exportFileItem = createMenuItem("Export Files", e -> {
-            importExportHandler.handleExport();
-        });
+        MenuItem exportFileItem = createMenuItem("Export Files", e -> importExportHandler.handleExport());
         fileMenu.getItems().addAll(newFileItem, importFileItem, exportFileItem);
 
         MenuItem addPanelItem = createMenuItem("Add Panel", e -> {
-            InstrumentPanelBuilder ipb = new InstrumentPanelBuilder(tabMaker);
+            InstrumentPanelBuilder ipb = new InstrumentPanelBuilder();
             ipb.showAndWait();
             InstrumentPanel instrumentPanel = ipb.getResult();
-            this.createNewTab("instrumentPanel");
+            this.createNewTab();
             if (instrumentPanel == null) {
                 TmLogger.warn("Instrument Panel Builder did not succeed in building an instrument panel.");
             } else {
@@ -84,14 +80,12 @@ public class UserInterface {
         tabPanelPane.getTabs().add(welcomeTab);
         tabPanelPane.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((observableValue, oldTab, newTab) -> {
-                    Platform.runLater(() -> {
-                        // so the width don't get fucked up lol
-                        double width = stage.getWidth();
-                        stage.sizeToScene();
-                        stage.setWidth(width);
-                    });
-                });
+                .addListener((observableValue, oldTab, newTab) -> Platform.runLater(() -> {
+                    // so the width don't get fucked up lol
+                    double width = stage.getWidth();
+                    stage.sizeToScene();
+                    stage.setWidth(width);
+                }));
 
         root.getStyleClass().add("root");
         root.getChildren().addAll(menuBar, tabPanelPane);
@@ -105,7 +99,7 @@ public class UserInterface {
         return importFileItem;
     }
 
-    public Tab createNewTab(String tabName) { // TODO: Refactor Instrument Panel parameter => Doesnt have to be here!
+    public Tab createNewTab() { // TODO: Refactor Instrument Panel parameter => Doesnt have to be here!
         TextInputDialog tabNameDialog = new TextInputDialog("Default");
         tabNameDialog.setTitle("Enter Tab name");
         tabNameDialog.setHeaderText("Please enter the Tab name of the imported panel!\n(leave empty for default)");
@@ -135,19 +129,7 @@ public class UserInterface {
         return fc.showOpenDialog(null);
     }
 
-    public VBox getRoot() {
-        return root;
-    }
-
-    public void setRoot(VBox root) {
-        this.root = root;
-    }
-
-    public ImportExportHandler getImportExportHandler() {
-        return importExportHandler;
-    }
-
-    public void setImportExportHandler(ImportExportHandler importExportHandler) {
-        this.importExportHandler = importExportHandler;
+    public Tab getSelectedTab() {
+        return tabPanelPane.getSelectionModel().getSelectedItem();
     }
 }

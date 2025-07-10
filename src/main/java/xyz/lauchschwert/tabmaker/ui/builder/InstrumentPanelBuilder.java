@@ -2,22 +2,19 @@ package xyz.lauchschwert.tabmaker.ui.builder;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.BassPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.GuitarPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 
 public class InstrumentPanelBuilder extends Dialog<InstrumentPanel> {
-    private final TabMaker tabMaker;
 
     private RadioButton radioGuitar;
     private RadioButton radioBass;
     private ToggleGroup panelTypeGroup;
     private String failMessage;
 
-    public InstrumentPanelBuilder(TabMaker tabMaker) {
+    public InstrumentPanelBuilder() {
         super();
-        this.tabMaker = tabMaker;
 
         setTitle("Create New Tab Panel");
         setHeaderText("Configure your tab panel settings");

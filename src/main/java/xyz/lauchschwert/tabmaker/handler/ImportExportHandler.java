@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
-import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
+import xyz.lauchschwert.tabmaker.ui.UserInterface;
 import xyz.lauchschwert.tabmaker.ui.panels.adapters.InstrumentPanelAdapter;
 import xyz.lauchschwert.tabmaker.ui.panels.adapters.TabPanelAdapter;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
@@ -27,7 +27,7 @@ public class ImportExportHandler {
 
     public static String VALID_IMPORTTYPE = "*.json";
 
-    private final TabMaker tabMaker;
+    private final UserInterface userInterface;
 
     private final GsonBuilder gsonBuilder = new GsonBuilder()
             .setPrettyPrinting()
@@ -35,8 +35,8 @@ public class ImportExportHandler {
             .registerTypeAdapter(InstrumentPanel.class, new InstrumentPanelAdapter());
     private final Gson gson = gsonBuilder.create();
 
-    public ImportExportHandler(TabMaker tabMaker) {
-        this.tabMaker = tabMaker;
+    public ImportExportHandler(UserInterface userInterface) {
+        this.userInterface = userInterface;
 
         final File SAVE_FOLDER = SAVE_PATH.toFile();
 
@@ -50,7 +50,7 @@ public class ImportExportHandler {
 
     public void handleExport() {
         // get current tab from TabMaker
-        TmTab selectedTab = (TmTab) tabMaker.getSelectedTab();
+        TmTab selectedTab = (TmTab) userInterface.getSelectedTab();
         InstrumentPanel targetPanel = selectedTab.getInstrumentPanel();
 
         String json = gson.toJson(
@@ -74,7 +74,7 @@ public class ImportExportHandler {
     }
 
     public void handleImport() throws ImportException {
-        File importFile = tabMaker.getUI().getFileViaFileChooser(
+        File importFile = userInterface.getFileViaFileChooser(
                 new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE) // later on text files etc....
         );
         if (importFile == null || importFile.isDirectory() || !importFile.canRead()) {
@@ -85,7 +85,7 @@ public class ImportExportHandler {
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             InstrumentPanel instrumentPanel = gson.fromJson(bufferedReader, InstrumentPanel.class);
 
-            TmTab tab = (TmTab) tabMaker.createNewTab("instrumentPanel");
+            TmTab tab = (TmTab) userInterface.createNewTab();
             tab.setInstrumentPanel(instrumentPanel);
         } catch (IOException e) {
             throw new ImportException(e.getMessage());

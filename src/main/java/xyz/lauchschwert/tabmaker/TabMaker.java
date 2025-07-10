@@ -2,7 +2,6 @@ package xyz.lauchschwert.tabmaker;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Tab;
 import javafx.stage.Stage;
 import xyz.lauchschwert.tabmaker.handler.ConfigHandler;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
@@ -30,7 +29,6 @@ public class TabMaker extends Application {
             "-", "X");
 
     private Properties applicationProps;
-
     private UserInterface userInterface;
 
     @Override
@@ -40,7 +38,7 @@ public class TabMaker extends Application {
         ConfigHandler.getInstance().initConfigFiles(); // getInstance() also initializes the ConfigHandler
         applicationProps = ConfigHandler.getInstance().loadProperties();
 
-        userInterface = new UserInterface(this);
+        userInterface = new UserInterface();
 
         TmLogger.logStartup();
     }
@@ -56,7 +54,7 @@ public class TabMaker extends Application {
     }
 
     private void setScene(Stage stage) {
-        Scene scene = userInterface.createScene();
+        Scene scene = userInterface.createScene(stage);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/TabMaker.css")).toExternalForm());
         stage.setTitle("TabMakerFX");
         stage.setScene(scene);
@@ -86,13 +84,5 @@ public class TabMaker extends Application {
 
     public void run() {
         launch();
-    }
-
-    public UserInterface getUI() {
-        return userInterface;
-    }
-
-    public Tab createNewTab(String tabName) {
-        return userInterface.createNewTab(tabName);
     }
 }
