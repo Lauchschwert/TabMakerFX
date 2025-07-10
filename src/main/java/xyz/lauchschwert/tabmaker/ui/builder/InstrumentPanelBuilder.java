@@ -9,7 +9,6 @@ import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel
 public class InstrumentPanelBuilder extends Dialog<InstrumentPanel> {
 
     private ToggleGroup panelTypeGroup;
-    private String failMessage;
 
     public InstrumentPanelBuilder() {
         super();
@@ -57,7 +56,6 @@ public class InstrumentPanelBuilder extends Dialog<InstrumentPanel> {
             // Get selected radio button
             Toggle selectedToggle = panelTypeGroup.getSelectedToggle();
             if (selectedToggle == null) {
-                setFailMessage("No radio button selected");
                 return null; // No radio button selected
             }
 
@@ -71,16 +69,10 @@ public class InstrumentPanelBuilder extends Dialog<InstrumentPanel> {
                     return new BassPanel();
                 }
                 default -> {
-                    setFailMessage("No radio button selected or unknown panel-preset configured.");
                     return null;
                 }
             }
         }
-        setFailMessage("TabMaker failed for unknown reason");
         return null;
-    }
-
-    private void setFailMessage(String failMessage) {
-        this.failMessage = failMessage;
     }
 }
