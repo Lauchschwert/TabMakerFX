@@ -97,6 +97,7 @@ public class TmLogger {
     public static void logStartup() {
         info("=== TabMakerFX Started ===");
         info("Java Version: " + System.getProperty("java.version"));
+        info("JavaFX Version: " + System.getProperty("javafx.version"));
         info("OS: " + System.getProperty("os.name"));
         info("User: " + System.getProperty("user.name"));
     }
@@ -106,7 +107,7 @@ public class TmLogger {
     }
 
     public static void logInitialization() {
-        info("=== TabMakerFX is initializing ===");
+        info("=== TabMakerFX initialized ===");
     }
 
     public static void logSystemExit(int i) {

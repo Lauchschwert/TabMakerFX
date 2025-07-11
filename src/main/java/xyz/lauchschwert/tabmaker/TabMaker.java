@@ -10,7 +10,6 @@ import xyz.lauchschwert.tabmaker.ui.UserInterface;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
 
 public class TabMaker extends Application {
     private static final double DEFAULT_WIDTH = 1000;
@@ -28,24 +27,25 @@ public class TabMaker extends Application {
             "19", "20", "21", "22", "23", "24",
             "-", "X");
 
-    private Properties applicationProps;
     private UserInterface userInterface;
+    private ConfigHandler configHandler;
 
     @Override
     public void init() {
-        TmLogger.logInitialization();
         // init code here
-        ConfigHandler.getInstance().initConfigFiles(); // getInstance() also initializes the ConfigHandler
-        applicationProps = ConfigHandler.getInstance().loadProperties();
+        this.configHandler = ConfigHandler.getInstance();
+        configHandler.initConfigFiles();
+        configHandler.loadProperties();
 
         userInterface = new UserInterface();
 
-        TmLogger.logStartup();
+        TmLogger.logInitialization();
     }
 
     @Override
     public void start(Stage stage) {
         setScene(stage);
+        TmLogger.logStartup();
     }
 
     @Override
@@ -56,23 +56,23 @@ public class TabMaker extends Application {
     private void setScene(Stage stage) {
         Scene scene = userInterface.createScene(stage);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/TabMaker.css")).toExternalForm());
-        stage.setTitle("TabMakerFX");
+        stage.setTitle("TabMakerFx");
         stage.setScene(scene);
-        stage.setMinHeight(400);
         stage.setMinWidth(600);
+        stage.setMinHeight(400);
 
-        String heightProp = applicationProps.getProperty("ui.window.height");
-        String widthProp = applicationProps.getProperty("ui.window.width");
+        final String widthProp = configHandler.find("ui.window.width");
+        final String heightProp = configHandler.find("ui.window.height");
 
         try {
-            double height = Double.parseDouble(heightProp);
             double width = Double.parseDouble(widthProp);
-            stage.setHeight(height);
+            double height = Double.parseDouble(heightProp);
             stage.setWidth(width);
+            stage.setHeight(height);
         } catch (NumberFormatException e) {
             TmLogger.warn("Error setting height and width property. Falling back to default values");
-            stage.setHeight(DEFAULT_HEIGHT);
             stage.setWidth(DEFAULT_WIDTH);
+            stage.setHeight(DEFAULT_HEIGHT);
         }
 
         stage.show();

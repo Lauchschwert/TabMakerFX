@@ -40,7 +40,7 @@ public class UserInterface {
     }
 
     private void configureComponents(Stage stage) {
-        TmTab welcomeTab = new TmTab("Welcome");
+        TmTab welcomeTab = new TmTab("Welcome", null);
         welcomeTab.setClosable(true);
 
         Menu fileMenu = new Menu("File");
@@ -48,7 +48,8 @@ public class UserInterface {
 
         final MenuItem importFileItem = createMenuItem("Import Files", e -> {
             try {
-                importExportHandler.handleImport();
+                InstrumentPanel importedPanel = importExportHandler.handleImport();
+                createNewTab(importedPanel);
             } catch (ImportException ex) {
                 TmLogger.error(ex.getMessage());
             }
@@ -58,14 +59,17 @@ public class UserInterface {
         fileMenu.getItems().addAll(newFileItem, importFileItem, exportFileItem);
 
         MenuItem addPanelItem = createMenuItem("Add Panel", e -> {
+            // Build a new InstrumentPanel
             InstrumentPanelBuilder ipb = new InstrumentPanelBuilder();
             ipb.showAndWait();
             InstrumentPanel instrumentPanel = ipb.getResult();
-            this.createNewTab();
+
             if (instrumentPanel == null) {
                 TmLogger.warn("Instrument Panel Builder did not succeed in building an instrument panel.");
             } else {
-                TmLogger.debug("Instrument Panel Builder succeeded in adding another panel");
+                // Create and set panel inside a new tab
+                this.createNewTab(instrumentPanel);
+                TmLogger.info("Instrument Panel Builder succeeded in adding another panel");
             }
         });
 
@@ -99,21 +103,15 @@ public class UserInterface {
         return importFileItem;
     }
 
-    public Tab createNewTab() {
-        TextInputDialog tabNameDialog = new TextInputDialog("Default");
-        tabNameDialog.setTitle("Enter Tab name");
-        tabNameDialog.setHeaderText("Please enter the Tab name of the imported panel!\n(leave empty for default)");
-        tabNameDialog.showAndWait();
-
-        String input = tabNameDialog.getResult();
-        if (input == null || input.trim().isEmpty()) {
-            input = tabNameDialog.getDefaultValue();
+    public void createNewTab(InstrumentPanel instrumentPanel) {
+        String input = openTextInputDialog();
+        if (input == null || input.isBlank()) {
+            input = "Default";
         }
 
-        final TmTab newTab = new TmTab(input);
+        final TmTab newTab = new TmTab(input, instrumentPanel);
         tabPanelPane.getTabs().add(newTab);
         TmLogger.debug("New Tab created successfully. Tab: " + newTab.getText());
-        return newTab;
     }
 
     public File getFileViaFileChooser(FileChooser.ExtensionFilter... filters) {
@@ -129,7 +127,24 @@ public class UserInterface {
         return fc.showOpenDialog(null);
     }
 
+    public String openTextInputDialog() {
+        TextInputDialog tabNameDialog = new TextInputDialog("Default");
+        tabNameDialog.setTitle("Enter Tab name");
+        tabNameDialog.setHeaderText("Please enter the Tab name of the imported panel!\n(leave empty for default)");
+        tabNameDialog.showAndWait();
+
+        return tabNameDialog.getResult();
+    }
+
     public Tab getSelectedTab() {
         return tabPanelPane.getSelectionModel().getSelectedItem();
+    }
+
+    public static void ShowAlert(Alert.AlertType alertType, String title, String header, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

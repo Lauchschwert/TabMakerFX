@@ -18,7 +18,7 @@ public class InstrumentPanelBuilder extends Dialog<InstrumentPanel> {
 
         // Set dialog buttons
         getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-        
+
         // Create your UI components
         VBox content = createContent(); // Pass button reference
         getDialogPane().setContent(content);
