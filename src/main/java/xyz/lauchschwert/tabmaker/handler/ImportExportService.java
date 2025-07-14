@@ -27,17 +27,13 @@ public class ImportExportService {
 
     public static String VALID_IMPORTTYPE = "*.json";
 
-    private final UserInterface userInterface;
-
     private final GsonBuilder gsonBuilder = new GsonBuilder()
             .setPrettyPrinting()
             .registerTypeAdapter(TabPanel.class, new TabPanelAdapter())
             .registerTypeAdapter(InstrumentPanel.class, new InstrumentPanelAdapter());
     private final Gson gson = gsonBuilder.create();
 
-    public ImportExportService(UserInterface userInterface) {
-        this.userInterface = userInterface;
-
+    public ImportExportService() {
         final File SAVE_FOLDER = SAVE_PATH.toFile();
         if (!SAVE_FOLDER.exists() || !SAVE_FOLDER.isDirectory()) {
             boolean succeeded = SAVE_FOLDER.mkdirs();

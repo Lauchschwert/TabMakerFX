@@ -29,7 +29,7 @@ public class UserInterface {
     private TabPane tabPanelPane;
 
     public UserInterface() {
-        this.importExportService = new ImportExportService(this);
+        this.importExportService = new ImportExportService();
         this.dialogService = new DialogService(this);
         initComponents();
     }
