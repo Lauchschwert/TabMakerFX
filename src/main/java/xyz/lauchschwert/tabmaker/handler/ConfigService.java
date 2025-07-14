@@ -16,16 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class ConfigHandler {
-    private static ConfigHandler instance;
+public class ConfigService {
+    private static ConfigService instance;
 
     private static final Path CONFIG_PATH = Paths.get(System.getProperty("user.home"), "Documents", "TabMakerFx", "Files", "Config");
-    private static final Path TEMPLATE_PATH = Paths.get(String.valueOf(ConfigHandler.class.getResourceAsStream("/templates/configs/")));
+    private static final Path TEMPLATE_PATH = Paths.get(String.valueOf(ConfigService.class.getResourceAsStream("/templates/configs/")));
 
     private File[] propFiles; // TODO: Change to Set<>
     private List<Properties> propList;
 
-    public ConfigHandler() {
+    public ConfigService() {
         init(); // Creates default files/dirs
     }
 
@@ -49,11 +49,11 @@ public class ConfigHandler {
         }
     }
 
-    public static ConfigHandler getInstance() {
+    public static ConfigService getInstance() {
         // Creates a new instance if no instance was created before
         if (instance == null) {
-            instance = new ConfigHandler();
-            TmLogger.info("ConfigHandler instance created.");
+            instance = new ConfigService();
+            TmLogger.info("ConfigService instance created.");
         }
         return instance;
     }

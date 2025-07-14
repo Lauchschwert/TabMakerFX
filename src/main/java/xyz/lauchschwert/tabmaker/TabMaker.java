@@ -3,7 +3,7 @@ package xyz.lauchschwert.tabmaker;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import xyz.lauchschwert.tabmaker.handler.ConfigHandler;
+import xyz.lauchschwert.tabmaker.handler.ConfigService;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.UserInterface;
 
@@ -28,14 +28,14 @@ public class TabMaker extends Application {
             "-", "X");
 
     private UserInterface userInterface;
-    private ConfigHandler configHandler;
+    private ConfigService configService;
 
     @Override
     public void init() {
         // init code here
-        this.configHandler = ConfigHandler.getInstance();
-        configHandler.initConfigFiles();
-        configHandler.loadProperties();
+        this.configService = ConfigService.getInstance();
+        configService.initConfigFiles();
+        configService.loadProperties();
 
         userInterface = new UserInterface();
 
@@ -61,8 +61,8 @@ public class TabMaker extends Application {
         stage.setMinWidth(600);
         stage.setMinHeight(400);
 
-        final String widthProp = configHandler.find("ui.window.width");
-        final String heightProp = configHandler.find("ui.window.height");
+        final String widthProp = configService.find("ui.window.width");
+        final String heightProp = configService.find("ui.window.height");
 
         try {
             double width = Double.parseDouble(widthProp);

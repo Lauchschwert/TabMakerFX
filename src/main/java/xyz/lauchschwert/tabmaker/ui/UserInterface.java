@@ -7,25 +7,30 @@ import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import xyz.lauchschwert.tabmaker.exceptions.ImportException;
-import xyz.lauchschwert.tabmaker.handler.ImportExportHandler;
+import xyz.lauchschwert.tabmaker.handler.ImportExportService;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
-import xyz.lauchschwert.tabmaker.ui.builder.InstrumentPanelBuilder;
+import xyz.lauchschwert.tabmaker.ui.builders.actions.menuitems.FileActions;
+import xyz.lauchschwert.tabmaker.ui.builders.actions.tabitems.TabActions;
+import xyz.lauchschwert.tabmaker.ui.builders.builder.MenuBarBuilder;
+import xyz.lauchschwert.tabmaker.ui.builders.builder.TabPaneBuilder;
+import xyz.lauchschwert.tabmaker.ui.builders.infos.MenuItemInfo;
+import xyz.lauchschwert.tabmaker.ui.builders.infos.TabItemInfo;
+import xyz.lauchschwert.tabmaker.ui.dialogs.DialogService;
+import xyz.lauchschwert.tabmaker.ui.dialogs.InstrumentPanelDialog;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
-import java.io.File;
-
 public class UserInterface {
-    private final ImportExportHandler importExportHandler;
+    private final ImportExportService importExportService;
+    private final DialogService dialogService;
 
     private VBox root;
     private TabPane tabPanelPane;
 
     public UserInterface() {
-        this.importExportHandler = new ImportExportHandler(this);
+        this.importExportService = new ImportExportService(this);
+        this.dialogService = new DialogService(this);
         initComponents();
     }
 
@@ -39,28 +44,65 @@ public class UserInterface {
         return new Scene(this.root);
     }
 
+    public void importPanel(InstrumentPanel instrumentPanel) {
+        if (instrumentPanel == null) {
+            UserInterface.ShowAlert(Alert.AlertType.ERROR,
+                    "Import Error",
+                    "Failed to import panel",
+                    "blab");
+        }
+
+        String name = dialogService.getStringViaTextDialog();
+
+        TabItemInfo tabItemInfo = new TabItemInfo(name, instrumentPanel);
+
+        TabPaneBuilder tabPaneBuilder = new TabPaneBuilder(tabPanelPane.getTabs());
+        tabPaneBuilder.addTab(tabPanelPane, tabItemInfo);
+    }
+
     private void configureComponents(Stage stage) {
-        TmTab welcomeTab = new TmTab("Welcome", null);
+        final TmTab welcomeTab = new TmTab("Welcome", null);
         welcomeTab.setClosable(true);
+
+        final FileActions fileActions = new FileActions(this);
+        final TabActions tabActions = new TabActions(this);
+
+        final MenuBar menuBar = new MenuBarBuilder()
+                .addMenu("File",
+                        new MenuItemInfo("Import Panel",
+                                e -> fileActions.importAction(),
+                                false
+                        ),
+                        new MenuItemInfo("Export Panel",
+                                e -> fileActions.exportAction(getSelectedTab().getInstrumentPanel()),
+                                false
+                        )
+                ).addMenu(
+                        "Tabs",
+                        new MenuItemInfo(
+                                "Add Panel",
+                                e -> tabActions.addNewPanel(),
+                                false
+                        )
+                ).build();
 
         Menu fileMenu = new Menu("File");
         MenuItem newFileItem = new MenuItem("Add Panel");
 
-        final MenuItem importFileItem = createMenuItem("Import Files", e -> {
-            try {
-                InstrumentPanel importedPanel = importExportHandler.handleImport();
-                createNewTab(importedPanel);
-            } catch (ImportException ex) {
-                TmLogger.error(ex.getMessage());
-            }
-        });
+//        final MenuItem importFileItem = createMenuItem("Import Files", e -> {
+//            try {
+//                InstrumentPanel importedPanel = importExportService.handleImport();
+//                createNewTab(importedPanel);
+//            } catch (ImportException ex) {
+//                TmLogger.error(ex.getMessage());
+//            }
+//        });
 
-        MenuItem exportFileItem = createMenuItem("Export Files", e -> importExportHandler.handleExport());
-        fileMenu.getItems().addAll(newFileItem, importFileItem, exportFileItem);
+//        fileMenu.getItems().addAll(newFileItem, importFileItem, exportFileItem);
 
         MenuItem addPanelItem = createMenuItem("Add Panel", e -> {
             // Build a new InstrumentPanel
-            InstrumentPanelBuilder ipb = new InstrumentPanelBuilder();
+            InstrumentPanelDialog ipb = new InstrumentPanelDialog();
             ipb.showAndWait();
             InstrumentPanel instrumentPanel = ipb.getResult();
 
@@ -76,8 +118,10 @@ public class UserInterface {
         Menu panelMenu = new Menu("Tabs");
         panelMenu.getItems().addAll(addPanelItem);
 
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(fileMenu, panelMenu);
+//        MenuBar menuBar = new MenuBar();
+//        menuBar.getMenus().addAll(fileMenu, panelMenu);
+
+        TabPaneBuilder tabPaneBuilder = new TabPaneBuilder(tabPanelPane.getTabs());
 
         tabPanelPane.setSide(Side.TOP);
         tabPanelPane.getStyleClass().add("tabPane");
@@ -104,7 +148,7 @@ public class UserInterface {
     }
 
     public void createNewTab(InstrumentPanel instrumentPanel) {
-        String input = openTextInputDialog();
+        String input = dialogService.getStringViaTextDialog();
         if (input == null || input.isBlank()) {
             input = "Default";
         }
@@ -114,30 +158,8 @@ public class UserInterface {
         TmLogger.debug("New Tab created successfully. Tab: " + newTab.getText());
     }
 
-    public File getFileViaFileChooser(FileChooser.ExtensionFilter... filters) {
-        FileChooser fc = new FileChooser();
-        fc.setTitle("Choose an import file.");
-
-        fc.getExtensionFilters().addAll(
-                filters
-        );
-
-        fc.setInitialDirectory(ImportExportHandler.SAVE_PATH.toFile());
-
-        return fc.showOpenDialog(null);
-    }
-
-    public String openTextInputDialog() {
-        TextInputDialog tabNameDialog = new TextInputDialog("Default");
-        tabNameDialog.setTitle("Enter Tab name");
-        tabNameDialog.setHeaderText("Please enter the Tab name of the imported panel!\n(leave empty for default)");
-        tabNameDialog.showAndWait();
-
-        return tabNameDialog.getResult();
-    }
-
-    public Tab getSelectedTab() {
-        return tabPanelPane.getSelectionModel().getSelectedItem();
+    private TmTab getSelectedTab() {
+        return (TmTab) tabPanelPane.getSelectionModel().getSelectedItem();
     }
 
     public static void ShowAlert(Alert.AlertType alertType, String title, String header, String content) {
@@ -146,5 +168,13 @@ public class UserInterface {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public DialogService getDialogService() {
+        return dialogService;
+    }
+
+    public ImportExportService getImportExportService() {
+        return importExportService;
     }
 }
