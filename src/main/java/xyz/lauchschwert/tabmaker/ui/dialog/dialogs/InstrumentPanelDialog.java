@@ -1,4 +1,4 @@
-package xyz.lauchschwert.tabmaker.ui.dialogs;
+package xyz.lauchschwert.tabmaker.ui.dialog.dialogs;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;

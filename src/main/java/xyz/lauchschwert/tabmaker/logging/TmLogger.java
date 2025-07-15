@@ -86,14 +86,6 @@ public class TmLogger {
         info("USER ACTION: " + action);
     }
 
-    public static void logFileOperation(String operation, String filename) {
-        info("FILE: " + operation + " - " + filename);
-    }
-
-    public static void logConfigLoad(String configFile) {
-        info("CONFIG: Loaded " + configFile);
-    }
-
     public static void logStartup() {
         info("=== TabMakerFX Started ===");
         info("Java Version: " + System.getProperty("java.version"));

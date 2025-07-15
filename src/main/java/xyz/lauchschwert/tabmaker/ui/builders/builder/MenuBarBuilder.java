@@ -22,30 +22,26 @@ public class MenuBarBuilder {
     }
 
     public MenuBarBuilder addMenu(String name, MenuItemInfo subMenuInfo) {
-        Menu newMenu = new Menu(name);
-
         final MenuItem newItem = new MenuItem(subMenuInfo.name());
         newItem.setOnAction(subMenuInfo.action());
         newItem.setDisable(subMenuInfo.disable());
-        newMenu.getItems().add(newItem);
-
+        final Menu newMenu = new Menu(name);
         newMenu.getItems().add(newItem);
         this.menuBar.getMenus().add(newMenu);
+
         return this;
     }
 
     public MenuBarBuilder addMenu(String name, MenuItemInfo... subMenuInfos) {
-        Menu newMenu = new Menu(name);
-
+        final Menu newMenu = new Menu(name);
         for (MenuItemInfo menuItemInfo : subMenuInfos) {
             final MenuItem newItem = new MenuItem(menuItemInfo.name());
             newItem.setOnAction(menuItemInfo.action());
             newItem.setDisable(menuItemInfo.disable());
-
             newMenu.getItems().add(newItem);
         }
-
         this.menuBar.getMenus().add(newMenu);
+
         return this;
     }
 }

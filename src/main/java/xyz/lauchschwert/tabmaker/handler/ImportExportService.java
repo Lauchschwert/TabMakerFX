@@ -6,15 +6,18 @@ import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
-import xyz.lauchschwert.tabmaker.ui.UserInterface;
+import xyz.lauchschwert.tabmaker.ui.dialog.DialogService;
 import xyz.lauchschwert.tabmaker.ui.panels.adapters.InstrumentPanelAdapter;
 import xyz.lauchschwert.tabmaker.ui.panels.adapters.TabPanelAdapter;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
-import javax.swing.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -44,12 +47,27 @@ public class ImportExportService {
     }
 
     public void handleExport(InstrumentPanel exportPanel) {
+        if (exportPanel == null) {
+            DialogService.ShowAlert(Alert.AlertType.ERROR, "Failed", "Import of panel failed", "The file you provided could not be parsed!");
+            return;
+        }
+
         String json = gson.toJson(
                 exportPanel,
                 InstrumentPanel.class
         );
-        //TODO
-//        userInterface.getDialogService().getFileViaDialog(true, json, new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE));
+
+        final File saveFile = DialogService.OpenFileDialog(true, new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE));
+        if (saveFile == null) {
+            TmLogger.warn("Filed to export instrument panel.");
+            return;
+        }
+
+        try {
+            Files.writeString(saveFile.toPath(), json, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            TmLogger.warn("Failed to write JSON to file: " + saveFile.getAbsolutePath() + "; " + e.getMessage());
+        }
     }
 
     public InstrumentPanel handleImport(File file) throws ImportException {

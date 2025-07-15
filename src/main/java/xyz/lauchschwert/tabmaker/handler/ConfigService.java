@@ -2,7 +2,7 @@ package xyz.lauchschwert.tabmaker.handler;
 
 import javafx.scene.control.Alert;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
-import xyz.lauchschwert.tabmaker.ui.UserInterface;
+import xyz.lauchschwert.tabmaker.ui.dialog.DialogService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,7 +37,7 @@ public class ConfigService {
             if (!success) {
                 TmLogger.error("Failed to create config directory: " + CONFIG_PATH);
 
-                UserInterface.ShowAlert(
+                DialogService.ShowAlert(
                         Alert.AlertType.ERROR,
                         "Startup Error",
                         "Cannot Create Configuration Directory",

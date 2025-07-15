@@ -16,21 +16,18 @@ import xyz.lauchschwert.tabmaker.ui.builders.builder.MenuBarBuilder;
 import xyz.lauchschwert.tabmaker.ui.builders.builder.TabPaneBuilder;
 import xyz.lauchschwert.tabmaker.ui.builders.infos.MenuItemInfo;
 import xyz.lauchschwert.tabmaker.ui.builders.infos.TabItemInfo;
-import xyz.lauchschwert.tabmaker.ui.dialogs.DialogService;
-import xyz.lauchschwert.tabmaker.ui.dialogs.InstrumentPanelDialog;
+import xyz.lauchschwert.tabmaker.ui.dialog.DialogService;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
 public class UserInterface {
     private final ImportExportService importExportService;
-    private final DialogService dialogService;
 
     private VBox root;
     private TabPane tabPanelPane;
 
     public UserInterface() {
         this.importExportService = new ImportExportService();
-        this.dialogService = new DialogService(this);
         initComponents();
     }
 
@@ -46,13 +43,13 @@ public class UserInterface {
 
     public void importPanel(InstrumentPanel instrumentPanel) {
         if (instrumentPanel == null) {
-            UserInterface.ShowAlert(Alert.AlertType.ERROR,
+            DialogService.ShowAlert(Alert.AlertType.ERROR,
                     "Import Error",
                     "Failed to import panel",
                     "blab");
         }
 
-        String name = dialogService.getStringViaTextDialog();
+        String name = DialogService.GetStringViaDialog();
 
         TabItemInfo tabItemInfo = new TabItemInfo(name, instrumentPanel);
 
@@ -81,13 +78,13 @@ public class UserInterface {
                         "Tabs",
                         new MenuItemInfo(
                                 "Add Panel",
-                                e -> tabActions.addNewPanel(),
+                                e -> tabActions.addNewTab(),
                                 false
                         )
                 ).build();
 
-        Menu fileMenu = new Menu("File");
-        MenuItem newFileItem = new MenuItem("Add Panel");
+//        Menu fileMenu = new Menu("File");
+//        MenuItem newFileItem = new MenuItem("Add Panel");
 
 //        final MenuItem importFileItem = createMenuItem("Import Files", e -> {
 //            try {
@@ -100,28 +97,17 @@ public class UserInterface {
 
 //        fileMenu.getItems().addAll(newFileItem, importFileItem, exportFileItem);
 
-        MenuItem addPanelItem = createMenuItem("Add Panel", e -> {
-            // Build a new InstrumentPanel
-            InstrumentPanelDialog ipb = new InstrumentPanelDialog();
-            ipb.showAndWait();
-            InstrumentPanel instrumentPanel = ipb.getResult();
-
-            if (instrumentPanel == null) {
-                TmLogger.warn("Instrument Panel Builder did not succeed in building an instrument panel.");
-            } else {
-                // Create and set panel inside a new tab
-                this.createNewTab(instrumentPanel);
-                TmLogger.info("Instrument Panel Builder succeeded in adding another panel");
-            }
-        });
+//        MenuItem addPanelItem = createMenuItem("Add Panel", e -> {
+//
+//        });
 
         Menu panelMenu = new Menu("Tabs");
-        panelMenu.getItems().addAll(addPanelItem);
+//        panelMenu.getItems().addAll(addPanelItem);
 
 //        MenuBar menuBar = new MenuBar();
 //        menuBar.getMenus().addAll(fileMenu, panelMenu);
 
-        TabPaneBuilder tabPaneBuilder = new TabPaneBuilder(tabPanelPane.getTabs());
+//        TabPaneBuilder tabPaneBuilder = new TabPaneBuilder(tabPanelPane.getTabs());
 
         tabPanelPane.setSide(Side.TOP);
         tabPanelPane.getStyleClass().add("tabPane");
@@ -148,7 +134,7 @@ public class UserInterface {
     }
 
     public void createNewTab(InstrumentPanel instrumentPanel) {
-        String input = dialogService.getStringViaTextDialog();
+        String input = DialogService.GetStringViaDialog();
         if (input == null || input.isBlank()) {
             input = "Default";
         }
@@ -160,18 +146,6 @@ public class UserInterface {
 
     private TmTab getSelectedTab() {
         return (TmTab) tabPanelPane.getSelectionModel().getSelectedItem();
-    }
-
-    public static void ShowAlert(Alert.AlertType alertType, String title, String header, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
-    public DialogService getDialogService() {
-        return dialogService;
     }
 
     public ImportExportService getImportExportService() {

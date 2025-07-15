@@ -1,11 +1,11 @@
 package xyz.lauchschwert.tabmaker.ui.builders.actions.menuitems;
 
-import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.handler.ImportExportService;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.UserInterface;
+import xyz.lauchschwert.tabmaker.ui.dialog.DialogService;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 
 import java.io.File;
@@ -18,7 +18,7 @@ public class FileActions {
     }
 
     public void importAction() {
-        File importFile = userInterface.getDialogService().getFileViaFileChooser(false,
+        File importFile = DialogService.OpenFileDialog(false,
                 new FileChooser.ExtensionFilter("JSON Files", ImportExportService.VALID_IMPORTTYPE)
         );
 
