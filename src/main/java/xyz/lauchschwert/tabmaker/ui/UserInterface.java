@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.handler.ImportExportService;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.builders.actions.menuitems.FileActions;
@@ -67,18 +68,24 @@ public class UserInterface {
         final MenuBar menuBar = new MenuBarBuilder()
                 .addMenu("File",
                         new MenuItemInfo("Import Panel",
-                                e -> fileActions.importAction(),
+                                e -> {
+                                    try {
+                                        fileActions.importAction();
+                                    } catch (ImportException ex) {
+                                        TmLogger.warn("Could not import file: " + ex.getMessage());
+                                    }
+                                },
                                 false
                         ),
                         new MenuItemInfo("Export Panel",
-                                e -> fileActions.exportAction(getSelectedTab().getInstrumentPanel()),
+                                e -> fileActions.exportAction(getSelectedTab()),
                                 false
                         )
                 ).addMenu(
                         "Tabs",
                         new MenuItemInfo(
-                                "Add Panel",
-                                e -> tabActions.addNewTab(),
+                                "Create new Tab",
+                                e -> tabActions.createNewTab(),
                                 false
                         )
                 ).build();

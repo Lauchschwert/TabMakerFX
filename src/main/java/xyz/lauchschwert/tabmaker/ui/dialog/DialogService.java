@@ -3,11 +3,14 @@ package xyz.lauchschwert.tabmaker.ui.dialog;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser.ExtensionFilter;
+import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.ui.dialog.dialogs.FileDialog;
 import xyz.lauchschwert.tabmaker.ui.dialog.dialogs.InstrumentPanelDialog;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 
 import java.io.File;
+import java.io.IOException;
+import java.rmi.server.ExportException;
 import java.util.Optional;
 
 public class DialogService {
@@ -26,7 +29,7 @@ public class DialogService {
         return instrumentPanel.orElse(null);
     }
 
-    public static File OpenFileDialog(boolean save, ExtensionFilter... filters) {
+    public static File OpenFileDialog(boolean save, ExtensionFilter... filters) throws ImportException, ExportException {
         return FileDialog.GetFileViaFileChooser(save, filters);
     }
 

@@ -2,6 +2,8 @@ package xyz.lauchschwert.tabmaker.handler;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
@@ -32,8 +34,9 @@ public class ImportExportService {
 
     private final GsonBuilder gsonBuilder = new GsonBuilder()
             .setPrettyPrinting()
-            .registerTypeAdapter(TabPanel.class, new TabPanelAdapter())
-            .registerTypeAdapter(InstrumentPanel.class, new InstrumentPanelAdapter());
+            .registerTypeAdapter(InstrumentPanel.class, new InstrumentPanelAdapter())
+            .registerTypeAdapter(TabPanel.class, new TabPanelAdapter());
+
     private final Gson gson = gsonBuilder.create();
 
     public ImportExportService() {
@@ -46,9 +49,9 @@ public class ImportExportService {
         }
     }
 
-    public void handleExport(InstrumentPanel exportPanel) {
+    public void handleExport(File destination, InstrumentPanel exportPanel) {
         if (exportPanel == null) {
-            DialogService.ShowAlert(Alert.AlertType.ERROR, "Failed", "Import of panel failed", "The file you provided could not be parsed!");
+            DialogService.ShowAlert(Alert.AlertType.ERROR, "Failed", "Import of panel failed", "The panel could not be parsed!");
             return;
         }
 
@@ -57,16 +60,10 @@ public class ImportExportService {
                 InstrumentPanel.class
         );
 
-        final File saveFile = DialogService.OpenFileDialog(true, new FileChooser.ExtensionFilter("JSON Files", VALID_IMPORTTYPE));
-        if (saveFile == null) {
-            TmLogger.warn("Filed to export instrument panel.");
-            return;
-        }
-
         try {
-            Files.writeString(saveFile.toPath(), json, StandardCharsets.UTF_8);
+            Files.writeString(destination.toPath(), json, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            TmLogger.warn("Failed to write JSON to file: " + saveFile.getAbsolutePath() + "; " + e.getMessage());
+            TmLogger.warn("Failed to write JSON to file: " + destination.getAbsolutePath() + "; " + e.getMessage());
         }
     }
 
@@ -75,10 +72,8 @@ public class ImportExportService {
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
 
             return gson.fromJson(bufferedReader, InstrumentPanel.class);
-        } catch (IOException e) {
+        } catch (IOException | JsonSyntaxException | JsonIOException e) {
             throw new ImportException(e.getMessage());
         }
     }
-
-
 }

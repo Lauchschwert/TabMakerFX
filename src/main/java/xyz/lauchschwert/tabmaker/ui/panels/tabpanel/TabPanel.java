@@ -7,24 +7,21 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import xyz.lauchschwert.tabmaker.TabMaker;
 import xyz.lauchschwert.tabmaker.ui.buttons.NoteButton;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.popups.ButtonGridPopup;
 
 public class TabPanel extends HBox {
     private final HBox noteBtnPanel;
-    private final Button stringButton;
+    private String selectedString;
     private boolean noteAdded;
-
 
     public TabPanel(String string) {
         setSpacing(10);
         setPadding(new Insets(15));
 
-        stringButton = new Button(string);
+        final Button stringButton = new Button(string);
         stringButton.getStyleClass().add("string-button");
-
         stringButton.setOnAction(e -> {
-            ButtonGridPopup.create(TabMaker.STRINGS, stringButton::setText, 6).show(stringButton);
+            ButtonGridPopup.create(TabMaker.STRINGS, this::setStringName, 6).show(stringButton);
         });
 
         Separator separator = new Separator(Orientation.VERTICAL);
@@ -32,7 +29,6 @@ public class TabPanel extends HBox {
         noteBtnPanel = new HBox();
         noteBtnPanel.setSpacing(5);
         NoteButton noteButton = new NoteButton(this, noteBtnPanel.getChildren().size());
-
         noteBtnPanel.getChildren().add(noteButton);
 
         this.getChildren().addAll(stringButton, separator, noteBtnPanel);
@@ -40,6 +36,10 @@ public class TabPanel extends HBox {
 
     public TabPanel(String string, String[] notes) {
         this(string);
+
+        if (notes.length == 0) {
+            return; // return early since we have no notes to import and don't want to skip the clear of noteBtnPanel
+        }
 
         // remove default button
         this.noteBtnPanel.getChildren().clear();
@@ -64,7 +64,11 @@ public class TabPanel extends HBox {
     }
 
     public String getStringName() {
-        return stringButton.getText();
+        return selectedString;
+    }
+
+    public void setStringName(String string) {
+        selectedString = string;
     }
 
     public String[] getNotes() {
@@ -77,11 +81,11 @@ public class TabPanel extends HBox {
         return noteArray;
     }
 
-    public boolean isNoteAdded() {
-        return noteAdded;
-    }
-
     public void setNoteAdded(boolean noteAdded) {
         this.noteAdded = noteAdded;
+    }
+
+    public boolean isNoteAdded() {
+        return noteAdded;
     }
 }

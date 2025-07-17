@@ -11,17 +11,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.List.of;
+
 public class TabMaker extends Application {
     private static final double DEFAULT_WIDTH = 1000;
     private static final double DEFAULT_HEIGHT = 600;
 
-    public static List<String> STRINGS = Arrays.asList(
+    public static List<String> STRINGS = of(
             // Standard tuning
             "E", "A", "D", "G", "B",
             // All chromatic notes for alternate tunings
             "C", "C#", "D#", "F", "F#", "G#", "A#"
     );
-    public static List<String> NOTES = Arrays.asList("1", "2", "3", "4", "5", "6",
+    public static List<String> NOTES = of("1", "2", "3", "4", "5", "6",
             "7", "8", "9", "10", "11", "12",
             "13", "14", "15", "16", "17", "18",
             "19", "20", "21", "22", "23", "24",

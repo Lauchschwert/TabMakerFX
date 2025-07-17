@@ -3,6 +3,9 @@ package xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import xyz.lauchschwert.tabmaker.TabMaker;
+import xyz.lauchschwert.tabmaker.enums.InstrumentType;
+import xyz.lauchschwert.tabmaker.enums.StringConstants;
+import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 import java.util.ArrayList;
@@ -10,49 +13,83 @@ import java.util.List;
 import java.util.Objects;
 
 public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
-    protected List<TabPanel> tabPanels;
-    private boolean noteAdded;
+    private static final String DEFAULT_STRING = "E";
 
-    public InstrumentPanel() {
+    protected final List<TabPanel> tabPanels;
+    protected InstrumentType instrumentType;
+
+    public InstrumentPanel(InstrumentType instrumentType) {
+        this.instrumentType = instrumentType;
+
         tabPanels = new ArrayList<>();
     }
 
-    public InstrumentPanel(List<TabPanel> tabPanels) {
-        this();
-        for (TabPanel tabPanel : Objects.requireNonNull(tabPanels)) {
-            createScrollPane(tabPanel);
+    public InstrumentPanel(InstrumentType instrumentType, List<TabPanel> importPanels) {
+        this(instrumentType);
+
+        this.tabPanels.addAll(importPanels);
+
+        System.out.println(tabPanels);
+
+        for (StringConstants string : instrumentType.getTuning()) {
+            System.out.println(string);
+        }
+
+        for (TabPanel tabPanel : Objects.requireNonNull(importPanels)) {
+            ScrollPane scrollPane = createScrollPane(tabPanel);
+            this.getChildren().add(scrollPane);
         }
     }
 
-    protected void initPanels(int count) {
+    protected void createTabPanels(InstrumentType instrumentType) {
+        for (StringConstants string : instrumentType.getTuning()) {
+            TabPanel tabPanel = createTabPanel(string.getNote());
+
+            // Wrap in ScrollPane for scrolling if buttons extend bounds
+            final ScrollPane scrollPane = createScrollPane(tabPanel);
+            this.getChildren().add(scrollPane);
+            this.tabPanels.add(tabPanel);
+        }
+    }
+
+    protected void createTabPanels(int count) {
         for (int i = 0; i < count; i++) {
-            addTabPanel(i);
+            TabPanel tabPanel = createTabPanel(i);
+
+            // Wrap in ScrollPane for scrolling if buttons extend bounds
+            final ScrollPane scrollPane = createScrollPane(tabPanel);
+            this.getChildren().add(scrollPane);
+            this.tabPanels.add(tabPanel);
         }
     }
 
-    public void addTabPanel(int index) {
-        final TabPanel tabPanel = createTabPanel(index);
-
-        // Wrap in ScrollPane for scrolling if buttons extend bounds
-        createScrollPane(tabPanel);
+    public TabPanel createTabPanel(int index) {
+        String stringVar = getStringVar(index);
+        if (stringVar == null) {
+            stringVar = DEFAULT_STRING;
+        }
+        return new TabPanel(stringVar);
     }
 
-    public TabPanel createTabPanel(int i) {
-        int index = i;
-        // if last string since E is not a duplicate
-        if (i == 5) {
+    public TabPanel createTabPanel(String string) {
+        return new TabPanel(string);
+    }
+
+    private static String getStringVar(int index) {
+        if (index < 0 || index >= TabMaker.STRINGS.size()) {
+            TmLogger.warn("Index out of bounds while generating a string: " + index);
+            return null;
+        }
+
+        // Reset high E (index 5) back to low E (index 0) to avoid duplicate E strings
+        final int offsetRange = 5;
+        if (index == offsetRange) {
             index = 0;
         }
-        return new TabPanel(TabMaker.STRINGS.get(index));
+        return TabMaker.STRINGS.get(index);
     }
 
-    // Method to add TabPanel from deserialized data
-    public void addTabPanelFromData(TabPanel tabPanel) {
-        // Recreate the UI components (ScrollPane, etc.)
-        createScrollPane(tabPanel);
-    }
-
-    private void createScrollPane(TabPanel tabPanel) {
+    private ScrollPane createScrollPane(TabPanel tabPanel) {
         ScrollPane scrollPane = new ScrollPane(tabPanel);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -60,18 +97,25 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
 
         // Add scroll listener
         scrollPane.hvalueProperty().addListener((observable, oldValue, newValue) -> {
-            if (noteAdded) {
+            if (tabPanel.isNoteAdded()) {
                 scrollPane.setHvalue(1.0);
-                noteAdded = false;
+                tabPanel.setNoteAdded(false);
             }
         });
-
+        // Set to 1.0 to activate the hvalue listener
         scrollPane.setHvalue(1.0);
-        this.getChildren().add(scrollPane);
-        tabPanels.add(tabPanel);
+        return scrollPane;
     }
 
     public List<TabPanel> getTabPanels() {
         return tabPanels;
+    }
+
+    public InstrumentType getInstrumentType() {
+        return instrumentType;
+    }
+
+    public void setInstrumentType(InstrumentType instrumentType) {
+        this.instrumentType = instrumentType;
     }
 }

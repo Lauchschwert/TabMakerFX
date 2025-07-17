@@ -106,4 +106,5 @@ public class TmLogger {
         TmLogger.info("TabMakerFx closed with code: " + i);
         System.exit(i);
     }
+
 }

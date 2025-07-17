@@ -1,15 +1,15 @@
 package xyz.lauchschwert.tabmaker.ui.tabs;
 
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
-import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 public class TmTab extends Tab {
     private InstrumentPanel instrumentPanel;
 
     public TmTab(String tabText, InstrumentPanel instrumentPanel) {
         super(tabText);
+        this.instrumentPanel = instrumentPanel;
+
         setContent(instrumentPanel);
     }
 
