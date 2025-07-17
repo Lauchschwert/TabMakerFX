@@ -93,7 +93,7 @@ class ImportExportServiceTest {
     }
 
     @Test
-    void handleImport_malformedJSON_throwsImportException() throws Exception {
+    void handleImport_malformedJSON_throwsImportException() throws ImportException, IOException {
         // no Instrument Type
         final String json = """
                 {
@@ -115,7 +115,7 @@ class ImportExportServiceTest {
     }
 
     @Test
-    void handleImport_validJSON_noNotes_throwsMalformedJsonException() throws IOException {
+    void handleImport_validJSON_noNotes_throwsMalformedJsonException() throws IOException, ImportException {
         final String json = """
                         {
                           "tabPanels": [
