@@ -10,22 +10,23 @@ import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
     private static final String DEFAULT_STRING = "E";
+    private static final InstrumentType DEFAULT_INSTRUMENTTYPE = InstrumentType.GUITAR;
 
     protected final List<TabPanel> tabPanels;
     protected InstrumentType instrumentType;
 
     public InstrumentPanel(InstrumentType instrumentType) {
-        this.instrumentType = instrumentType;
-        tabPanels = new ArrayList<>();
+        this.instrumentType = instrumentType == null ? DEFAULT_INSTRUMENTTYPE : instrumentType;
+        this.tabPanels = new ArrayList<>();
+
         createTabPanels();
     }
 
     public InstrumentPanel(InstrumentType instrumentType, List<TabPanel> importPanels) {
-        this.instrumentType = Objects.requireNonNull(instrumentType);
+        this.instrumentType = instrumentType == null ? DEFAULT_INSTRUMENTTYPE : instrumentType;
         this.tabPanels = new ArrayList<>();
 
         if (importPanels != null) {
@@ -98,9 +99,5 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
 
     public InstrumentType getInstrumentType() {
         return instrumentType;
-    }
-
-    public void setInstrumentType(InstrumentType instrumentType) {
-        this.instrumentType = instrumentType;
     }
 }
