@@ -8,7 +8,5 @@ public class GuitarPanel extends InstrumentPanel {
 
     public GuitarPanel() {
         super(InstrumentType.GUITAR);
-
-        createTabPanels(instrumentType);
     }
 }

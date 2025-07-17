@@ -1,7 +1,6 @@
 package xyz.lauchschwert.tabmaker.ui.panels.adapters;
 
 import com.google.gson.*;
-import javafx.scene.control.TabPane;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 import java.lang.reflect.Type;
@@ -22,8 +21,10 @@ public class TabPanelAdapter implements JsonSerializer<TabPanel>, JsonDeserializ
 
         JsonObject object = jsonElement.getAsJsonObject();
 
+        JsonArray notesObject = object.getAsJsonArray("notes");
+        String[] notes = context.deserialize(notesObject, String[].class);
+
         String string = object.get("string").getAsString();
-        String[] notes = context.deserialize(object.get("notes"), String[].class);
 
         return new TabPanel(string, notes);
     }

@@ -15,6 +15,8 @@ public class TabPanel extends HBox {
     private boolean noteAdded;
 
     public TabPanel(String string) {
+        this.selectedString = string;
+
         setSpacing(10);
         setPadding(new Insets(15));
 

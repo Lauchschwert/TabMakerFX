@@ -10,5 +10,6 @@ module xyz.lauchschwert.tabmaker {
     opens xyz.lauchschwert.tabmaker to javafx.fxml;
     exports xyz.lauchschwert.tabmaker;
     exports xyz.lauchschwert.tabmaker.logging;
+    exports xyz.lauchschwert.tabmaker.enums;
     opens xyz.lauchschwert.tabmaker.logging to javafx.fxml;
 }

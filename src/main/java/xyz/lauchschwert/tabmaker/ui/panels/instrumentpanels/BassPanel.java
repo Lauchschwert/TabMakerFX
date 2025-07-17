@@ -7,7 +7,5 @@ import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel
 public class BassPanel extends InstrumentPanel {
     public BassPanel() {
         super(InstrumentType.BASS);
-
-        createTabPanels(PanelSize.BASS.getLength());
     }
 }

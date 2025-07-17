@@ -20,41 +20,26 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
 
     public InstrumentPanel(InstrumentType instrumentType) {
         this.instrumentType = instrumentType;
-
         tabPanels = new ArrayList<>();
+        createTabPanels();
     }
 
     public InstrumentPanel(InstrumentType instrumentType, List<TabPanel> importPanels) {
-        this(instrumentType);
+        this.instrumentType = Objects.requireNonNull(instrumentType);
+        this.tabPanels = new ArrayList<>();
 
-        this.tabPanels.addAll(importPanels);
-
-        System.out.println(tabPanels);
-
-        for (StringConstants string : instrumentType.getTuning()) {
-            System.out.println(string);
-        }
-
-        for (TabPanel tabPanel : Objects.requireNonNull(importPanels)) {
-            ScrollPane scrollPane = createScrollPane(tabPanel);
-            this.getChildren().add(scrollPane);
+        if (importPanels != null) {
+            tabPanels.addAll(importPanels);
+            for (TabPanel tabPanel : this.tabPanels) {
+                final ScrollPane scrollPane = createScrollPane(tabPanel);
+                this.getChildren().add(scrollPane);
+            }
         }
     }
 
-    protected void createTabPanels(InstrumentType instrumentType) {
-        for (StringConstants string : instrumentType.getTuning()) {
+    private void createTabPanels() {
+        for (StringConstants string : this.instrumentType.getTuning()) {
             TabPanel tabPanel = createTabPanel(string.getNote());
-
-            // Wrap in ScrollPane for scrolling if buttons extend bounds
-            final ScrollPane scrollPane = createScrollPane(tabPanel);
-            this.getChildren().add(scrollPane);
-            this.tabPanels.add(tabPanel);
-        }
-    }
-
-    protected void createTabPanels(int count) {
-        for (int i = 0; i < count; i++) {
-            TabPanel tabPanel = createTabPanel(i);
 
             // Wrap in ScrollPane for scrolling if buttons extend bounds
             final ScrollPane scrollPane = createScrollPane(tabPanel);

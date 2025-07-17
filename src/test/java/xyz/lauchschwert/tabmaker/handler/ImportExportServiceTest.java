@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import xyz.lauchschwert.tabmaker.enums.InstrumentType;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.GuitarPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
 
 import java.io.File;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,15 +45,14 @@ class ImportExportServiceTest {
     }
 
     @Test
-    void handleImport_validJSONFile_emptyTabPanelNotes_returnsInstrumentPanel() throws Exception, ImportException {
+    void handleImport_validJSONFile_emptyNotes_returnsInstrumentPanel() throws Exception, ImportException {
         final String json = """
                 {
+                  "instrumentType": "GUITAR",
                   "tabPanels": [
                     {
                       "string": "E",
-                      "notes": [
-                        ""
-                      ]
+                      "notes": []
                     }
                   ]
                 }
@@ -60,14 +62,17 @@ class ImportExportServiceTest {
         Files.writeString(testFile.toPath(), json);
 
         InstrumentPanel result = service.handleImport(testFile);
-        assertThat(result.getTabPanels().get(0).getStringName()).isEqualTo("E");
         assertThat(result).isNotNull();
+        assertThat(result.getInstrumentType()).isEqualTo(InstrumentType.GUITAR);
+        assertThat(result.getTabPanels().get(0).getStringName()).isEqualTo("E");
     }
 
     @Test
     void handleImport_validJson_withNotes_returnsInstrumentPanel() throws Exception, ImportException {
+        // 3 notes
         final String json = """
                 {
+                  "instrumentType": "GUITAR",
                   "tabPanels": [
                     {
                       "string": "E",
@@ -85,12 +90,13 @@ class ImportExportServiceTest {
         Files.writeString(testFile.toPath(), json);
         InstrumentPanel result = service.handleImport(testFile);
 
-        assertThat(result.getTabPanels().get(0).getStringName()).isEqualTo("E");
+        assertThat(result).isNotNull();
         assertThat(result.getTabPanels().get(0).getNotes()).hasSize(3);
     }
 
     @Test
     void handleImport_malformedJSON_throwsImportException() throws Exception {
+        // no Instrument Type
         final String json = """
                 {
                   "tabPanels": [
@@ -128,14 +134,12 @@ class ImportExportServiceTest {
     }
 
     @Test
-    void handleExport_mockedInstrumentPanel_canImportViaExportFile() throws ImportException {
-        InstrumentPanel instrumentPanel = Mockito.mock(InstrumentPanel.class);
-
-        instrumentPanel.createTabPanel(0);
+    void handleExport_mockedInstrumentPanel_canImportViaExportFile() throws ImportException {;
+        GuitarPanel guitarPanel = new GuitarPanel();
 
         final File destination = tempDir.resolve("save.json").toFile();
 
-        service.handleExport(destination, instrumentPanel);
+        service.handleExport(destination, guitarPanel);
         assertThat(destination.exists()).isTrue();
 
         InstrumentPanel importedPanel = service.handleImport(destination);
