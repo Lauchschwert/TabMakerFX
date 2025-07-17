@@ -1,4 +1,4 @@
-package xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base;
+package xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
@@ -11,7 +11,7 @@ import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
+public class InstrumentPanel extends VBox  {
     private static final String DEFAULT_STRING = "E";
     private static final InstrumentType DEFAULT_INSTRUMENTTYPE = InstrumentType.GUITAR;
 
@@ -47,14 +47,6 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
             this.getChildren().add(scrollPane);
             this.tabPanels.add(tabPanel);
         }
-    }
-
-    public TabPanel createTabPanel(int index) {
-        String stringVar = getStringVar(index);
-        if (stringVar == null) {
-            stringVar = DEFAULT_STRING;
-        }
-        return new TabPanel(stringVar);
     }
 
     public TabPanel createTabPanel(String string) {

@@ -3,7 +3,7 @@ package xyz.lauchschwert.tabmaker.ui.panels.adapters;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import xyz.lauchschwert.tabmaker.enums.InstrumentType;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 import java.lang.reflect.Type;

@@ -18,7 +18,7 @@ import xyz.lauchschwert.tabmaker.ui.builders.builder.TabPaneBuilder;
 import xyz.lauchschwert.tabmaker.ui.builders.infos.MenuItemInfo;
 import xyz.lauchschwert.tabmaker.ui.builders.infos.TabItemInfo;
 import xyz.lauchschwert.tabmaker.ui.dialog.DialogService;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
 public class UserInterface {

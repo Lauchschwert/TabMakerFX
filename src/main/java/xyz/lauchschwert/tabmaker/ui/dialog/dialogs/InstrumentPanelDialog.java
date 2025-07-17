@@ -2,9 +2,8 @@ package xyz.lauchschwert.tabmaker.ui.dialog.dialogs;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.BassPanel;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.GuitarPanel;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.enums.InstrumentType;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 
 public class InstrumentPanelDialog extends Dialog<InstrumentPanel> {
 
@@ -60,10 +59,10 @@ public class InstrumentPanelDialog extends Dialog<InstrumentPanel> {
             String panelType = selectedRadio.getText(); // "Guitar-Panel" or "Bass-Panel"
             switch (panelType) {
                 case "Guitar-Panel" -> {
-                    return new GuitarPanel();
+                    return new InstrumentPanel(InstrumentType.GUITAR);
                 }
                 case "Bass-Panel" -> {
-                    return new BassPanel();
+                    return new InstrumentPanel(InstrumentType.BASS);
                 }
                 default -> {
                     return null;

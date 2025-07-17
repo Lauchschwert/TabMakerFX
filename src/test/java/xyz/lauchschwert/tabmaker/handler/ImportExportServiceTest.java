@@ -9,15 +9,13 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import xyz.lauchschwert.tabmaker.enums.InstrumentType;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.GuitarPanel;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -135,7 +133,7 @@ class ImportExportServiceTest {
 
     @Test
     void handleExport_mockedInstrumentPanel_canImportViaExportFile() throws ImportException {;
-        GuitarPanel guitarPanel = new GuitarPanel();
+        InstrumentPanel guitarPanel = new InstrumentPanel(InstrumentType.GUITAR);
 
         final File destination = tempDir.resolve("save.json").toFile();
 

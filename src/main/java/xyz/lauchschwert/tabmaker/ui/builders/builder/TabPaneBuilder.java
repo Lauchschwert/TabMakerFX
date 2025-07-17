@@ -4,7 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import xyz.lauchschwert.tabmaker.ui.builders.infos.TabItemInfo;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
 public class TabPaneBuilder {

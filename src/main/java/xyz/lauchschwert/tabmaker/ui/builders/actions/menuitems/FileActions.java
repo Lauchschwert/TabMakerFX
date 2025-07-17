@@ -7,11 +7,10 @@ import xyz.lauchschwert.tabmaker.handler.ImportExportService;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.UserInterface;
 import xyz.lauchschwert.tabmaker.ui.dialog.DialogService;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
 import java.io.File;
-import java.io.IOException;
 import java.rmi.server.ExportException;
 
 public class FileActions {

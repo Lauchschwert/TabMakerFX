@@ -6,10 +6,9 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.ui.dialog.dialogs.FileDialog;
 import xyz.lauchschwert.tabmaker.ui.dialog.dialogs.InstrumentPanelDialog;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 
 import java.io.File;
-import java.io.IOException;
 import java.rmi.server.ExportException;
 import java.util.Optional;
 

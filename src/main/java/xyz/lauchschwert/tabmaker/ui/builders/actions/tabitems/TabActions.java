@@ -3,7 +3,7 @@ package xyz.lauchschwert.tabmaker.ui.builders.actions.tabitems;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.UserInterface;
 import xyz.lauchschwert.tabmaker.ui.dialog.DialogService;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 
 public class TabActions {
     private final UserInterface userInterface;

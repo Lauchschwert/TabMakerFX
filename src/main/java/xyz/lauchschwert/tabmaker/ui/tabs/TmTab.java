@@ -1,7 +1,7 @@
 package xyz.lauchschwert.tabmaker.ui.tabs;
 
 import javafx.scene.control.Tab;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 
 public class TmTab extends Tab {
     private InstrumentPanel instrumentPanel;

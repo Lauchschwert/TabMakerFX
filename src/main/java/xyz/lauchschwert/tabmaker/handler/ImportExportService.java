@@ -5,13 +5,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import javafx.scene.control.Alert;
-import javafx.stage.FileChooser;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.dialog.DialogService;
 import xyz.lauchschwert.tabmaker.ui.panels.adapters.InstrumentPanelAdapter;
 import xyz.lauchschwert.tabmaker.ui.panels.adapters.TabPanelAdapter;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.base.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.panels.tabpanel.TabPanel;
 
 import java.io.BufferedReader;
