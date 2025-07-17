@@ -97,6 +97,7 @@ class ImportExportServiceTest {
         // no Instrument Type
         final String json = """
                 {
+                  "instrumentType": "GUITAR",
                   "tabPanels": [
                     {
                       "string": ,
@@ -118,6 +119,7 @@ class ImportExportServiceTest {
     void handleImport_validJSON_noNotes_throwsMalformedJsonException() throws IOException, ImportException {
         final String json = """
                         {
+                          "instrumentType": "GUITAR",
                           "tabPanels": [
                             {
                               "string": "E",
