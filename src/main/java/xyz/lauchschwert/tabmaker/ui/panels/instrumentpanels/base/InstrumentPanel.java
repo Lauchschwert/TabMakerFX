@@ -62,7 +62,7 @@ public class InstrumentPanel extends VBox implements BaseForInstrumentPanels {
     }
 
     private static String getStringVar(int index) {
-        if (index < 0 || index >= TabMaker.STRINGS.size()) {
+        if (index < 0 || index >= StringConstants.values().length) {
             TmLogger.warn("Index out of bounds while generating a string: " + index);
             return null;
         }
