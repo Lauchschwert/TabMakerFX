@@ -1,18 +1,19 @@
-package xyz.lauchschwert.tabmaker.ui.dialog;
+package xyz.lauchschwert.tabmaker.services;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser.ExtensionFilter;
+import xyz.lauchschwert.tabmaker.exceptions.ExportException;
 import xyz.lauchschwert.tabmaker.exceptions.ImportException;
-import xyz.lauchschwert.tabmaker.ui.dialog.dialogs.FileDialog;
-import xyz.lauchschwert.tabmaker.ui.dialog.dialogs.InstrumentPanelDialog;
+import xyz.lauchschwert.tabmaker.services.interfaces.AlertService;
+import xyz.lauchschwert.tabmaker.ui.dialogs.FileDialog;
+import xyz.lauchschwert.tabmaker.ui.dialogs.InstrumentPanelDialog;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 
 import java.io.File;
-import java.rmi.server.ExportException;
 import java.util.Optional;
 
-public class DialogService {
+public class DialogService implements AlertService {
     public static String GetStringViaDialog() {
         TextInputDialog tabNameDialog = new TextInputDialog("Default");
         tabNameDialog.setTitle("Enter Tab name");
@@ -32,12 +33,12 @@ public class DialogService {
         return FileDialog.GetFileViaFileChooser(save, filters);
     }
 
-    public static void ShowAlert(Alert.AlertType alertType, String title, String header, String content) {
-        Alert alert = new Alert(alertType);
+    @Override
+    public void ShowAlert(Alert.AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
     }
-
 }

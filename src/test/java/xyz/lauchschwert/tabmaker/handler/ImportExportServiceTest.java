@@ -8,7 +8,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import xyz.lauchschwert.tabmaker.enums.InstrumentType;
-import xyz.lauchschwert.tabmaker.exceptions.ImportException;
+import xyz.lauchschwert.tabmaker.exceptions.*;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 
 import java.io.File;
@@ -134,7 +134,7 @@ class ImportExportServiceTest {
     }
 
     @Test
-    void handleExport_mockedInstrumentPanel_canImportViaExportFile() throws ImportException {;
+    void handleExport_instrumentPanel_canImportViaExportFile() throws ImportException, ExportException {;
         InstrumentPanel guitarPanel = new InstrumentPanel(InstrumentType.GUITAR);
 
         final File destination = tempDir.resolve("save.json").toFile();
@@ -144,5 +144,10 @@ class ImportExportServiceTest {
 
         InstrumentPanel importedPanel = service.handleImport(destination);
         assertThat(importedPanel).isNotNull();
+    }
+
+    @Test
+    void handleExport_instrumentPanelNull_fails() throws ExportException {
+        assertThrows(ExportException.class, () -> service.handleExport(new File(""), null));
     }
 }

@@ -2,16 +2,15 @@ package xyz.lauchschwert.tabmaker.ui.builders.actions.menuitems;
 
 import javafx.scene.control.Tab;
 import javafx.stage.FileChooser;
-import xyz.lauchschwert.tabmaker.exceptions.ImportException;
+import xyz.lauchschwert.tabmaker.exceptions.*;
 import xyz.lauchschwert.tabmaker.handler.ImportExportService;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.UserInterface;
-import xyz.lauchschwert.tabmaker.ui.dialog.DialogService;
+import xyz.lauchschwert.tabmaker.services.DialogService;
 import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.ui.tabs.TmTab;
 
 import java.io.File;
-import java.rmi.server.ExportException;
 
 public class FileActions {
     private final UserInterface userInterface;
@@ -28,7 +27,8 @@ public class FileActions {
             );
         } catch (ImportException e) {
             throw new RuntimeException(e);
-        } catch (ExportException ignored) {}
+        } catch (ExportException ignored) {
+        }
 
         if (importFile.isDirectory() || !importFile.canRead()) {
             return;
@@ -56,11 +56,9 @@ public class FileActions {
 
             userInterface.getImportExportService().handleExport(destination, panel);
         } catch (ImportException ignored) {
+
         } catch (ExportException e) {
             TmLogger.warn("Export failed: " + e.getMessage());
-            return;
         }
-
-
     }
 }

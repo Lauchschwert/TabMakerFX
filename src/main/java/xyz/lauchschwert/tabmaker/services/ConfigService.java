@@ -1,8 +1,7 @@
-package xyz.lauchschwert.tabmaker.handler;
+package xyz.lauchschwert.tabmaker.services;
 
 import javafx.scene.control.Alert;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
-import xyz.lauchschwert.tabmaker.ui.dialog.DialogService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,9 +11,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+
+import static java.util.List.of;
 
 public class ConfigService {
     private static ConfigService instance;
@@ -23,6 +22,7 @@ public class ConfigService {
     private static final Path TEMPLATE_PATH = Paths.get(String.valueOf(ConfigService.class.getResourceAsStream("/templates/configs/")));
 
     private File[] propFiles; // TODO: Change to Set<>
+    private Set<File> propertyFiles;
     private List<Properties> propList;
 
     public ConfigService() {
@@ -58,9 +58,33 @@ public class ConfigService {
         return instance;
     }
 
+    public void loadConfig(File file) {
+        try {
+            FileService.validateFileForReading(file);
+        } catch (IllegalArgumentException e) {
+            TmLogger.warn("Invalid config file: " + file.getAbsolutePath()+ "; " + e.getMessage());
+            DialogService.ShowAlert(
+                    Alert.AlertType.ERROR, "Failed", "Error while loading configuration files. Please restart the Program!",
+                    e.getMessage()
+            );
+            TmLogger.logSystemExit(1);
+            return;
+        }
+
+        if (propertyFiles == null) {
+            propertyFiles = new HashSet<>();
+        }
+
+        // TODO: If propertyFiles contain the file overwrite settings
+        propertyFiles.add(file);
+
+
+
+    }
+
     public void initConfigFiles() {
         // Here the application checks if config files are non-existent and create them if so from a default template
-        Path defaultPropertiesPath = CONFIG_PATH.resolve("default.properties");
+        Path defaultTemplatePath = CONFIG_PATH.resolve("default.properties");
 
         File[] files = CONFIG_PATH.toFile().listFiles();
         if (files == null) {
@@ -70,6 +94,9 @@ public class ConfigService {
         }
 
         propFiles = new File[files.length];
+        propertyFiles = new HashSet<>();
+        propertyFiles.addAll(Arrays.asList(files));
+
         propList = new ArrayList<>();
 
         int counter = 0;
@@ -95,9 +122,9 @@ public class ConfigService {
                 return;
             }
 
-            if (!Files.exists(defaultPropertiesPath)) {
-                Files.createDirectories(defaultPropertiesPath.getParent());
-                Files.copy(templateStream, defaultPropertiesPath, StandardCopyOption.REPLACE_EXISTING);
+            if (!Files.exists(defaultTemplatePath)) {
+                Files.createDirectories(defaultTemplatePath.getParent());
+                Files.copy(templateStream, defaultTemplatePath, StandardCopyOption.REPLACE_EXISTING);
 
                 TmLogger.info("Created default config file from template.");
             }

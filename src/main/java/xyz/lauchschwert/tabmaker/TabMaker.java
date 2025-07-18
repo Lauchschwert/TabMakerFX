@@ -3,11 +3,10 @@ package xyz.lauchschwert.tabmaker;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import xyz.lauchschwert.tabmaker.handler.ConfigService;
+import xyz.lauchschwert.tabmaker.services.ConfigService;
 import xyz.lauchschwert.tabmaker.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.ui.UserInterface;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
