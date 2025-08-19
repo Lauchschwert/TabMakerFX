@@ -11,7 +11,7 @@ import xyz.lauchschwert.tabmaker.core.enums.StringConstants;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public class ButtonGridPopup {
+public class ButtonGridPopup implements TmPopup {
 
     private final Popup popup;
     private final VBox container;
@@ -30,18 +30,12 @@ public class ButtonGridPopup {
         this.popup.getContent().add(container);
     }
 
-    public static ButtonGridPopup create(Consumer<String> onButtonClick, int buttonsPerRow) {
-        ButtonGridPopup gridPopup = new ButtonGridPopup(buttonsPerRow);
-        gridPopup.setOnButtonClick(onButtonClick);
-        gridPopup.buildButtons(StringConstants.values());
-        return gridPopup;
-    }
-
+    @Override
     public void setOnButtonClick(Consumer<String> onButtonClick) {
         this.onButtonClick = onButtonClick;
     }
 
-    private void buildButtons(StringConstants[] buttonTexts) {
+    protected void buildButtons(StringConstants[] buttonTexts) {
         container.getChildren().clear();
 
         for (int i = 0; i < buttonTexts.length; i += buttonsPerRow) {
@@ -64,6 +58,7 @@ public class ButtonGridPopup {
         }
     }
 
+    @Override
     public void show(Button sourceButton) {
         Bounds bounds = sourceButton.getBoundsInLocal();
         Point2D screenCoords = sourceButton.localToScreen(bounds.getMinX(), bounds.getMaxY());

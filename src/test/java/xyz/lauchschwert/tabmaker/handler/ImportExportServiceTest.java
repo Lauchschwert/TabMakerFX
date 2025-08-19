@@ -8,10 +8,10 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import xyz.lauchschwert.tabmaker.core.enums.InstrumentType;
-import xyz.lauchschwert.tabmaker.core.exceptions.ExportException;
-import xyz.lauchschwert.tabmaker.core.exceptions.ImportException;
-import xyz.lauchschwert.tabmaker.core.ui.panels.InstrumentPanel;
-import xyz.lauchschwert.tabmaker.core.services.TmImportExportService;
+import xyz.lauchschwert.tabmaker.core.ex.ExportException;
+import xyz.lauchschwert.tabmaker.core.ex.ImportException;
+import xyz.lauchschwert.tabmaker.core.ui.components.panels.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.core.services.importexport.TmImportExportService;
 
 import java.io.File;
 import java.io.IOException;

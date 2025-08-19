@@ -2,9 +2,9 @@ package xyz.lauchschwert.tabmaker.core.ui.dialogs;
 
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import xyz.lauchschwert.tabmaker.core.exceptions.ExportException;
-import xyz.lauchschwert.tabmaker.core.exceptions.ImportException;
-import xyz.lauchschwert.tabmaker.core.services.TmImportExportService;
+import xyz.lauchschwert.tabmaker.core.ex.ExportException;
+import xyz.lauchschwert.tabmaker.core.ex.ImportException;
+import xyz.lauchschwert.tabmaker.core.services.importexport.TmImportExportService;
 
 import java.io.File;
 import java.io.IOException;

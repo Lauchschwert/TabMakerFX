@@ -11,18 +11,18 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import xyz.lauchschwert.tabmaker.core.exceptions.ImportException;
+import xyz.lauchschwert.tabmaker.core.ex.ImportException;
 import xyz.lauchschwert.tabmaker.core.logging.TmLogger;
-import xyz.lauchschwert.tabmaker.core.services.DialogService;
-import xyz.lauchschwert.tabmaker.core.services.TmDialogService;
-import xyz.lauchschwert.tabmaker.core.ui.builders.actions.FileActions;
-import xyz.lauchschwert.tabmaker.core.ui.builders.actions.TabActions;
-import xyz.lauchschwert.tabmaker.core.ui.builders.builder.MenuBarBuilder;
-import xyz.lauchschwert.tabmaker.core.ui.builders.builder.TabPaneBuilder;
-import xyz.lauchschwert.tabmaker.core.ui.builders.infos.MenuItemInfo;
-import xyz.lauchschwert.tabmaker.core.ui.builders.infos.TabItemInfo;
-import xyz.lauchschwert.tabmaker.core.ui.components.TmTab;
-import xyz.lauchschwert.tabmaker.core.ui.panels.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.core.services.dialog.DialogService;
+import xyz.lauchschwert.tabmaker.core.services.dialog.TmDialogService;
+import xyz.lauchschwert.tabmaker.core.actions.FileActions;
+import xyz.lauchschwert.tabmaker.core.actions.TabActions;
+import xyz.lauchschwert.tabmaker.core.ui.builder.MenuBarBuilder;
+import xyz.lauchschwert.tabmaker.core.ui.builder.TabPaneBuilder;
+import xyz.lauchschwert.tabmaker.core.configs.MenuItemConfig;
+import xyz.lauchschwert.tabmaker.core.configs.TabItemConfig;
+import xyz.lauchschwert.tabmaker.core.ui.components.buttons.TmTab;
+import xyz.lauchschwert.tabmaker.core.ui.components.panels.InstrumentPanel;
 
 import java.io.File;
 
@@ -57,10 +57,10 @@ public class UserInterface {
 
         String name = dialogService.GetTabNameViaDialog();
 
-        TabItemInfo tabItemInfo = new TabItemInfo(name, instrumentPanel);
+        TabItemConfig tabItemConfig = new TabItemConfig(name, instrumentPanel);
 
         TabPaneBuilder tabPaneBuilder = new TabPaneBuilder(tabPanelPane.getTabs());
-        tabPaneBuilder.addTab(tabPanelPane, tabItemInfo);
+        tabPaneBuilder.addTab(tabPanelPane, tabItemConfig);
     }
 
     private void configureComponents(Stage stage) {
@@ -72,19 +72,19 @@ public class UserInterface {
 
         final MenuBar menuBar = new MenuBarBuilder()
                 .addMenu("File",
-                        new MenuItemInfo("Import Panel",
+                        new MenuItemConfig("Import Panel",
                                 e ->
                                         importPanel(fileActions),
 
                                 false),
 
-                        new MenuItemInfo("Export Panel",
+                        new MenuItemConfig("Export Panel",
                                 e -> exportPanel(fileActions),
                                 false
                         )
                 ).addMenu(
                         "Tabs",
-                        new MenuItemInfo(
+                        new MenuItemConfig(
                                 "Create new Tab",
                                 e -> tabActions.createNewTab(),
                                 false

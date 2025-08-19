@@ -3,7 +3,7 @@ package xyz.lauchschwert.tabmaker.core.ui.dialogs;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import xyz.lauchschwert.tabmaker.core.enums.InstrumentType;
-import xyz.lauchschwert.tabmaker.core.ui.panels.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.core.ui.components.panels.InstrumentPanel;
 
 public class InstrumentPanelDialog extends Dialog<InstrumentPanel> {
 

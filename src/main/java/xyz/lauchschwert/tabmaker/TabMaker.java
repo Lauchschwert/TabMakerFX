@@ -4,8 +4,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import xyz.lauchschwert.tabmaker.core.logging.TmLogger;
-import xyz.lauchschwert.tabmaker.core.services.TmConfigService;
-import xyz.lauchschwert.tabmaker.core.services.TmFileService;
+import xyz.lauchschwert.tabmaker.core.services.config.TmConfigService;
+import xyz.lauchschwert.tabmaker.core.services.file.TmFileService;
 import xyz.lauchschwert.tabmaker.core.ui.UserInterface;
 
 import java.util.Objects;
