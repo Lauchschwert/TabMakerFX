@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import xyz.lauchschwert.tabmaker.enums.InstrumentType;
-import xyz.lauchschwert.tabmaker.exceptions.*;
-import xyz.lauchschwert.tabmaker.ui.panels.instrumentpanels.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.core.enums.InstrumentType;
+import xyz.lauchschwert.tabmaker.core.exceptions.ExportException;
+import xyz.lauchschwert.tabmaker.core.exceptions.ImportException;
+import xyz.lauchschwert.tabmaker.core.ui.panels.InstrumentPanel;
+import xyz.lauchschwert.tabmaker.core.services.TmImportExportService;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 
 class ImportExportServiceTest {
-    private ImportExportService service;
+    private TmImportExportService service;
 
     @TempDir
     Path tempDir;
@@ -38,7 +40,7 @@ class ImportExportServiceTest {
         try (MockedStatic<Paths> pathsMock = Mockito.mockStatic(Paths.class)) {
             pathsMock.when(() -> Paths.get(anyString(), anyString(), anyString(), anyString()))
                     .thenReturn(tempDir.resolve("test-saves"));
-            service = new ImportExportService();
+            service = new TmImportExportService();
         }
     }
 

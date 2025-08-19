@@ -6,10 +6,11 @@ module xyz.lauchschwert.tabmaker {
     requires com.google.gson;
     requires java.rmi;
     requires java.logging;
+    requires javafx.graphics;
 
     opens xyz.lauchschwert.tabmaker to javafx.fxml;
     exports xyz.lauchschwert.tabmaker;
-    exports xyz.lauchschwert.tabmaker.logging;
-    exports xyz.lauchschwert.tabmaker.enums;
-    opens xyz.lauchschwert.tabmaker.logging to javafx.fxml;
+    exports xyz.lauchschwert.tabmaker.core.logging;
+    exports xyz.lauchschwert.tabmaker.core.enums;
+    opens xyz.lauchschwert.tabmaker.core.logging to javafx.fxml;
 }

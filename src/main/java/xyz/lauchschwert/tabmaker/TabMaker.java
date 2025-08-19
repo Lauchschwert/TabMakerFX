@@ -3,40 +3,26 @@ package xyz.lauchschwert.tabmaker;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import xyz.lauchschwert.tabmaker.services.ConfigService;
-import xyz.lauchschwert.tabmaker.logging.TmLogger;
-import xyz.lauchschwert.tabmaker.ui.UserInterface;
+import xyz.lauchschwert.tabmaker.core.logging.TmLogger;
+import xyz.lauchschwert.tabmaker.core.services.TmConfigService;
+import xyz.lauchschwert.tabmaker.core.services.TmFileService;
+import xyz.lauchschwert.tabmaker.core.ui.UserInterface;
 
-import java.util.List;
 import java.util.Objects;
-
-import static java.util.List.of;
 
 public class TabMaker extends Application {
     private static final double DEFAULT_WIDTH = 1000;
     private static final double DEFAULT_HEIGHT = 600;
 
-    public static List<String> STRINGS = of(
-            // Standard tuning
-            "E", "A", "D", "G", "B",
-            // All chromatic notes for alternate tunings
-            "C", "C#", "D#", "F", "F#", "G#", "A#"
-    );
-    public static List<String> NOTES = of("1", "2", "3", "4", "5", "6",
-            "7", "8", "9", "10", "11", "12",
-            "13", "14", "15", "16", "17", "18",
-            "19", "20", "21", "22", "23", "24",
-            "-", "X");
-
     private UserInterface userInterface;
-    private ConfigService configService;
+    private TmConfigService configService;
+    private TmFileService fileService;
 
     @Override
     public void init() {
         // init code here
-        this.configService = ConfigService.getInstance();
-        configService.initConfigFiles();
-        configService.loadProperties();
+        this.fileService = new TmFileService();
+        this.configService = new TmConfigService(fileService);
 
         userInterface = new UserInterface();
 
@@ -62,21 +48,19 @@ public class TabMaker extends Application {
         stage.setMinWidth(600);
         stage.setMinHeight(400);
 
-        final String widthProp = configService.find("ui.window.width");
-        final String heightProp = configService.find("ui.window.height");
-
-        try {
-            double width = Double.parseDouble(widthProp);
-            double height = Double.parseDouble(heightProp);
-            stage.setWidth(width);
-            stage.setHeight(height);
-        } catch (NumberFormatException e) {
-            TmLogger.warn("Error setting height and width property. Falling back to default values");
-            stage.setWidth(DEFAULT_WIDTH);
-            stage.setHeight(DEFAULT_HEIGHT);
-        }
+        initWidthAndHeight(stage);
 
         stage.show();
+    }
+
+    private void initWidthAndHeight(Stage stage) {
+        stage.setWidth(DEFAULT_WIDTH);
+        stage.setHeight(DEFAULT_HEIGHT);
+
+    }
+
+    public UserInterface getUserInterface() {
+        return userInterface;
     }
 
     public static void main(String[] args) {
