@@ -55,11 +55,11 @@ public class UserInterface {
                     "blab");
         }
 
-        String name = dialogService.GetTabNameViaDialog();
+        final String name = dialogService.GetTabNameViaDialog();
 
-        TabItemConfig tabItemConfig = new TabItemConfig(name, instrumentPanel);
+        final TabItemConfig tabItemConfig = new TabItemConfig(name, instrumentPanel);
 
-        TabPaneBuilder tabPaneBuilder = new TabPaneBuilder(tabPanelPane.getTabs());
+        final TabPaneBuilder tabPaneBuilder = new TabPaneBuilder(tabPanelPane.getTabs());
         tabPaneBuilder.addTab(tabPanelPane, tabItemConfig);
     }
 

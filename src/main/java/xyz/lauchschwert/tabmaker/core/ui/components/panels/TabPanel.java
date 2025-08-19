@@ -7,6 +7,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import xyz.lauchschwert.tabmaker.core.ui.popups.ButtonGridPopup;
 import xyz.lauchschwert.tabmaker.core.ui.components.buttons.NoteButton;
+import xyz.lauchschwert.tabmaker.core.ui.popups.TmPopup;
 
 public class TabPanel extends HBox {
     private final HBox noteBtnPanel;
@@ -22,7 +23,7 @@ public class TabPanel extends HBox {
         final Button stringButton = new Button(string);
         stringButton.getStyleClass().add("string-button");
         stringButton.setOnAction(e -> {
-            ButtonGridPopup.create(this::setStringName, 6).show(stringButton);
+            ButtonGridPopup.createTuningPopup(this::setStringName, 6).show(stringButton);
         });
 
         Separator separator = new Separator(Orientation.VERTICAL);

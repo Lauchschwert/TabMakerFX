@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
-import xyz.lauchschwert.tabmaker.core.enums.StringConstants;
+import xyz.lauchschwert.tabmaker.core.enums.Tunings;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -30,12 +30,30 @@ public class ButtonGridPopup implements TmPopup {
         this.popup.getContent().add(container);
     }
 
-    @Override
-    public void setOnButtonClick(Consumer<String> onButtonClick) {
-        this.onButtonClick = onButtonClick;
+    public static ButtonGridPopup createTuningPopup(Consumer<String> onButtonClick, int buttonsPerRow) {
+        ButtonGridPopup gridPopup = new ButtonGridPopup(buttonsPerRow);
+        gridPopup.setOnButtonClick(onButtonClick);
+
+        String[] tunings = Tunings.GetAllTunings();
+
+        gridPopup.buildButtons(tunings);
+        return gridPopup;
     }
 
-    protected void buildButtons(StringConstants[] buttonTexts) {
+    public static ButtonGridPopup createFretPopup(Consumer<String> onButtonClick, int buttonsPerRow) {
+        ButtonGridPopup gridPopup = new ButtonGridPopup(buttonsPerRow);
+        gridPopup.setOnButtonClick(onButtonClick);
+
+        String[] fretNumbers = new String[25];
+        for (int i = 0; i < fretNumbers.length; i++) {
+            fretNumbers[i] = String.valueOf(i);
+        }
+
+        gridPopup.buildButtons(fretNumbers);
+        return gridPopup;
+    }
+
+    protected void buildButtons(String[] buttonTexts) {
         container.getChildren().clear();
 
         for (int i = 0; i < buttonTexts.length; i += buttonsPerRow) {
@@ -43,7 +61,7 @@ public class ButtonGridPopup implements TmPopup {
             row.setSpacing(10);
 
             for (int j = i; j < Math.min(i + buttonsPerRow, buttonTexts.length); j++) {
-                Button btn = new Button(buttonTexts[j].getNote());
+                Button btn = new Button(buttonTexts[j]);
                 btn.getStyleClass().add("popup-button");
                 btn.setOnAction(e -> {
                     if (onButtonClick != null) {
@@ -53,9 +71,13 @@ public class ButtonGridPopup implements TmPopup {
                 });
                 row.getChildren().add(btn);
             }
-
             container.getChildren().add(row);
         }
+    }
+
+    @Override
+    public void setOnButtonClick(Consumer<String> onButtonClick) {
+        this.onButtonClick = onButtonClick;
     }
 
     @Override

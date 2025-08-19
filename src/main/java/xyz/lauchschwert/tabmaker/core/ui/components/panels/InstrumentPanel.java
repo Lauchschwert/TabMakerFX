@@ -3,7 +3,7 @@ package xyz.lauchschwert.tabmaker.core.ui.components.panels;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import xyz.lauchschwert.tabmaker.core.enums.InstrumentType;
-import xyz.lauchschwert.tabmaker.core.enums.StringConstants;
+import xyz.lauchschwert.tabmaker.core.enums.Tunings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class InstrumentPanel extends VBox {
     }
 
     private void createTabPanels() {
-        for (StringConstants string : this.instrumentType.getTuning()) {
+        for (Tunings string : this.instrumentType.getTuning()) {
             TabPanel tabPanel = createTabPanel(string.getNote());
 
             // Wrap in ScrollPane for scrolling if buttons extend bounds

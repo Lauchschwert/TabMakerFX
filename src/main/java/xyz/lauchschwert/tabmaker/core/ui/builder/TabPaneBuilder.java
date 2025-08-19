@@ -16,9 +16,11 @@ public class TabPaneBuilder {
 
     public TabPaneBuilder(ObservableList<Tab> tabs) {
         this.tabPane = new TabPane();
-        for (Tab tab : tabs) {
-            tabPane.getTabs().add(tab);
-        }
+        // .addAll()?
+        tabPane.getTabs().addAll(tabs);
+//        for (Tab tab : tabs) {
+//            tabPane.getTabs().add(tab);
+//        }
     }
 
     public TabPane build() {

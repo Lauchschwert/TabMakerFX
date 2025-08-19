@@ -18,7 +18,7 @@ public class TabActions {
         if (instrumentPanel == null) {
             TmLogger.warn("Instrument Panel Builder did not succeed in building an instrument panel.");
         } else {
-            // Create and set panel inside a new tab
+            // Create and set the panel inside a new tab
             userInterface.createNewTab(instrumentPanel);
             TmLogger.info("Instrument Panel Builder succeeded in adding another panel.");
         }
