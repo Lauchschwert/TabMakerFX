@@ -7,7 +7,6 @@ module xyz.lauchschwert.tabmaker {
     requires java.rmi;
     requires java.logging;
     requires javafx.graphics;
-    requires xyz.lauchschwert.tabmaker;
 
     opens xyz.lauchschwert.tabmaker to javafx.fxml;
     exports xyz.lauchschwert.tabmaker;
