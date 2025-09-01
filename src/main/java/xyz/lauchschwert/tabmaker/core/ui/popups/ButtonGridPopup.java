@@ -82,8 +82,16 @@ public class ButtonGridPopup implements TmPopup {
 
     @Override
     public void show(Button sourceButton) {
+        if (popup.isShowing()) {
+            popup.hide();
+        }
         Bounds bounds = sourceButton.getBoundsInLocal();
-        Point2D screenCoords = sourceButton.localToScreen(bounds.getMinX(), bounds.getMaxY());
+        // Calculate center X position
+        double centerX = bounds.getMinX() + (bounds.getWidth() / 2);
+        // Calculate Y position (10 pixels above the button's top)
+        double topY = bounds.getMinY() - 10;
+        // Convert to screen coordinates
+        Point2D screenCoords = sourceButton.localToScreen(centerX, topY); // Changed this line
         popup.show(sourceButton, screenCoords.getX(), screenCoords.getY());
     }
 }
