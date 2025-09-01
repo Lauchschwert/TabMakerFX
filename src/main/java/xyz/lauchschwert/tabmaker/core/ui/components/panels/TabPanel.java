@@ -58,8 +58,12 @@ public class TabPanel extends HBox {
     public TabPanel(String string, String[] notes) {
         this(string);
 
+        importNotes(notes);
+    }
+
+    private void importNotes(String[] notes) {
         if (notes.length == 0) {
-            return; // return early since we have no notes to import and to skip the clear of noteBtnPanel
+            return;
         }
 
         // remove default button
