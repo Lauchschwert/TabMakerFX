@@ -11,6 +11,8 @@ import xyz.lauchschwert.tabmaker.core.ui.components.panels.InstrumentPanel;
 import java.io.File;
 
 public interface DialogService {
+    String DEFAULT_TABNAME = "Default";
+
     String GetTabNameViaDialog();
 
     InstrumentPanel GetInstrumentPanelViaDialog();

@@ -52,7 +52,8 @@ public class UserInterface {
                     "blab");
         }
 
-        final String name = dialogService.GetTabNameViaDialog();
+        String name = dialogService.GetTabNameViaDialog();
+        name = name == null ? DialogService.DEFAULT_TABNAME : name;
 
         final TabItemConfig tabItemConfig = new TabItemConfig(name, instrumentPanel);
 
