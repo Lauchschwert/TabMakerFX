@@ -5,7 +5,7 @@
 
 ## This software is currently in development and may contain bugs or cause unexpected behavior. 
 
-- USE AT YOUR OWN RISK. This software is provided "AS-IS" without warranties of any kind. To the maximum extent permitted by law, the developer disclaims all liability for any damages, including but not limited to data loss, system instability, or hardware issues that may result from using this software.
+- <b><u>USE AT YOUR OWN RISK</b></u>. This software is provided "AS-IS" without warranties of any kind. To the maximum extent permitted by law, the developer disclaims all liability for any damages, including but not limited to data loss, system instability, or hardware issues that may result from using this software.
 
 ## By installing and using this software, you acknowledge that you understand the risks associated with beta software and agree to assume full responsibility for any consequences.
 
