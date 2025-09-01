@@ -10,7 +10,7 @@
 ## By installing and using this software, you acknowledge that you understand the risks associated with beta software and agree to assume full responsibility for any consequences.
 
 # Current Feature under development
-- Export to readable format (Core Features) / User Documentation / Notefill
+- Export to readable format / Feature-bar ⇒ Rest of core features
 
 # Roadmap / Checklist
 
@@ -18,7 +18,7 @@
 - [x] Basic tab creation interface
 - [x] Note input and editing
 - [x] Export/Import
-- [ ] Notefill
+- [ ] Feature-bar
 - [ ] Export to readable format
 - [x] Dynamic panel adding
 
