@@ -9,7 +9,7 @@ import java.util.Optional;
 public class TmDialogService implements DialogService {
     @Override
     public String GetTabNameViaDialog() {
-        TextInputDialog tabNameDialog = new TextInputDialog("Default");
+        TextInputDialog tabNameDialog = new TextInputDialog(DEFAULT_TABNAME);
         tabNameDialog.setTitle("Enter Tab name");
         tabNameDialog.setHeaderText("Please enter a name for the imported panel!\n(leave empty for default)");
         tabNameDialog.showAndWait();
