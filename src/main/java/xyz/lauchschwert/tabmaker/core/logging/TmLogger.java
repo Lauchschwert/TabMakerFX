@@ -36,7 +36,7 @@ public class TmLogger {
             System.err.println("Log directory: " + LOG_DIR);
 
             // Don't continue with broken logger
-            throw new RuntimeException("Logger initialization failed", e);
+            System.exit(1);
         }
     }
 
@@ -84,19 +84,19 @@ public class TmLogger {
     }
 
     public static void logStartup() {
-        info("=== TabMakerFX Started ===");
         info("Java Version: " + System.getProperty("java.version"));
         info("JavaFX Version: " + System.getProperty("javafx.version"));
         info("OS: " + System.getProperty("os.name"));
         info("User: " + System.getProperty("user.name"));
+        info("=== TabMakerFX Starting ===");
     }
 
     public static void logShutdown() {
-        info("=== TabMakerFX Shutdown ===");
+        info("=== TabMakerFX Shutting Down ===");
     }
 
     public static void logInitialization() {
-        info("=== TabMakerFX initialized ===");
+        info("=== TabMakerFX initializing ===");
     }
 
     public static void logSystemExit(int i) {

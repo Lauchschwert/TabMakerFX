@@ -11,7 +11,7 @@ public class CustomFormatter extends Formatter {
 
     @Override
     public String format(LogRecord record) {
-        return String.format("[%s] %s - %s: %s%n",
+        return String.format("%s [%s] %s: %s%n",
                 LocalDateTime.now().format(TIMESTAMP_FORMAT),
                 record.getLevel(),
                 record.getLoggerName().substring(record.getLoggerName().lastIndexOf('.') + 1),
