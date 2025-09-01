@@ -61,7 +61,7 @@ class ImportExportServiceTest {
         File testFile = tempDir.resolve("test.json").toFile();
         Files.writeString(testFile.toPath(), json);
 
-        InstrumentPanel result = service.handleImport(testFile);
+        InstrumentPanel result = service.handleInstrumentPanelImport(testFile);
         assertThat(result).isNotNull();
         assertThat(result.getInstrumentType()).isEqualTo(InstrumentType.GUITAR);
         assertThat(result.getTabPanels().get(0).getStringName()).isEqualTo("E");
@@ -88,14 +88,14 @@ class ImportExportServiceTest {
 
         File testFile = tempDir.resolve("test.json").toFile();
         Files.writeString(testFile.toPath(), json);
-        InstrumentPanel result = service.handleImport(testFile);
+        InstrumentPanel result = service.handleInstrumentPanelImport(testFile);
 
         assertThat(result).isNotNull();
         assertThat(result.getTabPanels().get(0).getNotes()).hasSize(3);
     }
 
     @Test
-    void handleImport_malformedJSON_throwsImportException() throws ImportException, IOException {
+    void handleImport_malformedJSON_throwsImportException() throws IOException {
         // no Instrument Type
         final String json = """
                 {
@@ -114,11 +114,11 @@ class ImportExportServiceTest {
         File testFile = tempDir.resolve("test.json").toFile();
         Files.writeString(testFile.toPath(), json);
 
-        assertThrows(ImportException.class, () -> service.handleImport(testFile));
+        assertThrows(ImportException.class, () -> service.handleInstrumentPanelImport(testFile));
     }
 
     @Test
-    void handleImport_validJSON_noNotes_throwsMalformedJsonException() throws IOException, ImportException {
+    void handleImport_validJSON_noNotes_throwsMalformedJsonException() throws IOException {
         final String json = """
                         {
                           "instrumentType": "GUITAR",
@@ -132,24 +132,24 @@ class ImportExportServiceTest {
         File testFile = tempDir.resolve("test.json").toFile();
         Files.writeString(testFile.toPath(), json);
 
-        assertThrows(ImportException.class, () -> service.handleImport(testFile));
+        assertThrows(ImportException.class, () -> service.handleInstrumentPanelImport(testFile));
     }
 
     @Test
-    void handleExport_instrumentPanel_canImportViaExportFile() throws ImportException, ExportException {;
+    void handleExport_instrumentPanel_canImportViaExportFile() throws ImportException, ExportException {
         InstrumentPanel guitarPanel = new InstrumentPanel(InstrumentType.GUITAR);
 
         final File destination = tempDir.resolve("save.json").toFile();
 
-        service.handleExport(destination, guitarPanel);
+        service.handleInstrumentPanelExport(destination, guitarPanel);
         assertThat(destination.exists()).isTrue();
 
-        InstrumentPanel importedPanel = service.handleImport(destination);
+        InstrumentPanel importedPanel = service.handleInstrumentPanelImport(destination);
         assertThat(importedPanel).isNotNull();
     }
 
     @Test
-    void handleExport_instrumentPanelNull_fails() throws ExportException {
-        assertThrows(ExportException.class, () -> service.handleExport(new File(""), null));
+    void handleExport_instrumentPanelNull_fails() {
+        assertThrows(ExportException.class, () -> service.handleInstrumentPanelExport(new File(""), null));
     }
 }
