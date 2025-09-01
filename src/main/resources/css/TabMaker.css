@@ -2,7 +2,7 @@
     -fx-font-family: sans-serif;
 }
 
-.root {
+.root-panel {
     -fx-background-color: linear-gradient(to right, rgb(38, 0, 73), rgb(69, 0, 93));
     -fx-padding: 0px 0px 20px 0px;
 }
@@ -89,10 +89,6 @@
     -fx-border-color: white;
 }
 
-.tabPane {
-    -fx-padding: 0px 0px 0px 0px;
-}
-
 .tab {
     -fx-font-size: 16;
     -fx-font-weight: bold;
@@ -106,4 +102,15 @@
     -fx-pref-width: 20px;
     -fx-padding: 0px 5px 0px 5px !important;
     -fx-background-color: lightgray;
+}
+
+.feature-button {
+    -fx-background-color: rgb(50, 50, 50);
+    -fx-border-color: white;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-text-fill: white;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 10px;
+    -fx-font-weight: bold;
 }

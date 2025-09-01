@@ -21,10 +21,10 @@ public class MenuBarBuilder {
         return this;
     }
 
-    public MenuBarBuilder addMenu(String name, MenuItemConfig subMenuInfo) {
-        final MenuItem newItem = new MenuItem(subMenuInfo.name());
-        newItem.setOnAction(subMenuInfo.action());
-        newItem.setDisable(subMenuInfo.disable());
+    public MenuBarBuilder addMenu(String name, MenuItemConfig menuConfig) {
+        final MenuItem newItem = new MenuItem(menuConfig.name());
+        newItem.setOnAction(menuConfig.action());
+        newItem.setDisable(menuConfig.disable());
 
         final Menu newMenu = new Menu(name);
         newMenu.getItems().add(newItem);
@@ -34,9 +34,9 @@ public class MenuBarBuilder {
         return this;
     }
 
-    public MenuBarBuilder addMenu(String name, MenuItemConfig... subMenuInfos) {
+    public MenuBarBuilder addMenu(String name, MenuItemConfig... menuConfigs) {
         final Menu newMenu = new Menu(name);
-        for (MenuItemConfig menuItemConfig : subMenuInfos) {
+        for (MenuItemConfig menuItemConfig : menuConfigs) {
             final MenuItem newItem = new MenuItem(menuItemConfig.name());
             newItem.setOnAction(menuItemConfig.action());
             newItem.setDisable(menuItemConfig.disable());
