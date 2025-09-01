@@ -86,11 +86,10 @@ public class TabPanel extends HBox {
     }
 
     public void addNoteBtn() {
-        NoteButton newButton = new NoteButton(this, noteBtnPanel.getChildren().size());
+        final NoteButton newButton = new NoteButton(this, noteBtnPanel.getChildren().size());
         this.noteBtnPanel.getChildren().add(newButton);
         setNoteAdded(true);
         newButton.requestFocus();
-        ButtonGridPopup.createFretPopup(newButton::setText, 6).show(newButton);
     }
 
     public int getLastNoteButtonIndex() {
@@ -133,5 +132,9 @@ public class TabPanel extends HBox {
         }
 
         return featureArray;
+    }
+
+    public NoteButton getLastNoteButton() {
+        return (NoteButton) noteBtnPanel.getChildren().get(getLastNoteButtonIndex());
     }
 }
