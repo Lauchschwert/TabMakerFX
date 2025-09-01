@@ -13,6 +13,7 @@ public class TabPanelAdapter implements JsonSerializer<TabPanel>, JsonDeserializ
 
         jsonObject.addProperty("string", src.getStringName());
         jsonObject.add("notes", context.serialize(src.getNotes(), String[].class));
+        jsonObject.add("features", context.serialize(src.getFeatures(), String[].class));
 
         TmLogger.info("Serialized TabPanel: " + jsonObject);
 
@@ -22,13 +23,21 @@ public class TabPanelAdapter implements JsonSerializer<TabPanel>, JsonDeserializ
     @Override
     public TabPanel deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
 
-        JsonObject object = jsonElement.getAsJsonObject();
+        final JsonObject object = jsonElement.getAsJsonObject();
 
-        JsonArray notesObject = object.getAsJsonArray("notes");
+        final JsonArray notesObject = object.getAsJsonArray("notes");
+
+        final JsonArray featuresObject = object.getAsJsonArray("features");
 
         String[] notes = context.deserialize(notesObject, String[].class);
         if (notes == null) {
             TmLogger.warn("Failed to deserialize TabPanel, because notes are null.");
+            return null;
+        }
+
+        String[] features = context.deserialize(featuresObject, String[].class);
+        if (features == null) {
+            TmLogger.warn("Failed to deserialize TabPanel, because features are null.");
             return null;
         }
 
@@ -38,6 +47,6 @@ public class TabPanelAdapter implements JsonSerializer<TabPanel>, JsonDeserializ
             return null;
         }
 
-        return new TabPanel(string, notes);
+        return new TabPanel(string, notes, features);
     }
 }

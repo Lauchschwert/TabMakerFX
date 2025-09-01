@@ -15,7 +15,6 @@ import xyz.lauchschwert.tabmaker.core.ui.components.buttons.NoteButton;
 import xyz.lauchschwert.tabmaker.core.ui.popups.ButtonGridPopup;
 
 public class TabPanel extends HBox {
-    private final VBox panelContainer;
     private final HBox noteBtnPanel, featureBar;
     private String selectedString;
     private boolean noteAdded = false;
@@ -23,8 +22,8 @@ public class TabPanel extends HBox {
     public TabPanel(String string) {
         this.selectedString = string;
 
-        this.panelContainer = new VBox();
-        this.panelContainer.setSpacing(10);
+        VBox panelWrapper = new VBox();
+        panelWrapper.setSpacing(10);
 
         setSpacing(10);
         setPadding(new Insets(15));
@@ -43,7 +42,6 @@ public class TabPanel extends HBox {
 
         this.featureBar = new HBox();
         featureBar.setSpacing(5);
-        featureBar.getChildren().add(new FeatureButton());
 
         final NoteButton noteButton = new NoteButton(this, noteBtnPanel.getChildren().size());
         noteBtnPanel.getChildren().add(noteButton);
@@ -51,29 +49,39 @@ public class TabPanel extends HBox {
         final Separator separator = new Separator(Orientation.VERTICAL);
         setHgrow(separator, Priority.ALWAYS);
 
-        panelContainer.getChildren().addAll(featureBar, noteBtnPanel);
-        this.getChildren().addAll(stringButtonWrapper, separator, panelContainer);
+        panelWrapper.getChildren().addAll(featureBar, noteBtnPanel);
+        this.getChildren().addAll(stringButtonWrapper, separator, panelWrapper);
     }
 
-    public TabPanel(String string, String[] notes) {
+    public TabPanel(String string, String[] notes, String[] features) {
         this(string);
 
-        importNotes(notes);
+        importNotes(notes, features);
     }
 
-    private void importNotes(String[] notes) {
+    private void importNotes(String[] notes, String[] featureSymbols) {
         if (notes.length == 0) {
+            return;
+        }
+
+        if (featureSymbols.length == 0) {
             return;
         }
 
         // remove default button
         this.noteBtnPanel.getChildren().clear();
 
-        // import buttons
-        for (String note : notes) {
-            NoteButton noteButton = new NoteButton(this, noteBtnPanel.getChildren().size());
-            noteButton.setText(note);
+        // numerated for-loop for synchronized importing of the NoteButtons and FeatureButtons
+        for (int i = 0; i < notes.length; i++) {
+            // import the notes first
+            final NoteButton noteButton = new NoteButton(this, noteBtnPanel.getChildren().size());
+            noteButton.setText(notes[i]);
             this.noteBtnPanel.getChildren().add(noteButton);
+
+            // then the respective feature buttons
+            final FeatureButton featureButton = new FeatureButton();
+            featureButton.setText(featureSymbols[i]);
+            featureBar.getChildren().add(featureButton);
         }
     }
 
@@ -99,7 +107,7 @@ public class TabPanel extends HBox {
 
     public String[] getNotes() {
         final int noteBtnPanelSize = noteBtnPanel.getChildren().size();
-        String[] noteArray = new String[noteBtnPanelSize];
+        final String[] noteArray = new String[noteBtnPanelSize];
         for (int i = 0; i < noteBtnPanelSize; i++) {
             noteArray[i] = ((NoteButton) noteBtnPanel.getChildren().get(i)).getText();
         }
@@ -115,7 +123,15 @@ public class TabPanel extends HBox {
         return noteAdded;
     }
 
-    public HBox getFeatureBar() {
-        return featureBar;
+
+    public String[] getFeatures() {
+        final int featureBtnPanelSize = featureBar.getChildren().size();
+
+        final String[] featureArray = new String[featureBtnPanelSize];
+        for (int i = 0; i < featureBtnPanelSize; i++) {
+            featureArray[i] = ((FeatureButton) featureBar.getChildren().get(i)).getText();
+        }
+
+        return featureArray;
     }
 }
