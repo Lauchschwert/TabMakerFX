@@ -5,24 +5,26 @@ import javafx.scene.layout.VBox;
 import xyz.lauchschwert.tabmaker.core.enums.InstrumentType;
 import xyz.lauchschwert.tabmaker.core.enums.Tunings;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstrumentPanel extends VBox {
-    private static final InstrumentType DEFAULT_INSTRUMENTTYPE = InstrumentType.GUITAR;
+public class InstrumentPanel extends VBox implements Serializable {
+    private static final InstrumentType DEFAULT_INSTRUMENT_TYPE = InstrumentType.GUITAR;
 
     protected final List<TabPanel> tabPanels;
     protected InstrumentType instrumentType;
 
     public InstrumentPanel(InstrumentType instrumentType) {
-        this.instrumentType = instrumentType == null ? DEFAULT_INSTRUMENTTYPE : instrumentType;
+        this.instrumentType = instrumentType == null ? DEFAULT_INSTRUMENT_TYPE : instrumentType;
         this.tabPanels = new ArrayList<>();
 
         createTabPanels();
     }
 
     public InstrumentPanel(InstrumentType instrumentType, List<TabPanel> importPanels) {
-        this.instrumentType = instrumentType == null ? DEFAULT_INSTRUMENTTYPE : instrumentType;
+        this.instrumentType = instrumentType == null ? DEFAULT_INSTRUMENT_TYPE : instrumentType;
         this.tabPanels = new ArrayList<>();
 
         if (importPanels == null) {
@@ -40,7 +42,7 @@ public class InstrumentPanel extends VBox {
         for (Tunings string : this.instrumentType.getTuning()) {
             TabPanel tabPanel = createTabPanel(string.getNote());
 
-            // Wrap in ScrollPane for scrolling if buttons extend bounds
+            // Wrap in the ScrollPane for scrolling if buttons extend bounds
             final ScrollPane scrollPane = createScrollPane(tabPanel);
             this.getChildren().add(scrollPane);
             this.tabPanels.add(tabPanel);

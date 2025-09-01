@@ -8,16 +8,16 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import xyz.lauchschwert.tabmaker.core.actions.FileActions;
+import xyz.lauchschwert.tabmaker.core.actions.TabActions;
+import xyz.lauchschwert.tabmaker.core.configs.MenuItemConfig;
+import xyz.lauchschwert.tabmaker.core.configs.TabItemConfig;
 import xyz.lauchschwert.tabmaker.core.ex.ImportException;
 import xyz.lauchschwert.tabmaker.core.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.core.services.dialog.DialogService;
 import xyz.lauchschwert.tabmaker.core.services.dialog.TmDialogService;
-import xyz.lauchschwert.tabmaker.core.actions.FileActions;
-import xyz.lauchschwert.tabmaker.core.actions.TabActions;
 import xyz.lauchschwert.tabmaker.core.ui.builder.MenuBarBuilder;
 import xyz.lauchschwert.tabmaker.core.ui.builder.TabPaneBuilder;
-import xyz.lauchschwert.tabmaker.core.configs.MenuItemConfig;
-import xyz.lauchschwert.tabmaker.core.configs.TabItemConfig;
 import xyz.lauchschwert.tabmaker.core.ui.components.buttons.TmTab;
 import xyz.lauchschwert.tabmaker.core.ui.components.panels.InstrumentPanel;
 
@@ -87,7 +87,12 @@ public class UserInterface {
                                 e -> tabActions.createNewTab(),
                                 false
                         )
-                ).build();
+                ).addMenu("View",
+                        new MenuItemConfig("Display Feature-Bar",
+                                e -> System.out.println("")
+                        )
+                )
+                .build();
 
         tabPanelPane.setSide(Side.TOP);
         tabPanelPane.getStyleClass().add("tabPane");

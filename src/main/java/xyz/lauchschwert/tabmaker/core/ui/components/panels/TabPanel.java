@@ -1,46 +1,65 @@
 package xyz.lauchschwert.tabmaker.core.ui.components.panels;
 
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
-import xyz.lauchschwert.tabmaker.core.ui.popups.ButtonGridPopup;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import xyz.lauchschwert.tabmaker.core.ui.components.buttons.FeatureButton;
 import xyz.lauchschwert.tabmaker.core.ui.components.buttons.NoteButton;
-import xyz.lauchschwert.tabmaker.core.ui.popups.TmPopup;
+import xyz.lauchschwert.tabmaker.core.ui.popups.ButtonGridPopup;
 
 public class TabPanel extends HBox {
-    private final HBox noteBtnPanel;
+    private final VBox panelContainer;
+    private final HBox noteBtnPanel, featureBar;
     private String selectedString;
-    private boolean noteAdded;
+    private boolean noteAdded = false;
 
     public TabPanel(String string) {
         this.selectedString = string;
 
+        this.panelContainer = new VBox();
+        this.panelContainer.setSpacing(10);
+
         setSpacing(10);
         setPadding(new Insets(15));
 
-        final Button stringButton = new Button(string);
+        final Button stringButton = new Button(selectedString);
         stringButton.getStyleClass().add("string-button");
-        stringButton.setOnAction(e -> {
-            ButtonGridPopup.createTuningPopup(this::setStringName, 6).show(stringButton);
-        });
+        stringButton.setOnAction(e -> ButtonGridPopup.createTuningPopup(this::setStringName, 6).show(stringButton));
 
-        Separator separator = new Separator(Orientation.VERTICAL);
+        final VBox stringButtonWrapper = new VBox();
+        stringButtonWrapper.setAlignment(Pos.CENTER);
+        stringButtonWrapper.getChildren().add(stringButton);
 
-        noteBtnPanel = new HBox();
+        this.noteBtnPanel = new HBox();
         noteBtnPanel.setSpacing(5);
-        NoteButton noteButton = new NoteButton(this, noteBtnPanel.getChildren().size());
+        noteBtnPanel.getChildren().addListener((ListChangeListener<? super Node>) observable -> setNoteAdded(true));
+
+        this.featureBar = new HBox();
+        featureBar.setSpacing(5);
+        featureBar.getChildren().add(new FeatureButton());
+
+        final NoteButton noteButton = new NoteButton(this, noteBtnPanel.getChildren().size());
         noteBtnPanel.getChildren().add(noteButton);
 
-        this.getChildren().addAll(stringButton, separator, noteBtnPanel);
+        final Separator separator = new Separator(Orientation.VERTICAL);
+        setHgrow(separator, Priority.ALWAYS);
+
+        panelContainer.getChildren().addAll(featureBar, noteBtnPanel);
+        this.getChildren().addAll(stringButtonWrapper, separator, panelContainer);
     }
 
     public TabPanel(String string, String[] notes) {
         this(string);
 
         if (notes.length == 0) {
-            return; // return early since we have no notes to import and don't want to skip the clear of noteBtnPanel
+            return; // return early since we have no notes to import and to skip the clear of noteBtnPanel
         }
 
         // remove default button
@@ -59,9 +78,10 @@ public class TabPanel extends HBox {
         this.noteBtnPanel.getChildren().add(newButton);
         setNoteAdded(true);
         newButton.requestFocus();
+        ButtonGridPopup.createFretPopup(newButton::setText, 6).show(newButton);
     }
 
-    public int lastIndexOfNotePanel() {
+    public int getLastNoteButtonIndex() {
         return noteBtnPanel.getChildren().size() - 1;
     }
 
@@ -89,5 +109,9 @@ public class TabPanel extends HBox {
 
     public boolean isNoteAdded() {
         return noteAdded;
+    }
+
+    public HBox getFeatureBar() {
+        return featureBar;
     }
 }
