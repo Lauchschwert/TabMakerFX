@@ -11,7 +11,7 @@ public class NoteButton extends Button {
 
     public NoteButton(TabPanel tabPanel, int index) {
         this.index = index;
-        this.getStyleClass().add(STYLE_CLASS);
+        this.getStyleClass().addAll("tm-button", STYLE_CLASS);
 
         this.setOnAction(e -> this.openNoteSelector(tabPanel)); // add note selection
     }

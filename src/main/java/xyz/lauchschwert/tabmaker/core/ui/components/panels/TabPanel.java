@@ -29,7 +29,7 @@ public class TabPanel extends HBox {
         setPadding(new Insets(15));
 
         final Button stringButton = new Button(selectedString);
-        stringButton.getStyleClass().add("string-button");
+        stringButton.getStyleClass().addAll("tm-button", "string-button");
         stringButton.setOnAction(e -> ButtonGridPopup.createTuningPopup(this::setStringName, 6).show(stringButton));
 
         final VBox stringButtonWrapper = new VBox();

@@ -43,39 +43,41 @@
     -fx-pref-height: 10;
 }
 
-.string-button {
-    -fx-background-color: rgb(50, 50, 50);
-    -fx-text-fill: white;
-    -fx-font-size: 18;
-    -fx-font-weight: bold;
-    -fx-border-radius: 5;
-    -fx-pref-width: 50px;
-    -fx-pref-height: 50px;
-}
-
-.note-button {
+.tm-button {
     -fx-background-color: rgb(50, 50, 50);
     -fx-border-color: white;
     -fx-border-width: 1;
     -fx-border-radius: 5;
-    -fx-font-size: 18;
     -fx-text-fill: white;
-    -fx-pref-width: 50px;
-    -fx-pref-height: 50px;
     -fx-font-weight: bold;
 }
 
-.note-button:hover,
-.string-button:hover {
+.tm-button:hover {
     -fx-background-color: rgb(70, 70, 70);
     -fx-border-color: rgba(100, 100, 250, .45);
 ;
 }
 
-.note-button:focused,
-.string-button:focused {
+tm-button:focused {
     -fx-background-color: rgb(80, 80, 80);
     -fx-border-color: rgb(100, 100, 250);
+}
+
+.feature-button {
+    -fx-pref-width: 50px;
+    -fx-pref-height: 10px;
+}
+
+.string-button {
+    -fx-font-size: 18;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+}
+
+.note-button {
+    -fx-font-size: 18;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
 }
 
 .tab-header-background {
@@ -104,13 +106,3 @@
     -fx-background-color: lightgray;
 }
 
-.feature-button {
-    -fx-background-color: rgb(50, 50, 50);
-    -fx-border-color: white;
-    -fx-border-width: 1;
-    -fx-border-radius: 5;
-    -fx-text-fill: white;
-    -fx-pref-width: 50px;
-    -fx-pref-height: 10px;
-    -fx-font-weight: bold;
-}
