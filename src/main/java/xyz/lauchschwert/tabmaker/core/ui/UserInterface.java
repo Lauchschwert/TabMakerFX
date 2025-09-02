@@ -77,7 +77,7 @@ public class UserInterface {
                                 false),
 
                         new MenuItemConfig("Export Panel",
-                                e -> exportPanel(fileActions),
+                                e -> fileActions.exportAction(getSelectedTab()),
                                 false
                         )
                 ).addMenu(
