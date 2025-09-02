@@ -106,7 +106,7 @@ public class UserInterface {
                     stage.setWidth(width);
                 }));
 
-        root.getStyleClass().add("root");
+        root.getStyleClass().add("root-panel");
         root.getChildren().addAll(menuBar, tabPanelPane);
         TmLogger.debug("Configured Components successfully");
     }
