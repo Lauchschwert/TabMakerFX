@@ -1,13 +1,10 @@
 package xyz.lauchschwert.tabmaker.core.ui;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -119,13 +116,6 @@ public class UserInterface {
         } catch (ImportException ex) {
             TmLogger.warn("Could not import file: " + ex.getMessage());
         }
-    }
-
-    private MenuItem createMenuItem(String name, EventHandler<ActionEvent> e) {
-        MenuItem importFileItem = new MenuItem(name);
-
-        importFileItem.setOnAction(e);
-        return importFileItem;
     }
 
     public void createNewTab(InstrumentPanel instrumentPanel) {
