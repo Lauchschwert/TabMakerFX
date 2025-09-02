@@ -22,6 +22,9 @@ public class FileDialog {
         fc.setInitialDirectory(TmImportExportService.SAVE_PATH.toFile());
 
         final File file = fc.showOpenDialog(null);
+        if (file == null) {
+            throw new ExportException("No file selected.");
+        }
 
         if (!Files.exists(file.toPath())) {
             try {

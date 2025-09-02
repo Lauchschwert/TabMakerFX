@@ -64,32 +64,41 @@ public class TabPanel extends HBox {
             return;
         }
 
-        if (featureSymbols.length == 0) {
-            return;
-        }
-
         // remove default button
         this.noteBtnPanel.getChildren().clear();
 
         // numerated for-loop for synchronized importing of the NoteButtons and FeatureButtons
         for (int i = 0; i < notes.length; i++) {
-            // import the notes first
+            // import the note first
             final NoteButton noteButton = new NoteButton(this, noteBtnPanel.getChildren().size());
             noteButton.setText(notes[i]);
             this.noteBtnPanel.getChildren().add(noteButton);
 
-            // then the respective feature buttons
-            final FeatureButton featureButton = new FeatureButton();
-            featureButton.setText(featureSymbols[i]);
-            featureBar.getChildren().add(featureButton);
+            if (i > featureSymbols.length) {
+                addFeatureBtn("");
+                continue;
+            }
+
+            // then the respective feature button
+            final String featureSymbol = featureSymbols.length == 0 ? "" : featureSymbols[i];
+            addFeatureBtn(featureSymbol);
         }
     }
 
-    public void addNoteBtn() {
+    public NoteButton addNoteBtn() {
         final NoteButton newButton = new NoteButton(this, noteBtnPanel.getChildren().size());
         this.noteBtnPanel.getChildren().add(newButton);
         setNoteAdded(true);
         newButton.requestFocus();
+
+        addFeatureBtn("");
+
+        return newButton;
+    }
+
+    public void addFeatureBtn(String text) {
+        final FeatureButton newButton = new FeatureButton(text);
+        this.featureBar.getChildren().add(newButton);
     }
 
     public int getLastNoteButtonIndex() {
