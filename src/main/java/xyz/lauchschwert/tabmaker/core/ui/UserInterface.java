@@ -97,7 +97,7 @@ public class UserInterface {
         tabPanelPane.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observableValue, oldTab, newTab) -> Platform.runLater(() -> {
-                    // so the width don't get fucked up lol
+                    // so the width doesn't get fucked up lol
                     double width = stage.getWidth();
                     stage.sizeToScene();
                     stage.setWidth(width);
