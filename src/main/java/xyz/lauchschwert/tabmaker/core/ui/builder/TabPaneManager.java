@@ -7,14 +7,14 @@ import xyz.lauchschwert.tabmaker.core.configs.TabItemConfig;
 import xyz.lauchschwert.tabmaker.core.ui.components.panels.InstrumentPanel;
 import xyz.lauchschwert.tabmaker.core.ui.components.buttons.TmTab;
 
-public class TabPaneBuilder {
+public class TabPaneManager {
     private final TabPane tabPane;
 
-    public TabPaneBuilder() {
+    public TabPaneManager() {
         this.tabPane = new TabPane();
     }
 
-    public TabPaneBuilder(ObservableList<Tab> tabs) {
+    public TabPaneManager(ObservableList<Tab> tabs) {
         this.tabPane = new TabPane();
         // .addAll()?
         tabPane.getTabs().addAll(tabs);

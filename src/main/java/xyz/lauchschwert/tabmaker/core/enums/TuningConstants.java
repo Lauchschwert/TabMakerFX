@@ -3,7 +3,7 @@ package xyz.lauchschwert.tabmaker.core.enums;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public enum Tunings {
+public enum TuningConstants {
     LOW_E("E", 0),
     A("A", 1),
     D("D", 2),
@@ -23,15 +23,15 @@ public enum Tunings {
     private final String note;
     private final int index;
 
-    Tunings(String note, int index) {
+    TuningConstants(String note, int index) {
         this.note = note;
         this.index = index;
     }
 
     public static String[] GetAllTunings() {
         return Arrays.stream(values())
-                .sorted(Comparator.comparingInt(Tunings::getIndex))
-                .map(Tunings::getNote)
+                .sorted(Comparator.comparingInt(TuningConstants::getIndex))
+                .map(TuningConstants::getNote)
                 .toArray(String[]::new);
     }
 
@@ -44,9 +44,11 @@ public enum Tunings {
     }
 
     // Define tuning arrays
-    public static final Tunings[] STANDARD_GUITAR_TUNING =
+    public static final TuningConstants[] STANDARD_GUITAR_TUNING =
             {LOW_E, A, D, G, B, HIGH_E};
 
-    public static final Tunings[] STANDARD_BASS_TUNING =
+    public static final TuningConstants[] STANDARD_BASS_TUNING =
             {LOW_E, A, D, G};
+
+    public static final int FRET_COUNT = 24;
 }

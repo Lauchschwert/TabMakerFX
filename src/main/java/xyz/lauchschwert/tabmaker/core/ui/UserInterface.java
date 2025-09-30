@@ -16,12 +16,13 @@ import xyz.lauchschwert.tabmaker.core.ex.ImportException;
 import xyz.lauchschwert.tabmaker.core.logging.TmLogger;
 import xyz.lauchschwert.tabmaker.core.services.dialog.DialogService;
 import xyz.lauchschwert.tabmaker.core.services.dialog.TmDialogService;
-import xyz.lauchschwert.tabmaker.core.ui.builder.MenuBarBuilder;
-import xyz.lauchschwert.tabmaker.core.ui.builder.TabPaneBuilder;
+import xyz.lauchschwert.tabmaker.core.ui.builder.MenuBarManager;
+import xyz.lauchschwert.tabmaker.core.ui.builder.TabPaneManager;
 import xyz.lauchschwert.tabmaker.core.ui.components.buttons.TmTab;
 import xyz.lauchschwert.tabmaker.core.ui.components.panels.InstrumentPanel;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 public class UserInterface {
     private VBox root;
@@ -57,8 +58,8 @@ public class UserInterface {
 
         final TabItemConfig tabItemConfig = new TabItemConfig(name, instrumentPanel);
 
-        final TabPaneBuilder tabPaneBuilder = new TabPaneBuilder(tabPanelPane.getTabs());
-        tabPaneBuilder.addTab(tabPanelPane, tabItemConfig);
+        final TabPaneManager tabPaneManager = new TabPaneManager(tabPanelPane.getTabs());
+        tabPaneManager.addTab(tabPanelPane, tabItemConfig);
     }
 
     private void configureComponents(Stage stage) {
@@ -68,7 +69,7 @@ public class UserInterface {
         final FileActions fileActions = new FileActions(this);
         final TabActions tabActions = new TabActions(this);
 
-        final MenuBar menuBar = new MenuBarBuilder()
+        final MenuBar menuBar = new MenuBarManager()
                 .addMenu("File",
                         new MenuItemConfig("Import Panel",
                                 e ->
@@ -89,7 +90,7 @@ public class UserInterface {
                         )
                 ).addMenu("View",
                         new MenuItemConfig("Display Feature-Bar",
-                                e -> System.out.println("")
+                                e -> TmLogger.info("Feature button pressed")
                         )
                 )
                 .build();
@@ -109,10 +110,6 @@ public class UserInterface {
         root.getStyleClass().add("root-panel");
         root.getChildren().addAll(menuBar, tabPanelPane);
         TmLogger.debug("Configured Components successfully");
-    }
-
-    private void exportPanel(FileActions fileActions) {
-        fileActions.exportAction(getSelectedTab());
     }
 
     private void importPanel(FileActions fileActions) {

@@ -1,19 +1,19 @@
 package xyz.lauchschwert.tabmaker.core.enums;
 
 
-import static xyz.lauchschwert.tabmaker.core.enums.Tunings.*;
+import static xyz.lauchschwert.tabmaker.core.enums.TuningConstants.*;
 
 public enum InstrumentType {
     GUITAR(STANDARD_GUITAR_TUNING),
     BASS(STANDARD_BASS_TUNING);
 
-    private final Tunings[] tuning;
+    private final TuningConstants[] tuning;
 
-    InstrumentType(Tunings[] tuning) {
+    InstrumentType(TuningConstants[] tuning) {
         this.tuning = tuning;
     }
 
-    public Tunings[] getTuning() {
+    public TuningConstants[] getTuning() {
         return tuning.clone(); // Defensive copy
     }
 

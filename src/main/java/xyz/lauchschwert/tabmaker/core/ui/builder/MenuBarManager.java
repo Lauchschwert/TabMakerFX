@@ -5,10 +5,10 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import xyz.lauchschwert.tabmaker.core.configs.MenuItemConfig;
 
-public class MenuBarBuilder {
+public class MenuBarManager {
     private final MenuBar menuBar;
 
-    public MenuBarBuilder() {
+    public MenuBarManager() {
         this.menuBar = new MenuBar();
     }
 
@@ -16,12 +16,12 @@ public class MenuBarBuilder {
         return menuBar;
     }
 
-    public MenuBarBuilder addSubMenu(Menu menu) {
+    public MenuBarManager addSubMenu(Menu menu) {
         this.menuBar.getMenus().add(menu);
         return this;
     }
 
-    public MenuBarBuilder addMenu(String name, MenuItemConfig menuConfig) {
+    public MenuBarManager addMenu(String name, MenuItemConfig menuConfig) {
         final MenuItem newItem = new MenuItem(menuConfig.name());
         newItem.setOnAction(menuConfig.action());
         newItem.setDisable(menuConfig.disable());
@@ -34,7 +34,7 @@ public class MenuBarBuilder {
         return this;
     }
 
-    public MenuBarBuilder addMenu(String name, MenuItemConfig... menuConfigs) {
+    public MenuBarManager addMenu(String name, MenuItemConfig... menuConfigs) {
         final Menu newMenu = new Menu(name);
         for (MenuItemConfig menuItemConfig : menuConfigs) {
             final MenuItem newItem = new MenuItem(menuItemConfig.name());

@@ -3,9 +3,8 @@ package xyz.lauchschwert.tabmaker.core.ui.components.panels;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import xyz.lauchschwert.tabmaker.core.enums.InstrumentType;
-import xyz.lauchschwert.tabmaker.core.enums.Tunings;
+import xyz.lauchschwert.tabmaker.core.enums.TuningConstants;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class InstrumentPanel extends VBox implements Serializable {
     }
 
     private void createTabPanels() {
-        for (Tunings string : this.instrumentType.getTuning()) {
+        for (TuningConstants string : this.instrumentType.getTuning()) {
             TabPanel tabPanel = createTabPanel(string.getNote());
 
             // Wrap in the ScrollPane for scrolling if buttons extend bounds
